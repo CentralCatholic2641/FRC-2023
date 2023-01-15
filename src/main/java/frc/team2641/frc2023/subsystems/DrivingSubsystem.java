@@ -1,7 +1,5 @@
 package frc.team2641.frc2023.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,6 +8,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
+import frc.team2641.lib.motors.CTR_Falcon500;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -23,19 +22,21 @@ public class DrivingSubsystem extends SubsystemBase {
     return instance;
   }
 
-  private WPI_TalonFX leftMotor1 = new WPI_TalonFX(Constants.Motors.leftMotor1);
-  private WPI_TalonFX leftMotor2 = new WPI_TalonFX(Constants.Motors.leftMotor2);
-  private WPI_TalonFX leftMotor3 = new WPI_TalonFX(Constants.Motors.leftMotor3);
+  private CTR_Falcon500 leftMotor1 = CTR_Falcon500.getInstance(Constants.CAN.leftMotor1);
+  private CTR_Falcon500 leftMotor2 = CTR_Falcon500.getInstance(Constants.CAN.leftMotor2);
+  private CTR_Falcon500 leftMotor3 = CTR_Falcon500.getInstance(Constants.CAN.leftMotor3);
 
-  private WPI_TalonFX rightMotor1 = new WPI_TalonFX(Constants.Motors.rightMotor1);
-  private WPI_TalonFX rightMotor2 = new WPI_TalonFX(Constants.Motors.rightMotor2);
-  private WPI_TalonFX rightMotor3 = new WPI_TalonFX(Constants.Motors.rightMotor3);
+  private CTR_Falcon500 rightMotor1 = CTR_Falcon500.getInstance(Constants.CAN.rightMotor1);
+  private CTR_Falcon500 rightMotor2 = CTR_Falcon500.getInstance(Constants.CAN.rightMotor2);
+  private CTR_Falcon500 rightMotor3 = CTR_Falcon500.getInstance(Constants.CAN.rightMotor3);
 
-  private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMotor1, leftMotor2, leftMotor3);
-  private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMotor1, rightMotor2, rightMotor3);
+  private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMotor1.getTalon(), leftMotor2.getTalon(),
+      leftMotor3.getTalon());
+  private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMotor1.getTalon(), rightMotor2.getTalon(),
+      rightMotor3.getTalon());
 
-  private WPI_TalonFX leftEncoder = leftMotor2;
-  private WPI_TalonFX rightEncoder = rightMotor2;
+  private CTR_Falcon500 leftEncoder = leftMotor2;
+  private CTR_Falcon500 rightEncoder = rightMotor2;
 
   private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
@@ -44,15 +45,8 @@ public class DrivingSubsystem extends SubsystemBase {
   private Pose2d pose;
 
   private DrivingSubsystem() {
-    leftMotor1.clearStickyFaults();
-    leftMotor2.clearStickyFaults();
-    leftMotor3.clearStickyFaults();
-    rightMotor1.clearStickyFaults();
-    rightMotor2.clearStickyFaults();
-    rightMotor3.clearStickyFaults();
-
-    configBrakes(Constants.MotorSpeeds.brakes);
-    configRamps(Constants.MotorSpeeds.driveRampSpeed);
+    configBrakes(Constants.Drive.brakes);
+    configRamps(Constants.Drive.rampSpeed);
 
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
@@ -60,11 +54,11 @@ public class DrivingSubsystem extends SubsystemBase {
   }
 
   public void aDrive(double rotation, double speed) {
-    drive.arcadeDrive(rotation * 0.5, -speed * 0.5, true);
+    drive.arcadeDrive(rotation * Constants.Drive.maxDrive, -speed * Constants.Drive.maxDrive, true);
   }
 
   public void tDrive(double left, double right) {
-    drive.tankDrive(left, right, true);
+    drive.tankDrive(left * Constants.Drive.maxDrive, right * Constants.Drive.maxDrive, true);
   }
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
@@ -75,43 +69,37 @@ public class DrivingSubsystem extends SubsystemBase {
   }
 
   public void halt() {
-    configRamps(Constants.MotorSpeeds.driveRampSpeed);
-    configBrakes(Constants.MotorSpeeds.brakes);
-    leftMotor1.stopMotor();
-    leftMotor2.stopMotor();
-    leftMotor3.stopMotor();
-    rightMotor1.stopMotor();
-    rightMotor2.stopMotor();
-    rightMotor3.stopMotor();
+    configRamps(Constants.Drive.rampSpeed);
+    configBrakes(Constants.Drive.brakes);
+    leftMotor1.stop();
+    leftMotor2.stop();
+    leftMotor3.stop();
+    rightMotor1.stop();
+    rightMotor2.stop();
+    rightMotor3.stop();
   }
 
   public void configBrakes(boolean brakesOn) {
-    NeutralMode input;
-    if (brakesOn)
-      input = NeutralMode.Brake;
-    else
-      input = NeutralMode.Coast;
-
-    leftMotor1.setNeutralMode(input);
-    leftMotor2.setNeutralMode(input);
-    leftMotor3.setNeutralMode(input);
-    rightMotor1.setNeutralMode(input);
-    rightMotor2.setNeutralMode(input);
-    rightMotor3.setNeutralMode(input);
+    leftMotor1.configBrakes(brakesOn);
+    leftMotor2.configBrakes(brakesOn);
+    leftMotor3.configBrakes(brakesOn);
+    rightMotor1.configBrakes(brakesOn);
+    rightMotor2.configBrakes(brakesOn);
+    rightMotor3.configBrakes(brakesOn);
   }
 
   public void configRamps(double driveRampSpeed) {
-    leftMotor1.configOpenloopRamp(driveRampSpeed);
-    leftMotor2.configOpenloopRamp(driveRampSpeed);
-    leftMotor3.configOpenloopRamp(driveRampSpeed);
-    rightMotor1.configOpenloopRamp(driveRampSpeed);
-    rightMotor2.configOpenloopRamp(driveRampSpeed);
-    rightMotor3.configOpenloopRamp(driveRampSpeed);
+    leftMotor1.configRamps(driveRampSpeed);
+    leftMotor2.configRamps(driveRampSpeed);
+    leftMotor3.configRamps(driveRampSpeed);
+    rightMotor1.configRamps(driveRampSpeed);
+    rightMotor2.configRamps(driveRampSpeed);
+    rightMotor3.configRamps(driveRampSpeed);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftEncoder.getSelectedSensorVelocity(),
-        rightEncoder.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(getLeftEncoder(),
+        getRightEncoder());
   }
 
   public DifferentialDriveOdometry getOdometry() {
@@ -134,16 +122,16 @@ public class DrivingSubsystem extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    return leftEncoder.getSelectedSensorPosition() / Constants.oneRotation / 10.71;
+    return leftEncoder.getEncoder() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
   }
 
   public double getRightEncoder() {
-    return rightEncoder.getSelectedSensorPosition() / Constants.oneRotation / 10.71;
+    return rightEncoder.getEncoder() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
   }
 
   public void resetEncoders() {
-    leftEncoder.setSelectedSensorPosition(0.0);
-    rightEncoder.setSelectedSensorPosition(0.0);
+    leftEncoder.resetEncoder();
+    rightEncoder.resetEncoder();
   }
 
   public Rotation2d getAngle() {

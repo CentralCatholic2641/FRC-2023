@@ -7,6 +7,7 @@ package frc.team2641.frc2023.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team2641.frc2023.Constants;
 
 public class PnuematicSubsystem extends SubsystemBase {
 
@@ -18,7 +19,7 @@ public class PnuematicSubsystem extends SubsystemBase {
     return instance;
   }
 
-  private Compressor compressor = new Compressor(21, PneumaticsModuleType.CTREPCM);
+  private Compressor compressor = new Compressor(Constants.CAN.PCM, PneumaticsModuleType.CTREPCM);
 
   private PnuematicSubsystem() {
   }

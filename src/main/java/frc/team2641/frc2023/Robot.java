@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team2641.frc2023.subsystems.DrivingSubsystem;
 import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
+import frc.team2641.lib.control.Buttons.Gamepad;
 import frc.team2641.lib.limelight.Limelight;
 
 public class Robot extends TimedRobot {
@@ -29,7 +30,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    if (robotContainer.driver.getRawButton(Constants.GamepadButtons.leftBumper)) {
+    if (robotContainer.driver.getRawButton(Gamepad.leftBumper)) {
       robotContainer.driverShift = true;
     } else {
       robotContainer.driverShift = false;
@@ -67,7 +68,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    DrivingSubsystem.getInstance().configRamps(Constants.MotorSpeeds.driveRampSpeed);
+    DrivingSubsystem.getInstance().configRamps(Constants.Drive.rampSpeed);
 
     if (autoCommand != null)
       autoCommand.cancel();

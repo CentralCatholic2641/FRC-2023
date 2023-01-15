@@ -28,18 +28,18 @@ public class FollowPath {
 	public static SequentialCommandGroup get() {
 		var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
 				new SimpleMotorFeedforward(
-						Constants.DriveConstants.ksVolts,
-						Constants.DriveConstants.kvVoltSecondsPerMeter,
-						Constants.DriveConstants.kaVoltSecondsSquaredPerMeter),
-				Constants.DriveConstants.kDriveKinematics,
+						Constants.Drive.ksVolts,
+						Constants.Drive.kvVoltSecondsPerMeter,
+						Constants.Drive.kaVoltSecondsSquaredPerMeter),
+				Constants.Drive.kDriveKinematics,
 				10);
 
 		// Create config for trajectory
 		TrajectoryConfig config = new TrajectoryConfig(
-				Constants.DriveConstants.kMaxSpeedMetersPerSecond,
-				Constants.DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+				Constants.Drive.kMaxSpeedMetersPerSecond,
+				Constants.Drive.kMaxAccelerationMetersPerSecondSquared)
 				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(Constants.DriveConstants.kDriveKinematics)
+				.setKinematics(Constants.Drive.kDriveKinematics)
 				// Apply the voltage constraint
 				.addConstraint(autoVoltageConstraint);
 
@@ -57,16 +57,16 @@ public class FollowPath {
 		RamseteCommand ramseteCommand = new RamseteCommand(
 				exampleTrajectory,
 				drivingSubsystem::getPose,
-				new RamseteController(Constants.DriveConstants.kRamseteB,
-						Constants.DriveConstants.kRamseteZeta),
+				new RamseteController(Constants.Drive.kRamseteB,
+						Constants.Drive.kRamseteZeta),
 				new SimpleMotorFeedforward(
-						Constants.DriveConstants.ksVolts,
-						Constants.DriveConstants.kvVoltSecondsPerMeter,
-						Constants.DriveConstants.kaVoltSecondsSquaredPerMeter),
-				Constants.DriveConstants.kDriveKinematics,
+						Constants.Drive.ksVolts,
+						Constants.Drive.kvVoltSecondsPerMeter,
+						Constants.Drive.kaVoltSecondsSquaredPerMeter),
+				Constants.Drive.kDriveKinematics,
 				drivingSubsystem::getWheelSpeeds,
-				new PIDController(Constants.DriveConstants.kPDriveVel, 0, 0),
-				new PIDController(Constants.DriveConstants.kPDriveVel, 0, 0),
+				new PIDController(Constants.Drive.kPDriveVel, 0, 0),
+				new PIDController(Constants.Drive.kPDriveVel, 0, 0),
 				// RamseteCommand passes volts to the callback
 				drivingSubsystem::tDriveVolts,
 				drivingSubsystem);
