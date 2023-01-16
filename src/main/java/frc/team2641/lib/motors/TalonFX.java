@@ -8,34 +8,34 @@ import java.util.ArrayList;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-public class CTR_Falcon500 {
-  public static CTR_Falcon500 instance = null;
-  private static ArrayList<CTR_Falcon500> instances = new ArrayList<CTR_Falcon500>();
+public class TalonFX {
+  public static TalonFX instance = null;
+  private static ArrayList<TalonFX> instances = new ArrayList<TalonFX>();
 
   private int id;
   private WPI_TalonFX talonFX = null;
 
   /**
-   * Returns a prexisting instance of a Falcon 500 motor, or creates and returns a
-   * new one
+   * Returns a prexisting instance of a Talon FX-controlled motor, or creates and
+   * returns a new one
    * 
-   * @return instance of Falcon500
+   * @return instance of TalonFX
    */
-  public static CTR_Falcon500 getInstance(int id) {
-    CTR_Falcon500 instance = null;
-    for (CTR_Falcon500 i : instances) {
+  public static TalonFX getInstance(int id) {
+    TalonFX instance = null;
+    for (TalonFX i : instances) {
       if (i.getID() == id) {
         instance = i;
       }
     }
     if (instance == null) {
-      instance = new CTR_Falcon500(id);
+      instance = new TalonFX(id);
       instances.add(instance);
     }
     return instance;
   }
 
-  private CTR_Falcon500(int id) {
+  private TalonFX(int id) {
     talonFX = new WPI_TalonFX(id);
     talonFX.clearStickyFaults();
   }

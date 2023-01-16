@@ -8,34 +8,34 @@ import java.util.ArrayList;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-public class VEX_775pro {
-  public static VEX_775pro instance = null;
-  private static ArrayList<VEX_775pro> instances = new ArrayList<VEX_775pro>();
+public class TalonSRX {
+  public static TalonSRX instance = null;
+  private static ArrayList<TalonSRX> instances = new ArrayList<TalonSRX>();
 
   private int id;
   private WPI_TalonSRX talonSRX = null;
 
   /**
-   * Returns a prexisting instance of a VEX 775pro motor, or creates and returns a
-   * new one
+   * Returns a prexisting instance of a Talon SRX-controlled motor, or creates and
+   * returns a new one
    * 
-   * @return instance of VEX_775pro
+   * @return instance of TalonSRX
    */
-  public static VEX_775pro getInstance(int id) {
-    VEX_775pro instance = null;
-    for (VEX_775pro i : instances) {
+  public static TalonSRX getInstance(int id) {
+    TalonSRX instance = null;
+    for (TalonSRX i : instances) {
       if (i.getID() == id) {
         instance = i;
       }
     }
     if (instance == null) {
-      instance = new VEX_775pro(id);
+      instance = new TalonSRX(id);
       instances.add(instance);
     }
     return instance;
   }
 
-  private VEX_775pro(int id) {
+  private TalonSRX(int id) {
     talonSRX = new WPI_TalonSRX(id);
     talonSRX.clearStickyFaults();
   }

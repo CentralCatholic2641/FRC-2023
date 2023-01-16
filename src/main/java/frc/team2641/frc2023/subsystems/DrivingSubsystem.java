@@ -8,7 +8,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
-import frc.team2641.lib.motors.CTR_Falcon500;
+import frc.team2641.lib.motors.TalonFX;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -22,21 +22,21 @@ public class DrivingSubsystem extends SubsystemBase {
     return instance;
   }
 
-  private CTR_Falcon500 leftMotor1 = CTR_Falcon500.getInstance(Constants.CAN.leftMotor1);
-  private CTR_Falcon500 leftMotor2 = CTR_Falcon500.getInstance(Constants.CAN.leftMotor2);
-  private CTR_Falcon500 leftMotor3 = CTR_Falcon500.getInstance(Constants.CAN.leftMotor3);
+  private TalonFX leftMotor1 = TalonFX.getInstance(Constants.CAN.leftMotor1);
+  private TalonFX leftMotor2 = TalonFX.getInstance(Constants.CAN.leftMotor2);
+  private TalonFX leftMotor3 = TalonFX.getInstance(Constants.CAN.leftMotor3);
 
-  private CTR_Falcon500 rightMotor1 = CTR_Falcon500.getInstance(Constants.CAN.rightMotor1);
-  private CTR_Falcon500 rightMotor2 = CTR_Falcon500.getInstance(Constants.CAN.rightMotor2);
-  private CTR_Falcon500 rightMotor3 = CTR_Falcon500.getInstance(Constants.CAN.rightMotor3);
+  private TalonFX rightMotor1 = TalonFX.getInstance(Constants.CAN.rightMotor1);
+  private TalonFX rightMotor2 = TalonFX.getInstance(Constants.CAN.rightMotor2);
+  private TalonFX rightMotor3 = TalonFX.getInstance(Constants.CAN.rightMotor3);
 
   private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMotor1.getTalon(), leftMotor2.getTalon(),
       leftMotor3.getTalon());
   private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMotor1.getTalon(), rightMotor2.getTalon(),
       rightMotor3.getTalon());
 
-  private CTR_Falcon500 leftEncoder = leftMotor2;
-  private CTR_Falcon500 rightEncoder = rightMotor2;
+  private TalonFX leftEncoder = leftMotor2;
+  private TalonFX rightEncoder = rightMotor2;
 
   private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
