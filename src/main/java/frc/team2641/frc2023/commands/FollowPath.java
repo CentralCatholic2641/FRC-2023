@@ -71,7 +71,7 @@ public class FollowPath {
 				drivingSubsystem::tDriveVolts,
 				drivingSubsystem);
 
-		Robot.field.getObject("traj").setTrajectory(exampleTrajectory);
+		Robot.getField().getObject("traj").setTrajectory(exampleTrajectory);
 
 		// Reset odometry to the starting pose of the trajectory.
 		drivingSubsystem.resetPose(exampleTrajectory.getInitialPose());

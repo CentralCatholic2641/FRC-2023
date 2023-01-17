@@ -5,9 +5,9 @@
 package frc.team2641.frc2023.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
+import frc.team2641.frc2023.Robot;
 
 public class PnuematicSubsystem extends SubsystemBase {
 
@@ -19,13 +19,13 @@ public class PnuematicSubsystem extends SubsystemBase {
     return instance;
   }
 
-  private Compressor compressor = new Compressor(Constants.CAN.PCM, PneumaticsModuleType.CTREPCM);
+  private Compressor compressor = Robot.getPH().makeCompressor();
 
   private PnuematicSubsystem() {
   }
 
   public void enable() {
-    compressor.enableDigital();
+    compressor.enableAnalog(Constants.Pneumatics.minPressure, Constants.Pneumatics.maxPressure);
   }
 
   public void disable() {
@@ -34,6 +34,5 @@ public class PnuematicSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

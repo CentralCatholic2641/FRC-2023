@@ -15,7 +15,8 @@ public final class Constants {
 		public static final int leftMotor1 = 3;
 		public static final int leftMotor2 = 4;
 		public static final int leftMotor3 = 5;
-		public static final int PCM = 21;
+		public static final int PH = 21;
+		public static final int PDH = 20;
 	}
 
 	public static final class Drive {
@@ -35,5 +36,10 @@ public final class Constants {
 		public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 		public static final double kRamseteB = 2;
 		public static final double kRamseteZeta = 0.7;
+	}
+
+	public static final class Pneumatics {
+		public static final int minPressure = 80;
+		public static final int maxPressure = 120;
 	}
 }

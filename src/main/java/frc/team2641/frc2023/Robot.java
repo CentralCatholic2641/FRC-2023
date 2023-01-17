@@ -1,5 +1,7 @@
 package frc.team2641.frc2023;
 
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,10 +17,12 @@ public class Robot extends TimedRobot {
   Command autoCommand;
 
   public static RobotContainer robotContainer;
-  public static final Field2d field = new Field2d();
+  private static Field2d field = new Field2d();
   private static LogController logController = LogController.getInstance();
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
   private static Limelight limelight = Limelight.getInstance();
+  private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
+  private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
 
   @Override
   public void robotInit() {
@@ -93,5 +97,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {
+  }
+
+  public static PowerDistribution getPDH() {
+    return pdh;
+  }
+
+  public static PneumaticHub getPH() {
+    return ph;
+  }
+
+  public static Field2d getField() {
+    return field;
   }
 }

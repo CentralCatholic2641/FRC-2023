@@ -5,8 +5,8 @@
 package frc.team2641.frc2023.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team2641.frc2023.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class ClawSubsystem extends SubsystemBase {
 
@@ -18,15 +18,10 @@ public class ClawSubsystem extends SubsystemBase {
     return instance;
   }
 
-  private PnuematicSubsystem pnuematicSubsystem = PnuematicSubsystem.getInstance();
-  private DoubleSolenoid clawSolenoid = new DoubleSolenoid(21,
-      PneumaticsModuleType.CTREPCM, 0, 1);
-  private DoubleSolenoid pressureSolenoid = new DoubleSolenoid(21,
-      PneumaticsModuleType.CTREPCM, 2, 3);
+  private DoubleSolenoid clawSolenoid = Robot.getPH().makeDoubleSolenoid(0, 1);
+  private DoubleSolenoid pressureSolenoid = Robot.getPH().makeDoubleSolenoid(2, 3);
 
-  /** Creates a new ClawSubsystem. */
   private ClawSubsystem() {
-    pnuematicSubsystem.enable();
     pressurize();
   }
 
@@ -49,6 +44,5 @@ public class ClawSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }
