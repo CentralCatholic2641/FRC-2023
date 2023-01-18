@@ -2,15 +2,15 @@ package frc.team2641.frc2023.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team2641.frc2023.Robot;
-import frc.team2641.frc2023.subsystems.DrivingSubsystem;
+import frc.team2641.frc2023.subsystems.Drivetrain;
 import frc.team2641.lib.control.Buttons.Gamepad;
 
 public class Drive extends CommandBase {
-  private DrivingSubsystem drivingSubsystem;
+  private Drivetrain drivetrain;
 
   public Drive() {
-    this.drivingSubsystem = DrivingSubsystem.getInstance();
-    addRequirements(this.drivingSubsystem);
+    this.drivetrain = Drivetrain.getInstance();
+    addRequirements(this.drivetrain);
   }
 
   @Override
@@ -22,11 +22,11 @@ public class Drive extends CommandBase {
     if (Robot.robotContainer.driverShift == true) {
       double left = Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis);
       double right = Robot.robotContainer.driver.getRawAxis(Gamepad.ryAxis);
-      drivingSubsystem.tDrive(-left, right);
+      drivetrain.tDrive(-left, right);
     } else {
       double rotation = Robot.robotContainer.driver.getRawAxis(Gamepad.lxAxis);
       double drive = Robot.robotContainer.driver.getRawAxis(Gamepad.ryAxis);
-      drivingSubsystem.aDrive(rotation, drive);
+      drivetrain.aDrive(rotation, drive);
     }
   }
 

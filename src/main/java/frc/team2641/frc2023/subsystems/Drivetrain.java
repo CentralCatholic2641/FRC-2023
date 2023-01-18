@@ -12,13 +12,13 @@ import frc.team2641.lib.motors.TalonFX;
 
 import com.kauailabs.navx.frc.AHRS;
 
-public class DrivingSubsystem extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
 
-  private static DrivingSubsystem instance = null;
+  private static Drivetrain instance = null;
 
-  public static DrivingSubsystem getInstance() {
+  public static Drivetrain getInstance() {
     if (instance == null)
-      instance = new DrivingSubsystem();
+      instance = new Drivetrain();
     return instance;
   }
 
@@ -44,7 +44,7 @@ public class DrivingSubsystem extends SubsystemBase {
   private DifferentialDriveOdometry odometry;
   private Pose2d pose;
 
-  private DrivingSubsystem() {
+  private Drivetrain() {
     configBrakes(Constants.Drive.brakes);
     configRamps(Constants.Drive.rampSpeed);
 

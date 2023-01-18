@@ -9,19 +9,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
 
-public class PnuematicSubsystem extends SubsystemBase {
+public class Pneumatics extends SubsystemBase {
 
-  private static PnuematicSubsystem instance = null;
+  private static Pneumatics instance = null;
 
-  public static PnuematicSubsystem getInstance() {
+  public static Pneumatics getInstance() {
     if (instance == null)
-      instance = new PnuematicSubsystem();
+      instance = new Pneumatics();
     return instance;
   }
 
   private Compressor compressor = Robot.getPH().makeCompressor();
 
-  private PnuematicSubsystem() {
+  private Pneumatics() {
   }
 
   public void enable() {

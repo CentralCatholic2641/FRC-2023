@@ -8,20 +8,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class ClawSubsystem extends SubsystemBase {
+public class Claw extends SubsystemBase {
 
-  private static ClawSubsystem instance = null;
+  private static Claw instance = null;
 
-  public static ClawSubsystem getInstance() {
+  public static Claw getInstance() {
     if (instance == null)
-      instance = new ClawSubsystem();
+      instance = new Claw();
     return instance;
   }
 
   private DoubleSolenoid clawSolenoid = Robot.getPH().makeDoubleSolenoid(0, 1);
   private DoubleSolenoid pressureSolenoid = Robot.getPH().makeDoubleSolenoid(2, 3);
 
-  private ClawSubsystem() {
+  private Claw() {
     pressurize();
   }
 

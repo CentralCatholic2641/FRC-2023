@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.team2641.frc2023.subsystems.DrivingSubsystem;
+import frc.team2641.frc2023.subsystems.Drivetrain;
 import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
@@ -23,12 +23,13 @@ public class Robot extends TimedRobot {
   private static Limelight limelight = Limelight.getInstance();
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
+  private Drivetrain drivetrain = Drivetrain.getInstance();
 
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
-    field.setRobotPose(DrivingSubsystem.getInstance().getPose());
+    field.setRobotPose(Drivetrain.getInstance().getPose());
     logController.start();
   }
 
@@ -59,7 +60,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = shuffleboardController.getAutonomousCommand();
-    DrivingSubsystem.getInstance().configRamps(0);
+    drivetrain.configRamps(0);
 
     if (autoCommand != null)
       autoCommand.schedule();
@@ -72,7 +73,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    DrivingSubsystem.getInstance().configRamps(Constants.Drive.rampSpeed);
+    drivetrain.configRamps(Constants.Drive.rampSpeed);
 
     if (autoCommand != null)
       autoCommand.cancel();

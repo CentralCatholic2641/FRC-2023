@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
-import frc.team2641.frc2023.subsystems.DrivingSubsystem;
+import frc.team2641.frc2023.subsystems.Drivetrain;
 
 public class FollowPath {
 
-	private static DrivingSubsystem drivingSubsystem = DrivingSubsystem.getInstance();
+	private static Drivetrain drivetrain = Drivetrain.getInstance();
 
 	public static SequentialCommandGroup get() {
 		var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
@@ -56,7 +56,7 @@ public class FollowPath {
 
 		RamseteCommand ramseteCommand = new RamseteCommand(
 				exampleTrajectory,
-				drivingSubsystem::getPose,
+				drivetrain::getPose,
 				new RamseteController(Constants.Drive.kRamseteB,
 						Constants.Drive.kRamseteZeta),
 				new SimpleMotorFeedforward(
@@ -64,18 +64,18 @@ public class FollowPath {
 						Constants.Drive.kvVoltSecondsPerMeter,
 						Constants.Drive.kaVoltSecondsSquaredPerMeter),
 				Constants.Drive.kDriveKinematics,
-				drivingSubsystem::getWheelSpeeds,
+				drivetrain::getWheelSpeeds,
 				new PIDController(Constants.Drive.kPDriveVel, 0, 0),
 				new PIDController(Constants.Drive.kPDriveVel, 0, 0),
 				// RamseteCommand passes volts to the callback
-				drivingSubsystem::tDriveVolts,
-				drivingSubsystem);
+				drivetrain::tDriveVolts,
+				drivetrain);
 
 		Robot.getField().getObject("traj").setTrajectory(exampleTrajectory);
 
 		// Reset odometry to the starting pose of the trajectory.
-		drivingSubsystem.resetPose(exampleTrajectory.getInitialPose());
+		drivetrain.resetPose(exampleTrajectory.getInitialPose());
 
-		return ramseteCommand.andThen(() -> drivingSubsystem.tDriveVolts(0, 0));
+		return ramseteCommand.andThen(() -> drivetrain.tDriveVolts(0, 0));
 	}
 }

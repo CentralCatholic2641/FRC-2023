@@ -5,20 +5,20 @@
 package frc.team2641.frc2023.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.team2641.frc2023.subsystems.ClawSubsystem;
+import frc.team2641.frc2023.subsystems.Claw;
 
 public class ToggleClaw extends CommandBase {
 
-  private ClawSubsystem clawSubsystem;
+  private Claw claw;
 
   public ToggleClaw() {
-    this.clawSubsystem = ClawSubsystem.getInstance();
-    addRequirements(this.clawSubsystem);
+    this.claw = Claw.getInstance();
+    addRequirements(this.claw);
   }
 
   @Override
   public void initialize() {
-    clawSubsystem.clamp();
+    claw.clamp();
   }
 
   @Override
@@ -27,7 +27,7 @@ public class ToggleClaw extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    clawSubsystem.release();
+    claw.release();
   }
 
   @Override

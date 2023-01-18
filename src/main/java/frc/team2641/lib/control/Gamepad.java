@@ -5,13 +5,10 @@
 package frc.team2641.lib.control;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Gamepad extends XboxController {
   private final double joystickDeadband;
-
-  protected CommandBase rumbleAnimationCommand;
 
   /**
    * Construct an instance of a controller.
@@ -26,7 +23,7 @@ public class Gamepad extends XboxController {
   }
 
   /**
-   * Construct an instance of a controller.
+   * Construct an instance of a controller with a default deadband of 0.25.
    *
    * @param port The port index on the Driver Station that the controller is
    *             plugged into.
@@ -35,67 +32,67 @@ public class Gamepad extends XboxController {
     this(port, 0.25);
   }
 
-  public Trigger A() {
+  public Trigger aButton() {
     return new Trigger(this::getAButton);
   }
 
-  public Trigger B() {
+  public Trigger bButton() {
     return new Trigger(this::getBButton);
   }
 
-  public Trigger X() {
+  public Trigger xButton() {
     return new Trigger(this::getXButton);
   }
 
-  public Trigger Y() {
+  public Trigger yButton() {
     return new Trigger(this::getYButton);
   }
 
-  public Trigger LB() {
+  public Trigger leftBumper() {
     return new Trigger(this::getLeftBumper);
   }
 
-  public Trigger RB() {
+  public Trigger rightBumper() {
     return new Trigger(this::getRightBumper);
   }
 
-  public Trigger START() {
+  public Trigger start() {
     return new Trigger(this::getStartButton);
   }
 
-  public Trigger BACK() {
+  public Trigger back() {
     return new Trigger(this::getBackButton);
   }
 
-  public Trigger LS() {
+  public Trigger leftStickButton() {
     return new Trigger(this::getLeftStickButton);
   }
 
-  public Trigger RS() {
+  public Trigger rightStickButton() {
     return new Trigger(this::getRightStickButton);
   }
 
-  public Trigger LT() {
+  public Trigger leftTriggerPressed() {
     return new Trigger(() -> this.getLeftTriggerAxis() > 0);
   }
 
-  public Trigger RT() {
+  public Trigger rightTriggerPressed() {
     return new Trigger(() -> this.getRightTriggerAxis() > 0);
   }
 
-  public Trigger DUp() {
+  public Trigger povUp() {
     return new Trigger(() -> this.getPOV() == 0);
   }
 
-  public Trigger DRight() {
+  public Trigger povRight() {
     return new Trigger(() -> this.getPOV() == 90);
   }
 
-  public Trigger DDown() {
+  public Trigger povDown() {
     return new Trigger(() -> this.getPOV() == 180);
   }
 
-  public Trigger DLeft() {
+  public Trigger povLeft() {
     return new Trigger(() -> this.getPOV() == 270);
   }
 
@@ -117,6 +114,14 @@ public class Gamepad extends XboxController {
   @Override
   public double getRightY() {
     return this.calculateDeadband(super.getRightY());
+  }
+
+  public double getRightTrigger() {
+    return this.calculateDeadband(super.getRightTriggerAxis());
+  }
+
+  public double getLeftTrigger() {
+    return this.calculateDeadband(super.getLeftTriggerAxis());
   }
 
   protected double calculateDeadband(double value) {
