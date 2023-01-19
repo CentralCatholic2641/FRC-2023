@@ -18,7 +18,7 @@ public class LinearInterpolation {
     for (int i = 0; i < x.length - 1; i++) {
       dx[i] = x[i + 1] - x[i];
       if (dx[i] == 0) {
-        throw new IllegalArgumentException("x must be monotonic, a duplicate x-value was found");
+        throw new IllegalArgumentException("x must be monotonic, a duplicate x-value was found: " + x[i]);
       }
       if (dx[i] < 0) {
         throw new IllegalArgumentException("x must be sorted");
