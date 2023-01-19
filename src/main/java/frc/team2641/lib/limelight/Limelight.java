@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -58,6 +59,12 @@ public class Limelight {
     this.table = NetworkTableInstance.getDefault().getTable(this.name);
     this.posesub = this.table.getDoubleArrayTopic("botpose").subscribe(new double[] {});
     _heartBeat.startPeriodic(_heartBeatPeriod);
+    PortForwarder.add(5800, "10.26.41.25", 5800);
+    PortForwarder.add(5801, "10.26.41.25", 5801);
+    PortForwarder.add(5802, "10.26.41.25", 5802);
+    PortForwarder.add(5803, "10.26.41.25", 5803);
+    PortForwarder.add(5804, "10.26.41.25", 5804);
+    PortForwarder.add(5805, "10.26.41.25", 5805);
   }
 
   private Limelight(String name) {
@@ -65,6 +72,12 @@ public class Limelight {
     this.table = NetworkTableInstance.getDefault().getTable(this.name);
     this.posesub = this.table.getDoubleArrayTopic("botpose").subscribe(new double[] {});
     _heartBeat.startPeriodic(_heartBeatPeriod);
+    PortForwarder.add(5800, "10.26.41.25", 5800);
+    PortForwarder.add(5801, "10.26.41.25", 5801);
+    PortForwarder.add(5802, "10.26.41.25", 5802);
+    PortForwarder.add(5803, "10.26.41.25", 5803);
+    PortForwarder.add(5804, "10.26.41.25", 5804);
+    PortForwarder.add(5805, "10.26.41.25", 5805);
   }
 
   /**
