@@ -1,6 +1,5 @@
 package frc.team2641.frc2023.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -8,8 +7,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
-import frc.team2641.lib.motors.TalonFX;
-
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase {
@@ -22,31 +23,39 @@ public class Drivetrain extends SubsystemBase {
     return instance;
   }
 
-  private TalonFX leftMotor1 = TalonFX.getInstance(Constants.CAN.leftMotor1);
-  private TalonFX leftMotor2 = TalonFX.getInstance(Constants.CAN.leftMotor2);
-  private TalonFX leftMotor3 = TalonFX.getInstance(Constants.CAN.leftMotor3);
+  private WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.CAN.leftMaster);
+  private WPI_TalonFX leftSlave1 = new WPI_TalonFX(Constants.CAN.leftSlave1);
+  private WPI_TalonFX leftSlave2 = new WPI_TalonFX(Constants.CAN.leftSlave2);
 
-  private TalonFX rightMotor1 = TalonFX.getInstance(Constants.CAN.rightMotor1);
-  private TalonFX rightMotor2 = TalonFX.getInstance(Constants.CAN.rightMotor2);
-  private TalonFX rightMotor3 = TalonFX.getInstance(Constants.CAN.rightMotor3);
+  private WPI_TalonFX rightMaster = new WPI_TalonFX(Constants.CAN.rightMaster);
+  private WPI_TalonFX rightSlave1 = new WPI_TalonFX(Constants.CAN.rightSlave1);
+  private WPI_TalonFX rightSlave2 = new WPI_TalonFX(Constants.CAN.rightSlave2);
 
-  private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMotor1.getTalon(), leftMotor2.getTalon(),
-      leftMotor3.getTalon());
-  private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMotor1.getTalon(), rightMotor2.getTalon(),
-      rightMotor3.getTalon());
-
-  private TalonFX leftEncoder = leftMotor2;
-  private TalonFX rightEncoder = rightMotor2;
-
-  private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
+  private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
   private AHRS ahrs = new AHRS();
   private DifferentialDriveOdometry odometry;
   private Pose2d pose;
 
   private Drivetrain() {
-    configBrakes(Constants.Drive.brakes);
-    configRamps(Constants.Drive.rampSpeed);
+    init(leftMaster);
+    init(leftSlave1);
+    init(leftSlave2);
+    init(rightMaster);
+    init(rightSlave1);
+    init(rightSlave2);
+
+    leftSlave1.follow(leftMaster);
+    leftSlave2.follow(leftMaster);
+    rightSlave1.follow(rightMaster);
+    rightSlave2.follow(rightMaster);
+
+    leftMaster.setInverted(false);
+    rightMaster.setInverted(true);
+    leftSlave1.setInverted(InvertType.FollowMaster);
+    leftSlave2.setInverted(InvertType.FollowMaster);
+    rightSlave1.setInverted(InvertType.FollowMaster);
+    rightSlave2.setInverted(InvertType.FollowMaster);
 
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
@@ -63,38 +72,24 @@ public class Drivetrain extends SubsystemBase {
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
     System.out.println("left:" + leftVolts + " right: " + rightVolts);
-    leftGroup.setVoltage(leftVolts);
-    rightGroup.setVoltage(rightVolts);
+    leftMaster.setVoltage(leftVolts);
+    rightMaster.setVoltage(rightVolts);
     drive.feed();
   }
 
-  public void halt() {
-    configRamps(Constants.Drive.rampSpeed);
-    configBrakes(Constants.Drive.brakes);
-    leftMotor1.stop();
-    leftMotor2.stop();
-    leftMotor3.stop();
-    rightMotor1.stop();
-    rightMotor2.stop();
-    rightMotor3.stop();
-  }
-
   public void configBrakes(boolean brakesOn) {
-    leftMotor1.configBrakes(brakesOn);
-    leftMotor2.configBrakes(brakesOn);
-    leftMotor3.configBrakes(brakesOn);
-    rightMotor1.configBrakes(brakesOn);
-    rightMotor2.configBrakes(brakesOn);
-    rightMotor3.configBrakes(brakesOn);
-  }
+    NeutralMode input;
+    if (brakesOn)
+      input = NeutralMode.Brake;
+    else
+      input = NeutralMode.Coast;
 
-  public void configRamps(double driveRampSpeed) {
-    leftMotor1.configRamps(driveRampSpeed);
-    leftMotor2.configRamps(driveRampSpeed);
-    leftMotor3.configRamps(driveRampSpeed);
-    rightMotor1.configRamps(driveRampSpeed);
-    rightMotor2.configRamps(driveRampSpeed);
-    rightMotor3.configRamps(driveRampSpeed);
+    leftMaster.setNeutralMode(input);
+    leftSlave1.setNeutralMode(input);
+    leftSlave2.setNeutralMode(input);
+    rightMaster.setNeutralMode(input);
+    rightSlave1.setNeutralMode(input);
+    rightSlave2.setNeutralMode(input);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -122,16 +117,16 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    return leftEncoder.getEncoder() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
+    return leftMaster.getSelectedSensorPosition() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
   }
 
   public double getRightEncoder() {
-    return rightEncoder.getEncoder() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
+    return rightMaster.getSelectedSensorPosition() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
   }
 
   public void resetEncoders() {
-    leftEncoder.resetEncoder();
-    rightEncoder.resetEncoder();
+    leftMaster.setSelectedSensorPosition(0);
+    rightMaster.setSelectedSensorPosition(0);
   }
 
   public Rotation2d getAngle() {
@@ -140,6 +135,16 @@ public class Drivetrain extends SubsystemBase {
 
   public void zeroHeading() {
     ahrs.reset();
+  }
+
+  private void init(WPI_TalonFX talon) {
+    talon.configFactoryDefault();
+    TalonFXConfiguration toApply = new TalonFXConfiguration();
+    talon.setNeutralMode(NeutralMode.Brake);
+    // talon.configClosedloopRamp(Constants.Drive.rampSpeed);
+    // talon.configOpenloopRamp(Constants.Drive.rampSpeed);
+    talon.configAllSettings(toApply);
+    talon.setSelectedSensorPosition(0);
   }
 
   @Override

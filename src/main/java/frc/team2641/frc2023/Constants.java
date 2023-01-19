@@ -9,12 +9,12 @@ public final class Constants {
 	}
 
 	public static final class CAN {
-		public static final int rightMotor1 = 0;
-		public static final int rightMotor2 = 1;
-		public static final int rightMotor3 = 2;
-		public static final int leftMotor1 = 3;
-		public static final int leftMotor2 = 4;
-		public static final int leftMotor3 = 5;
+		public static final int rightSlave1 = 0;
+		public static final int rightMaster = 1;
+		public static final int rightSlave2 = 2;
+		public static final int leftSlave1 = 3;
+		public static final int leftMaster = 4;
+		public static final int leftSlave2 = 5;
 		public static final int PH = 21;
 		public static final int PDH = 20;
 	}
@@ -41,5 +41,10 @@ public final class Constants {
 	public static final class Pneumatics {
 		public static final int minPressure = 80;
 		public static final int maxPressure = 120;
+	}
+
+	public static final class Pipelines {
+		public static final int AprilTag = 0;
+		public static final int SeekTarget = 1;
 	}
 }

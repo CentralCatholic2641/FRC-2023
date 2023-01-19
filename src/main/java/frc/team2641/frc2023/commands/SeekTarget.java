@@ -1,0 +1,62 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.team2641.frc2023.commands;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.team2641.frc2023.Constants.Pipelines;
+import frc.team2641.frc2023.subsystems.Drivetrain;
+import frc.team2641.lib.limelight.Limelight;
+
+public class SeekTarget extends CommandBase {
+  private Drivetrain drivetrain = Drivetrain.getInstance();
+  private Limelight limelight = Limelight.getInstance();
+
+  private double kPaim = -0.1;
+  private double kPdistance = -0.1;
+  private double minAim = 0.05;
+
+  public SeekTarget() {
+    addRequirements(drivetrain);
+  }
+
+  @Override
+  public void initialize() {
+    limelight.setPipeline(Pipelines.SeekTarget);
+  }
+
+  @Override
+  public void execute() {
+    double tx = limelight.getRotationToTargetDeg();
+    double ty = limelight.getVerticalToTargetDeg();
+    boolean tv = limelight.isTargetFound();
+
+    double headingError = -tx;
+    double distanceError = -ty;
+    double steeringAdjust = 0;
+    double distanceAdjust = 0;
+
+    if (tv) {
+      if (tx > 0.2) {
+        steeringAdjust = kPaim * headingError - minAim;
+      } else if (tx < -0.2) {
+        steeringAdjust = kPaim * headingError + minAim;
+      }
+      distanceAdjust = kPdistance * distanceError;
+    } else {
+      steeringAdjust = 0.3;
+    }
+
+    System.out.println("Steering: " + steeringAdjust + " Distance: " + distanceAdjust);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+}

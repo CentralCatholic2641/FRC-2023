@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
   private static Limelight limelight = Limelight.getInstance();
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
-  private Drivetrain drivetrain = Drivetrain.getInstance();
+  // private Drivetrain drivetrain = Drivetrain.getInstance();
 
   @Override
   public void robotInit() {
@@ -60,7 +60,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = shuffleboardController.getAutonomousCommand();
-    drivetrain.configRamps(0);
 
     if (autoCommand != null)
       autoCommand.schedule();
@@ -73,8 +72,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    drivetrain.configRamps(Constants.Drive.rampSpeed);
-
     if (autoCommand != null)
       autoCommand.cancel();
   }

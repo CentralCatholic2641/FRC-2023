@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 // import frc.team2641.frc2023.auto.*;
 import frc.team2641.frc2023.commands.FollowPath;
+import frc.team2641.frc2023.commands.SeekTarget;
 
 public class ShuffleboardController {
   public ShuffleboardTab preMatchTab = Shuffleboard.getTab("Pre-Match");
@@ -45,8 +46,12 @@ public class ShuffleboardController {
     teleopTab.addCamera("Driver", "Driver", "/dev/video1").withPosition(5, 0).withSize(5, 5);
   }
 
+  // public Command getAutonomousCommand() {
+  // return FollowPath.get();
+  // }
+
   public Command getAutonomousCommand() {
-    return FollowPath.get();
+    return new SeekTarget();
   }
 
   public void preMatch() {
