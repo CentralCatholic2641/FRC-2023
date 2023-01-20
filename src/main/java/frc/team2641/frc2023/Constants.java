@@ -1,6 +1,8 @@
 package frc.team2641.frc2023;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import frc.team2641.lib.PIDGains;
 
 public final class Constants {
 	public static final class Controllers {
@@ -15,6 +17,7 @@ public final class Constants {
 		public static final int leftSlave1 = 3;
 		public static final int leftMaster = 4;
 		public static final int leftSlave2 = 5;
+		public static final int leftShoulder = 6;
 		public static final int PH = 21;
 		public static final int PDH = 20;
 	}
@@ -36,6 +39,7 @@ public final class Constants {
 		public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 		public static final double kRamseteB = 2;
 		public static final double kRamseteZeta = 0.7;
+		public static final SlewRateLimiter rateLimiter = new SlewRateLimiter(0.5);
 	}
 
 	public static final class Pneumatics {
@@ -46,5 +50,10 @@ public final class Constants {
 	public static final class Pipelines {
 		public static final int AprilTag = 0;
 		public static final int SeekTarget = 1;
+	}
+
+	public static final class Shoulder {
+		public static final int timeoutMs = 30;
+		public static final PIDGains gains = new PIDGains(0.15, 0.0, 1.0, 0.0, 0, 1.0);
 	}
 }

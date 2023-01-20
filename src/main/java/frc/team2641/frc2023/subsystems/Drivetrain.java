@@ -5,8 +5,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -62,8 +65,9 @@ public class Drivetrain extends SubsystemBase {
     pose = odometry.getPoseMeters();
   }
 
-  public void aDrive(double rotation, double speed) {
-    drive.arcadeDrive(rotation * Constants.Drive.maxDrive, -speed * Constants.Drive.maxDrive, true);
+  public void aDrive(double speed, double rotation) {
+    drive.arcadeDrive(Constants.Drive.rateLimiter.calculate(-speed * Constants.Drive.maxDrive),
+        rotation * Constants.Drive.maxDrive, true);
   }
 
   public void tDrive(double left, double right) {
@@ -117,11 +121,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    return leftMaster.getSelectedSensorPosition() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
+    double value = leftMaster.getSelectedSensorPosition() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
+    SmartDashboard.putNumber("leftEncoder", value);
+    return value;
   }
 
   public double getRightEncoder() {
-    return rightMaster.getSelectedSensorPosition() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
+    double value = rightMaster.getSelectedSensorPosition() / Constants.Drive.oneRotation / Constants.Drive.gearRatio;
+    SmartDashboard.putNumber("rightEncoder", value);
+    return value;
   }
 
   public void resetEncoders() {
@@ -135,6 +143,11 @@ public class Drivetrain extends SubsystemBase {
 
   public void zeroHeading() {
     ahrs.reset();
+    ahrs.zeroYaw();
+  }
+
+  public void calibrate() {
+    ahrs.calibrate();
   }
 
   private void init(WPI_TalonFX talon) {

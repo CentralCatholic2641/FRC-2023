@@ -4,6 +4,7 @@
 
 package frc.team2641.frc2023.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team2641.frc2023.Constants.Pipelines;
 import frc.team2641.frc2023.subsystems.Drivetrain;
@@ -14,7 +15,9 @@ public class SeekTarget extends CommandBase {
   private Limelight limelight = Limelight.getInstance();
 
   private double kPaim = -0.1;
-  private double kPdistance = -0.1;
+  private double kPdistance = 0.06;
+  private double kIdistance = 0.01;
+  private double kDdistance = 0.075;
   private double minAim = 0.05;
 
   public SeekTarget() {
@@ -43,12 +46,19 @@ public class SeekTarget extends CommandBase {
       } else if (tx < -0.2) {
         steeringAdjust = kPaim * headingError + minAim;
       }
-      distanceAdjust = kPdistance * distanceError;
+      distanceAdjust = (kPdistance * distanceError) + (kDdistance * distanceError);
     } else {
+      distanceAdjust = 0;
       steeringAdjust = 0.3;
     }
 
+    if (distanceAdjust < 0.25)
+      end(false);
+
+    SmartDashboard.putNumber("distanceAdjust", distanceAdjust);
+    SmartDashboard.putNumber("steeringAdjust", steeringAdjust);
     System.out.println("Steering: " + steeringAdjust + " Distance: " + distanceAdjust);
+    drivetrain.aDrive(distanceAdjust, steeringAdjust);
   }
 
   @Override

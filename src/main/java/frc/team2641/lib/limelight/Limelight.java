@@ -240,10 +240,14 @@ public class Limelight {
    */
   public Pose2d getPose() {
     double[] result = posesub.get();
-    Translation3d tran3d = new Translation3d(result[0], result[1], result[2]);
-    Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
-    Pose3d p3d = new Pose3d(tran3d, r3d);
-    return p3d.toPose2d();
+    if (result.length == 6) {
+      Translation3d tran3d = new Translation3d(result[0], result[1], result[2]);
+      Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
+      Pose3d p3d = new Pose3d(tran3d, r3d);
+      return p3d.toPose2d();
+    } else {
+      return new Pose2d();
+    }
   }
 
   /**

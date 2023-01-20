@@ -24,9 +24,9 @@ public class Drive extends CommandBase {
       double right = Robot.robotContainer.driver.getRawAxis(Gamepad.ryAxis);
       drivetrain.tDrive(-left, right);
     } else {
-      double rotation = Robot.robotContainer.driver.getRawAxis(Gamepad.lxAxis);
-      double drive = Robot.robotContainer.driver.getRawAxis(Gamepad.ryAxis);
-      drivetrain.aDrive(rotation, drive);
+      double drive = Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis);
+      double rotation = Robot.robotContainer.driver.getRawAxis(Gamepad.rxAxis);
+      drivetrain.aDrive(drive, rotation);
     }
   }
 

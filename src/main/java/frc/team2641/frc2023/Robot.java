@@ -8,10 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team2641.frc2023.subsystems.Drivetrain;
+import frc.team2641.frc2023.subsystems.Shoulder;
 import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
-import frc.team2641.lib.limelight.Limelight;
+// import frc.team2641.lib.limelight.Limelight;
 
 public class Robot extends TimedRobot {
   Command autoCommand;
@@ -20,17 +21,21 @@ public class Robot extends TimedRobot {
   private static Field2d field = new Field2d();
   private static LogController logController = LogController.getInstance();
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
-  private static Limelight limelight = Limelight.getInstance();
+  // private static Limelight limelight = Limelight.getInstance();
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
-  // private Drivetrain drivetrain = Drivetrain.getInstance();
+  private Drivetrain drivetrain = Drivetrain.getInstance();
+  private Shoulder shoulder = Shoulder.getInstance();
 
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
-    field.setRobotPose(Drivetrain.getInstance().getPose());
+    field.setRobotPose(drivetrain.getPose());
     logController.start();
+    SmartDashboard.putNumber("steeringAdjust", 0);
+    SmartDashboard.putNumber("distanceAdjust", 0);
+    shoulder.set(2048);
   }
 
   @Override
@@ -41,12 +46,10 @@ public class Robot extends TimedRobot {
       robotContainer.driverShift = false;
     }
 
-    System.out.println(limelight.getAprilTagID());
-
     CommandScheduler.getInstance().run();
 
-    // field.setRobotPose(DrivingSubsystem.getInstance().getPose());
-    field.setRobotPose(limelight.getPose());
+    field.setRobotPose(drivetrain.getPose());
+    // field.setRobotPose(limelight.getPose());
   }
 
   @Override
