@@ -251,6 +251,15 @@ public class Limelight {
   }
 
   /**
+   * Checks if Limelight has the robot's position on the field (botpose)
+   * 
+   * @return true if botpose
+   */
+  public boolean hasPose() {
+    return posesub.get().length == 6;
+  }
+
+  /**
    * Checks if connected to Limelight
    * 
    * @return true if connected

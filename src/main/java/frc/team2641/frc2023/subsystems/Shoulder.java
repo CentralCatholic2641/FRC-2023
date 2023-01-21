@@ -36,10 +36,10 @@ public class Shoulder extends SubsystemBase {
 
     left.configAllowableClosedloopError(0, 0, Constants.Shoulder.timeoutMs);
 
-    left.config_kF(0, Constants.Shoulder.gains.kF, Constants.Shoulder.timeoutMs);
     left.config_kP(0, Constants.Shoulder.gains.kP, Constants.Shoulder.timeoutMs);
     left.config_kI(0, Constants.Shoulder.gains.kI, Constants.Shoulder.timeoutMs);
     left.config_kD(0, Constants.Shoulder.gains.kD, Constants.Shoulder.timeoutMs);
+    left.config_kF(0, Constants.Shoulder.gains.kF, Constants.Shoulder.timeoutMs);
   }
 
   public void set(double pos) {

@@ -12,7 +12,7 @@ import frc.team2641.frc2023.subsystems.Shoulder;
 import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
-// import frc.team2641.lib.limelight.Limelight;
+import frc.team2641.lib.limelight.Limelight;
 
 public class Robot extends TimedRobot {
   Command autoCommand;
@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
   private static Field2d field = new Field2d();
   private static LogController logController = LogController.getInstance();
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
-  // private static Limelight limelight = Limelight.getInstance();
+  private static Limelight limelight = Limelight.getInstance();
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
   private Drivetrain drivetrain = Drivetrain.getInstance();
@@ -31,7 +31,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
-    field.setRobotPose(drivetrain.getPose());
     logController.start();
     SmartDashboard.putNumber("steeringAdjust", 0);
     SmartDashboard.putNumber("distanceAdjust", 0);
@@ -48,8 +47,9 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
+    if (limelight.hasPose())
+      drivetrain.resetPose(limelight.getPose());
     field.setRobotPose(drivetrain.getPose());
-    // field.setRobotPose(limelight.getPose());
   }
 
   @Override

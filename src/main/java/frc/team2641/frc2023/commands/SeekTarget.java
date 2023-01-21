@@ -16,7 +16,7 @@ public class SeekTarget extends CommandBase {
 
   private double kPaim = -0.1;
   private double kPdistance = 0.06;
-  private double kIdistance = 0.01;
+  private double kIdistance = 0.0;
   private double kDdistance = 0.075;
   private double minAim = 0.05;
 
@@ -46,7 +46,7 @@ public class SeekTarget extends CommandBase {
       } else if (tx < -0.2) {
         steeringAdjust = kPaim * headingError + minAim;
       }
-      distanceAdjust = (kPdistance * distanceError) + (kDdistance * distanceError);
+      distanceAdjust = (kPdistance * distanceError) + (kIdistance * distanceError) + (kDdistance * distanceError);
     } else {
       distanceAdjust = 0;
       steeringAdjust = 0.3;
