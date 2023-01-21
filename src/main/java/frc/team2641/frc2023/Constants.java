@@ -56,4 +56,17 @@ public final class Constants {
 		public static final int timeoutMs = 30;
 		public static final PIDGains gains = new PIDGains(0.15, 0.0, 1.0, 0.0, 0, 1.0);
 	}
+
+	public static Mode currentMode = Mode.REAL;
+
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
+  }
 }

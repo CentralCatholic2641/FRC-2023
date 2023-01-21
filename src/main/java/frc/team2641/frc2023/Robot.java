@@ -2,7 +2,16 @@ package frc.team2641.frc2023;
 
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.TimedRobot;
+import org.littletonrobotics.junction.LoggedRobot;
+
+import java.sql.ClientInfoStatus;
+
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,7 +23,7 @@ import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
 import frc.team2641.lib.limelight.Limelight;
 
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   Command autoCommand;
 
   public static RobotContainer robotContainer;
@@ -29,12 +38,38 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    if (isReal()) Constants.currentMode = Constants.Mode.REAL;
+    else Constants.currentMode = Constants.Mode.SIM;
+    
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
     logController.start();
     SmartDashboard.putNumber("steeringAdjust", 0);
     SmartDashboard.putNumber("distanceAdjust", 0);
     shoulder.set(2048);
+
+    Logger logger = Logger.getInstance();
+
+    logger.recordMetadata("ProjectName", "ChargedUp2023");
+
+    switch (Constants.currentMode) {
+      case REAL:
+        logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
+        logger.addDataReceiver(new NT4Publisher());
+        break;
+      case SIM:
+        logger.addDataReceiver(new WPILOGWriter(""));
+        logger.addDataReceiver(new NT4Publisher());
+        break;
+      case REPLAY:
+        setUseTiming(false);
+        String logPath = LogFileUtil.findReplayLog();
+        logger.setReplaySource(new WPILOGReader(logPath));
+        logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        break;
+    }
+
+    logger.start();
   }
 
   @Override
