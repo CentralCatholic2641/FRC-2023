@@ -1,7 +1,6 @@
 package frc.team2641.frc2023;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import frc.team2641.lib.PIDGains;
 
 public final class Constants {
@@ -28,13 +27,13 @@ public final class Constants {
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 10.71;
+		public static final double wheelDiameter = 0.1524;
+		public static final double encoderDistancePerPulse = (wheelDiameter * Math.PI) / (double) oneRotation * gearRatio;
 		public static final double ksVolts = 0.59198;
 		public static final double kvVoltSecondsPerMeter = 2.3765;
 		public static final double kaVoltSecondsSquaredPerMeter = 0.21168;
 		public static final double kPDriveVel = 2.8757;
 		public static final double kTrackwidthMeters = 0.5588;
-		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-				kTrackwidthMeters);
 		public static final double kMaxSpeedMetersPerSecond = 3;
 		public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 		public static final double kRamseteB = 2;
@@ -59,14 +58,14 @@ public final class Constants {
 
 	public static Mode currentMode = Mode.REAL;
 
-  public static enum Mode {
-    /** Running on a real robot. */
-    REAL,
+	public static enum Mode {
+		/** Running on a real robot. */
+		REAL,
 
-    /** Running a physics simulator. */
-    SIM,
+		/** Running a physics simulator. */
+		SIM,
 
-    /** Replaying from a log file. */
-    REPLAY
-  }
+		/** Replaying from a log file. */
+		REPLAY
+	}
 }

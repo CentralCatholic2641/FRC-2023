@@ -3,11 +3,7 @@ package frc.team2641.frc2023;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import org.littletonrobotics.junction.LoggedRobot;
-
-import java.sql.ClientInfoStatus;
-
 import org.littletonrobotics.junction.LogFileUtil;
-import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
@@ -38,9 +34,11 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
-    if (isReal()) Constants.currentMode = Constants.Mode.REAL;
-    else Constants.currentMode = Constants.Mode.SIM;
-    
+    if (isReal())
+      Constants.currentMode = Constants.Mode.REAL;
+    else
+      Constants.currentMode = Constants.Mode.SIM;
+
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
     logController.start();
