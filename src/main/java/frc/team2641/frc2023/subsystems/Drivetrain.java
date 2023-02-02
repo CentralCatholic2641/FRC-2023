@@ -81,8 +81,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDrive(double speed, double rotation) {
-    drive.arcadeDrive(Constants.Drive.rateLimiter.calculate(-speed * Constants.Drive.maxDrive),
-        rotation * Constants.Drive.maxDrive, true);
+    drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(-speed * Constants.Drive.maxDrive),
+        Constants.Drive.rotationRateLimiter.calculate(-rotation * Constants.Drive.maxDrive), true);
   }
 
   public void aDriveUnlimited(double speed, double rotation) {

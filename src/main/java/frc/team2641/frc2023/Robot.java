@@ -79,7 +79,7 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
 
-    System.out.println(shoulder.getEncoder());
+    // System.out.println(shoulder.getEncoder());
 
     // if (limelight.hasPose())
       // drivetrain.resetPose(limelight.getPose());
