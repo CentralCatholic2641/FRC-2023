@@ -5,7 +5,7 @@ import frc.team2641.frc2023.subsystems.*;
 import frc.team2641.lib.control.Gamepad;
 
 public class RobotContainer {
-	private Drivetrain drivetrain = Drivetrain.getInstance();
+	// private Drivetrain drivetrain = Drivetrain.getInstance();
 
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
 	public Gamepad controller = new Gamepad(Constants.Controllers.controller);
@@ -15,7 +15,7 @@ public class RobotContainer {
 
 	public RobotContainer() {
 		configureButtonBindings();
-		drivetrain.setDefaultCommand(new Drive());
+		// drivetrain.setDefaultCommand(new Drive());
 	}
 
 	private void configureButtonBindings() {

@@ -10,12 +10,12 @@ public final class Constants {
 	}
 
 	public static final class CAN {
-		public static final int rightSlave1 = 0;
-		public static final int rightMaster = 1;
-		public static final int rightSlave2 = 2;
-		public static final int leftSlave1 = 3;
-		public static final int leftMaster = 4;
-		public static final int leftSlave2 = 5;
+		public static final int leftSlave1 = 0;
+		public static final int leftMaster = 1;
+		public static final int leftSlave2 = 2;
+		public static final int rightSlave1 = 3;
+		public static final int rightMaster = 4;
+		public static final int rightSlave2 = 5;
 		public static final int leftShoulder = 6;
 		public static final int PH = 21;
 		public static final int PDH = 20;
@@ -53,7 +53,7 @@ public final class Constants {
 
 	public static final class Shoulder {
 		public static final int timeoutMs = 30;
-		public static final PIDGains gains = new PIDGains(0.15, 0.0, 1.0, 0.0, 0, 1.0);
+		public static final PIDGains gains = new PIDGains(0.15, 0.0, 0.0, 0.0, 0, 1.0);
 	}
 
 	public static Mode currentMode = Mode.REAL;

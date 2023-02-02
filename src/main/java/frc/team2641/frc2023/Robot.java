@@ -29,7 +29,7 @@ public class Robot extends LoggedRobot {
   private static Limelight limelight = Limelight.getInstance();
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
-  private Drivetrain drivetrain = Drivetrain.getInstance();
+  // private Drivetrain drivetrain = Drivetrain.getInstance();
   private Shoulder shoulder = Shoulder.getInstance();
 
   @Override
@@ -44,7 +44,6 @@ public class Robot extends LoggedRobot {
     logController.start();
     SmartDashboard.putNumber("steeringAdjust", 0);
     SmartDashboard.putNumber("distanceAdjust", 0);
-    shoulder.set(2048);
 
     Logger logger = Logger.getInstance();
 
@@ -80,9 +79,11 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
 
-    if (limelight.hasPose())
-      drivetrain.resetPose(limelight.getPose());
-    field.setRobotPose(drivetrain.getPose());
+    System.out.println(shoulder.getEncoder());
+
+    // if (limelight.hasPose())
+      // drivetrain.resetPose(limelight.getPose());
+    // field.setRobotPose(drivetrain.getPose());
   }
 
   @Override
@@ -110,6 +111,8 @@ public class Robot extends LoggedRobot {
   public void teleopInit() {
     if (autoCommand != null)
       autoCommand.cancel();
+    shoulder.set(2048);
+    
   }
 
   @Override

@@ -46,6 +46,10 @@ public class Shoulder extends SubsystemBase {
     left.set(TalonFXControlMode.Position, pos);
   }
 
+  public double getEncoder() {
+    return left.getSelectedSensorPosition();
+  }
+
   @Override
   public void periodic() {
   }
