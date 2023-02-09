@@ -4,6 +4,7 @@
 
 package frc.team2641.frc2023.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -31,8 +32,8 @@ public class Shoulder extends SubsystemBase {
 
     left.configNominalOutputForward(0, Constants.Shoulder.timeoutMs);
     left.configNominalOutputReverse(0, Constants.Shoulder.timeoutMs);
-    left.configPeakOutputForward(1, Constants.Shoulder.timeoutMs);
-    left.configPeakOutputReverse(-1, Constants.Shoulder.timeoutMs);
+    left.configPeakOutputForward(0.5, Constants.Shoulder.timeoutMs);
+    left.configPeakOutputReverse(-0.5, Constants.Shoulder.timeoutMs);
 
     left.configAllowableClosedloopError(0, 0, Constants.Shoulder.timeoutMs);
 
@@ -40,17 +41,28 @@ public class Shoulder extends SubsystemBase {
     left.config_kI(0, Constants.Shoulder.gains.kI, Constants.Shoulder.timeoutMs);
     left.config_kD(0, Constants.Shoulder.gains.kD, Constants.Shoulder.timeoutMs);
     left.config_kF(0, Constants.Shoulder.gains.kF, Constants.Shoulder.timeoutMs);
+
+    // setEncoder(0);
+  }
+
+  public void setPos(double pos) {
+    left.set(TalonFXControlMode.Position, pos * 48);
   }
 
   public void set(double pos) {
-    left.set(TalonFXControlMode.Position, pos);
+    left.set(ControlMode.PercentOutput, pos);
   }
 
   public double getEncoder() {
-    return left.getSelectedSensorPosition();
+    return left.getSelectedSensorPosition() / 48;
+  }
+
+  public void setEncoder(double value) {
+    left.setSelectedSensorPosition(value);
   }
 
   @Override
   public void periodic() {
+    System.out.println(getEncoder());
   }
 }

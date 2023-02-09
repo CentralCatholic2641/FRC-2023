@@ -22,7 +22,7 @@ public final class Constants {
 	}
 
 	public static final class Drive {
-		public static final double maxDrive = .8;
+		public static final double maxDrive = 1;
 		public static final double rampSpeed = 0.5;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
@@ -54,7 +54,7 @@ public final class Constants {
 
 	public static final class Shoulder {
 		public static final int timeoutMs = 30;
-		public static final PIDGains gains = new PIDGains(0.15, 0.0, 0.0, 0.0, 0, 1.0);
+		public static final PIDGains gains = new PIDGains(0.065, 0.01, 0.05, 0.055, 0, 1.0);
 	}
 
 	public static Mode currentMode = Mode.REAL;
