@@ -7,6 +7,7 @@ import frc.team2641.lib.control.Gamepad;
 
 public class RobotContainer {
 	private Drivetrain drivetrain = Drivetrain.getInstance();
+	private Wrist wrist = Wrist.getInstance();
 
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
 	public Joystick joystick = new Joystick(2);
@@ -18,6 +19,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		configureButtonBindings();
 		drivetrain.setDefaultCommand(new Drive());
+		wrist.setDefaultCommand(new MoveWrist());
 	}
 
 	private void configureButtonBindings() {
