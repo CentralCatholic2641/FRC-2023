@@ -106,6 +106,7 @@ public class Robot extends LoggedRobot {
   public void teleopInit() {
     if (autoCommand != null)
       autoCommand.cancel();
+    drivetrain.resetEncoders();
   }
 
   @Override

@@ -147,13 +147,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    double value = leftMaster.getSelectedSensorPosition() * Constants.Drive.encoderToMeters;
+    double value = leftMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
     SmartDashboard.putNumber("leftEncoder", value);
     return value;
   }
 
   public double getRightEncoder() {
-    double value = rightMaster.getSelectedSensorPosition() * Constants.Drive.encoderToMeters;
+    double value = rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
     SmartDashboard.putNumber("rightEncoder", value);
     return value;
   }
