@@ -7,15 +7,8 @@ package frc.team2641.frc2023.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
-
-  public Compressor compressor = new Compressor(21, PneumaticsModuleType.CTREPCM);
-  public DoubleSolenoid clamper = new DoubleSolenoid(21, PneumaticsModuleType.CTREPCM, 0, 1);
 
   private static Claw instance = null;
 
@@ -25,30 +18,22 @@ public class Claw extends SubsystemBase {
     return instance;
   }
 
-  // private DoubleSolenoid clawSolenoid = new DoubleSolenoid(21, PneumaticsModuleType.CTREPCM, 0, 1);
-  // private DoubleSolenoid pressureSolenoid = Robot.getPH().makeDoubleSolenoid(2, 3);
+  private DoubleSolenoid claw = Robot.getPH().makeDoubleSolenoid(0, 1);
 
   private Claw() {
-    // pressurize();
-    compressor.enableDigital();
     release();
   }
 
-  // public void pressurize() {
-  //   pressureSolenoid.set(DoubleSolenoid.Value.kForward);
-  // }
-
-  // public void depressurize() {
-  //   release();
-  //   pressureSolenoid.set(DoubleSolenoid.Value.kReverse);
-  // }
+  public void depressurize() {
+    claw.set(DoubleSolenoid.Value.kOff);
+  }
 
   public void clamp() {
-    clamper.set(DoubleSolenoid.Value.kForward);
+    claw.set(DoubleSolenoid.Value.kForward);
   }
 
   public void release() {
-    clamper.set(DoubleSolenoid.Value.kReverse);
+    claw.set(DoubleSolenoid.Value.kReverse);
   }
 
   @Override

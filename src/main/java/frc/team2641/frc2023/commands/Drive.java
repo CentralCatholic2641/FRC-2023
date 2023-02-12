@@ -19,7 +19,7 @@ public class Drive extends CommandBase {
 
   @Override
   public void execute() {
-    if (Robot.robotContainer.driverShift == true) {
+    if (Robot.robotContainer.driverShift) {
       double left = Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis);
       double right = Robot.robotContainer.driver.getRawAxis(Gamepad.ryAxis);
       drivetrain.tDrive(-left, right);

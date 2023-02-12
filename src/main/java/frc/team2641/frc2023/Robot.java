@@ -1,5 +1,6 @@
 package frc.team2641.frc2023;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -13,11 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team2641.frc2023.subsystems.Drivetrain;
-import frc.team2641.frc2023.subsystems.Shoulder;
 import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
-import frc.team2641.lib.limelight.Limelight;
 
 public class Robot extends LoggedRobot {
   Command autoCommand;
@@ -26,11 +25,9 @@ public class Robot extends LoggedRobot {
   private static Field2d field = new Field2d();
   private static LogController logController = LogController.getInstance();
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
-  private static Limelight limelight = Limelight.getInstance();
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
-  // private Drivetrain drivetrain = Drivetrain.getInstance();
-  private Shoulder shoulder = Shoulder.getInstance();
+  private Drivetrain drivetrain = Drivetrain.getInstance();
 
   @Override
   public void robotInit() {
@@ -38,6 +35,8 @@ public class Robot extends LoggedRobot {
       Constants.currentMode = Constants.Mode.REAL;
     else
       Constants.currentMode = Constants.Mode.SIM;
+
+    CameraServer.startAutomaticCapture("Camera", "/dev/video0");
 
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
@@ -79,11 +78,7 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
 
-    // System.out.println(shoulder.getEncoder());
-
-    // if (limelight.hasPose())
-      // drivetrain.resetPose(limelight.getPose());
-    // field.setRobotPose(drivetrain.getPose());
+    field.setRobotPose(drivetrain.getPose());
   }
 
   @Override
@@ -111,8 +106,6 @@ public class Robot extends LoggedRobot {
   public void teleopInit() {
     if (autoCommand != null)
       autoCommand.cancel();
-    shoulder.set(2048);
-    
   }
 
   @Override

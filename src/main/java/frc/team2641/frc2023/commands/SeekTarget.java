@@ -16,9 +16,12 @@ public class SeekTarget extends CommandBase {
 
   private double kPaim = -0.03;
   private double kPdistance = 0.02;
-  // private double kIdistance = 0.0;
+  private double kIdistance = 0.0;
   private double kDdistance = 0.125;
   private double minAim = 0.025;
+
+  private double distanceErrorI = 0.0;
+  private double prevDistanceError = 0.0;
 
   public SeekTarget() {
     addRequirements(drivetrain);
@@ -36,11 +39,11 @@ public class SeekTarget extends CommandBase {
     boolean tv = limelight.isTargetFound();
 
     double headingError = -tx;
-    double distanceError = -ty;
+    double distanceErrorP = -ty;
     double steeringAdjust = 0;
     double distanceAdjust = 0;
 
-    System.out.println(tv);
+    distanceErrorI += distanceErrorP;
 
     if (tv) {
       if (tx > 0.2) {
@@ -48,7 +51,8 @@ public class SeekTarget extends CommandBase {
       } else if (tx < -0.2) {
         steeringAdjust = kPaim * headingError + minAim;
       }
-      distanceAdjust = (kPdistance * distanceError) + (kDdistance * distanceError);
+      distanceAdjust = (kPdistance * distanceErrorP) + (kIdistance * distanceErrorI)
+          + (kDdistance * (distanceErrorP - prevDistanceError));
     } else {
       distanceAdjust = 0;
       steeringAdjust = 0;
@@ -56,7 +60,7 @@ public class SeekTarget extends CommandBase {
     }
 
     // if (distanceAdjust < 0.25)
-      // end(false);
+    // end(false);
 
     SmartDashboard.putNumber("distanceAdjust", distanceAdjust);
     SmartDashboard.putNumber("steeringAdjust", steeringAdjust);

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
+import frc.team2641.lib.limelight.Limelight;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -35,6 +36,8 @@ public class Drivetrain extends SubsystemBase {
       instance = new Drivetrain();
     return instance;
   }
+
+  private static Limelight limelight = Limelight.getInstance();
 
   private WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.CAN.leftMaster);
   private WPI_TalonFX leftSlave1 = new WPI_TalonFX(Constants.CAN.leftSlave1);
@@ -82,15 +85,16 @@ public class Drivetrain extends SubsystemBase {
 
   public void aDrive(double speed, double rotation) {
     drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(-speed * Constants.Drive.maxDrive),
-        Constants.Drive.rotationRateLimiter.calculate(-rotation * Constants.Drive.maxDrive), true);
+        Constants.Drive.rotationRateLimiter.calculate(-rotation * Constants.Drive.maxSteer), true);
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
-    drive.arcadeDrive(-speed * Constants.Drive.maxDrive, rotation * Constants.Drive.maxDrive, true);
+    drive.arcadeDrive(-speed, rotation, true);
   }
 
   public void tDrive(double left, double right) {
-    drive.tankDrive(left * Constants.Drive.maxDrive, right * Constants.Drive.maxDrive, true);
+    drive.tankDrive(Constants.Drive.driveRateLimiter.calculate(left * Constants.Drive.maxDrive),
+        Constants.Drive.driveRateLimiter.calculate(right * Constants.Drive.maxDrive), true);
   }
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
@@ -131,7 +135,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void updatePose() {
-    pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
+    if (limelight.hasPose())
+      pose = limelight.getPose();
+    else
+      pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
   }
 
   public Pose2d getPose() {
@@ -140,13 +147,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    double value = leftMaster.getSelectedSensorPosition() * Constants.Drive.encoderDistancePerPulse;
+    double value = leftMaster.getSelectedSensorPosition() * Constants.Drive.encoderToMeters;
     SmartDashboard.putNumber("leftEncoder", value);
     return value;
   }
 
   public double getRightEncoder() {
-    double value = rightMaster.getSelectedSensorPosition() * Constants.Drive.encoderDistancePerPulse;
+    double value = rightMaster.getSelectedSensorPosition() * Constants.Drive.encoderToMeters;
     SmartDashboard.putNumber("rightEncoder", value);
     return value;
   }

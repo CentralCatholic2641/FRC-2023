@@ -17,18 +17,20 @@ public final class Constants {
 		public static final int rightMaster = 4;
 		public static final int rightSlave2 = 5;
 		public static final int leftShoulder = 6;
-		public static final int PH = 21;
+		public static final int rightShoulder = 7;
 		public static final int PDH = 20;
+		public static final int PH = 21;
 	}
 
 	public static final class Drive {
-		public static final double maxDrive = 1;
+		public static final double maxDrive = 0.5;
+		public static final double maxSteer = 0.4;
 		public static final double rampSpeed = 0.5;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 10.71;
 		public static final double wheelDiameter = 0.1524;
-		public static final double encoderDistancePerPulse = (wheelDiameter * Math.PI) / (double) oneRotation * gearRatio;
+		public static final double encoderToMeters = (wheelDiameter * Math.PI) / (double) oneRotation * gearRatio;
 		public static final double ksVolts = 0.59198;
 		public static final double kvVoltSecondsPerMeter = 2.3765;
 		public static final double kaVoltSecondsSquaredPerMeter = 0.21168;
