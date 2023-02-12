@@ -18,6 +18,7 @@ public final class Constants {
 		public static final int rightSlave2 = 5;
 		public static final int leftShoulder = 6;
 		public static final int rightShoulder = 7;
+		public static final int elbow = 8;
 		public static final int PDH = 20;
 		public static final int PH = 21;
 	}

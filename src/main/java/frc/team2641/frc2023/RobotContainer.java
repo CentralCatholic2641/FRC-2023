@@ -7,6 +7,8 @@ import frc.team2641.lib.control.Gamepad;
 
 public class RobotContainer {
 	private Drivetrain drivetrain = Drivetrain.getInstance();
+	private Elbow elbow = Elbow.getInstance();
+
 
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
 	public Joystick joystick = new Joystick(2);
@@ -18,6 +20,8 @@ public class RobotContainer {
 	public RobotContainer() {
 		configureButtonBindings();
 		drivetrain.setDefaultCommand(new Drive());
+		elbow.setDefaultCommand(new MoveElbow());
+
 	}
 
 	private void configureButtonBindings() {
