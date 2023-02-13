@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 
 public class Shoulder extends SubsystemBase {
-  /** Creates a new Shoulder. */
   private static Shoulder instance = null;
 
   public static Shoulder getInstance() {
@@ -18,16 +17,16 @@ public class Shoulder extends SubsystemBase {
       instance = new Shoulder();
     return instance;
   }
-
+  
   private WPI_TalonFX leftShoulder = new WPI_TalonFX(Constants.CAN.leftShoulder);
   private WPI_TalonFX rightShoulder = new WPI_TalonFX(Constants.CAN.rightShoulder);
 
   public Shoulder() {}
-
-public void set(double value){
-leftShoulder.set(value);
-rightShoulder.set(-value);
-}
+  /** Creates a new Shoulder. */
+  public void set(double value){
+    leftShoulder.set(value);
+    rightShoulder.set(-value);
+  }
 
   @Override
   public void periodic() {
