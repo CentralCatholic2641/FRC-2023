@@ -180,8 +180,6 @@ public class Drivetrain extends SubsystemBase {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
     talon.setNeutralMode(NeutralMode.Brake);
-    // talon.configClosedloopRamp(Constants.Drive.rampSpeed);
-    // talon.configOpenloopRamp(Constants.Drive.rampSpeed);
     talon.configAllSettings(toApply);
     talon.setSelectedSensorPosition(0);
   }
@@ -194,7 +192,7 @@ public class Drivetrain extends SubsystemBase {
     PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
-    Robot.getField().getObject("traj").setTrajectory(traj);
+    Robot.getField().getObject("traj_" + trajectory).setTrajectory(traj);
 
     return new SequentialCommandGroup(
         new InstantCommand(() -> {

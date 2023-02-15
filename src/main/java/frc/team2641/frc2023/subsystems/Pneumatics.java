@@ -32,6 +32,10 @@ public class Pneumatics extends SubsystemBase {
     compressor.disable();
   }
 
+  public boolean get() {
+    return compressor.isEnabled();
+  }
+
   @Override
   public void periodic() {
   }
