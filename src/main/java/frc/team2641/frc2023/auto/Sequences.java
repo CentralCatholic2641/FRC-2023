@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// Copyright (c) 2023 FRC Team 2641
+// Use of this source code is governed by the MIT license
 
 package frc.team2641.frc2023.auto;
 
@@ -21,7 +20,8 @@ public class Sequences {
     return Commands.sequence(
         Commands.parallel(new SetArm(Constants.Arm.Positions.topRow), FollowPath.get("Right Grid Left Cone")),
         new InstantCommand(() -> claw.release(), claw),
-        FollowPath.goTo(new PathPoint(new Translation2d(2.4, 2.7), Rotation2d.fromDegrees(0))),
+        Commands.parallel(new SetArm(Constants.Arm.Positions.start),
+            FollowPath.goTo(new PathPoint(new Translation2d(2.4, 2.7), Rotation2d.fromDegrees(0)))),
         new AutoBalance());
   }
 }
