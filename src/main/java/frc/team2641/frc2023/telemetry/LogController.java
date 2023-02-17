@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class LogController {
-
   private static LogController instance = null;
 
   public static LogController getInstance() {

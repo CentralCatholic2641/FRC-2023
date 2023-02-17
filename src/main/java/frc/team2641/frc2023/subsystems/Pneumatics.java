@@ -10,7 +10,6 @@ import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
 
 public class Pneumatics extends SubsystemBase {
-
   private static Pneumatics instance = null;
 
   public static Pneumatics getInstance() {

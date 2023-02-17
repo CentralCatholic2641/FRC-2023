@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team2641.frc2023.subsystems.Claw;
 
 public class ToggleClaw extends CommandBase {
-
   private Claw claw;
 
   public ToggleClaw() {

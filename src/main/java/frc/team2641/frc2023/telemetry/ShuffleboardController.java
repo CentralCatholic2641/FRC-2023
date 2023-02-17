@@ -24,8 +24,8 @@ public class ShuffleboardController {
 
   public ShuffleboardController() {
     // Pre-match
-    autoChooser.setDefaultOption("Follow Path", FollowPath.get());
-    autoChooser.addOption("Seek Target", new SeekTarget());
+    autoChooser.setDefaultOption("Default", Sequences.ScoreConeThenBalance());
+
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
     preMatchTab.addCamera("Camera", "Camera", "/dev/video0");
 
@@ -40,12 +40,8 @@ public class ShuffleboardController {
   }
 
   public Command getAutonomousCommand() {
-    return FollowPath.get();
+    return autoChooser.getSelected();
   }
-
-  // public Command getAutonomousCommand() {
-  // return new SeekTarget();
-  // }
 
   public void preMatch() {
     Shuffleboard.selectTab("Pre-Match");

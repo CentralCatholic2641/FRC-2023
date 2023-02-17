@@ -9,7 +9,6 @@ import frc.team2641.frc2023.Robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Claw extends SubsystemBase {
-
   private static Claw instance = null;
 
   public static Claw getInstance() {

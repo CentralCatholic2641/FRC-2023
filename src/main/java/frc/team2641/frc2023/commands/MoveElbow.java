@@ -10,7 +10,6 @@ import frc.team2641.frc2023.subsystems.Elbow;
 import frc.team2641.lib.control.Buttons.Gamepad;
 
 public class MoveElbow extends CommandBase {
-
   private Elbow elbow;
 
   public MoveElbow() {
@@ -18,22 +17,20 @@ public class MoveElbow extends CommandBase {
     addRequirements(this.elbow);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double output = Robot.robotContainer.controller.getRawAxis(Gamepad.lxAxis);
     elbow.set(output);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

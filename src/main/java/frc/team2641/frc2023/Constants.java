@@ -45,6 +45,7 @@ public final class Constants {
 		public static final double kRamseteZeta = 0.7;
 		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(5);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
+		public static final PIDGains PID = new PIDGains(0, 0, 0, 0, 0.25, 500);
 	}
 
 	public static final class Pneumatics {
@@ -59,13 +60,13 @@ public final class Constants {
 
 	public static final class Arm {
 		public static final class Positions {
-			public static final ArmPosition start = new ArmPosition(0, 0, 0, false);
-			public static final ArmPosition intake = new ArmPosition(0, 0, 0, true);
-			public static final ArmPosition bottomRow = new ArmPosition(0, 0, 0, false);
-			public static final ArmPosition middleRow = new ArmPosition(0, 0, 0, false);
-			public static final ArmPosition topRow = new ArmPosition(0, 0, 0, false);
-			public static final ArmPosition singleSubstation = new ArmPosition(0, 0, 0, true);
-			public static final ArmPosition doubleSubstation = new ArmPosition(0, 0, 0, true);
+			public static final ArmPosition start = new ArmPosition(0, 0, 0);
+			public static final ArmPosition intake = new ArmPosition(0, 0, 0);
+			public static final ArmPosition bottomRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition middleRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition topRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition singleSubstation = new ArmPosition(0, 0, 0);
+			public static final ArmPosition doubleSubstation = new ArmPosition(0, 0, 0);
 		}
 
 		public static final PIDGains shoulderGains = new PIDGains(0, 0, 0, 0, 0.25, 500);

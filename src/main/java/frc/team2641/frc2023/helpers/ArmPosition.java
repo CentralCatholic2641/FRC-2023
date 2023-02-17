@@ -4,18 +4,14 @@
 
 package frc.team2641.frc2023.helpers;
 
-/** Add your docs here. */
 public class ArmPosition {
-
   public int shoulder;
   public int elbow;
   public int wrist;
-  public boolean clawOpen;
 
-  public ArmPosition(int shoulder, int elbow, int wrist, boolean clawOpen) {
+  public ArmPosition(int shoulder, int elbow, int wrist) {
     this.shoulder = shoulder;
     this.elbow = elbow;
     this.wrist = wrist;
-    this.clawOpen = clawOpen;
   }
 }

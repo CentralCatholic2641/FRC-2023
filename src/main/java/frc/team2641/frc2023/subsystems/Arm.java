@@ -9,7 +9,6 @@ import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.helpers.ArmPosition;
 
 public class Arm extends SubsystemBase {
-
   private static Arm instance = null;
 
   public static Arm getInstance() {
@@ -21,7 +20,6 @@ public class Arm extends SubsystemBase {
   private Shoulder shoulder = Shoulder.getInstance();
   private Elbow elbow = Elbow.getInstance();
   private Wrist wrist = Wrist.getInstance();
-  private Claw claw = Claw.getInstance();
 
   private ArmPosition position;
 
@@ -33,14 +31,21 @@ public class Arm extends SubsystemBase {
     shoulder.setPos(position.shoulder);
     elbow.setPos(position.elbow);
     wrist.setPos(position.wrist);
-    if (position.clawOpen)
-      claw.release();
-    else
-      claw.clamp();
   }
 
   public ArmPosition get() {
     return position;
+  }
+
+  public boolean atPosition() {
+    boolean value = true;
+    if (shoulder.getEncoder() != position.shoulder)
+      value = false;
+    if (elbow.getEncoder() != position.elbow)
+      value = false;
+    if (wrist.getEncoder() != position.wrist)
+      value = false;
+    return value;
   }
 
   public void reset() {
@@ -49,6 +54,5 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

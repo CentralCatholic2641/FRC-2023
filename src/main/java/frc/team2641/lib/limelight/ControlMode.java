@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ControlMode {
-
   public enum LEDMode {
     kPipeLine(0),
     kForceOff(1),

@@ -5,26 +5,27 @@
 package frc.team2641.frc2023.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.team2641.frc2023.Robot;
-import frc.team2641.frc2023.subsystems.Wrist;
-import frc.team2641.lib.control.Buttons.Gamepad;
+import frc.team2641.frc2023.helpers.ArmPosition;
+import frc.team2641.frc2023.subsystems.Arm;
 
-public class MoveWrist extends CommandBase {
-  private Wrist wrist;
+public class SetArm extends CommandBase {
+  private Arm arm = Arm.getInstance();
+  private ArmPosition position;
 
-  public MoveWrist() {
-    this.wrist = Wrist.getInstance();
-    addRequirements(this.wrist);
+  public SetArm(ArmPosition position) {
+    addRequirements(arm);
+    this.position = position;
   }
 
   @Override
   public void initialize() {
+    arm.set(position);
   }
 
   @Override
   public void execute() {
-    double output = Robot.robotContainer.controller.getRawAxis(Gamepad.rxAxis);
-    wrist.set(output);
+    if (arm.atPosition())
+      end(false);
   }
 
   @Override
@@ -33,6 +34,6 @@ public class MoveWrist extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return arm.atPosition();
   }
 }

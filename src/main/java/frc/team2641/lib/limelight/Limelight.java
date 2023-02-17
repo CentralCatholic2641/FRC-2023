@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.Notifier;
 import frc.team2641.lib.limelight.ControlMode.*;
 
 public class Limelight {
-
   private boolean isConnected = false;
   private String name = "limelight";
   private NetworkTable table;
