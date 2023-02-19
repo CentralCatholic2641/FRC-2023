@@ -1,12 +1,13 @@
+// Copyright (c) 2023 FRC Team 2641
+// Use of this source code is governed by the MIT license
+
 package frc.team2641.frc2023.telemetry;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.team2641.frc2023.auto.*;
-import frc.team2641.frc2023.commands.FollowPath;
-// import frc.team2641.frc2023.commands.SeekTarget;
+import frc.team2641.frc2023.auto.*;
 
 public class ShuffleboardController {
   public ShuffleboardTab preMatchTab = Shuffleboard.getTab("Pre-Match");
@@ -26,33 +27,24 @@ public class ShuffleboardController {
 
   public ShuffleboardController() {
     // Pre-match
-    // autoChooser.setDefaultOption("Auto For Florida",
-    // new AutoForFlorida());
-    // autoChooser.addOption("Low Then High Target",
-    // new LowThenHighTarget());
-    // preMatchTab.add("Auto", autoChooser).withSize(2, 1);
-    preMatchTab.addCamera("Intake", "Intake", "/dev/video0");
-    preMatchTab.addCamera("Driver", "Driver", "/dev/video1");
+    autoChooser.setDefaultOption("Default", Sequences.ScoreConeThenBalance());
+
+    preMatchTab.add("Auto", autoChooser).withSize(2, 1);
+    preMatchTab.addCamera("Camera", "Camera", "/dev/video0");
 
     // Test
     // testTab.add("Test", new TestCommand()).withSize(2, 1);
 
     // Autonomous
-    autoTab.addCamera("Intake", "Intake", "/dev/video0").withPosition(0, 0).withSize(5, 5);
-    autoTab.addCamera("Driver", "Driver", "/dev/video1").withPosition(5, 0).withSize(5, 5);
+    autoTab.addCamera("Camera", "Camera", "/dev/video0").withPosition(0, 0).withSize(5, 5);
 
     // Teleop
-    teleopTab.addCamera("Intake", "Intake", "/dev/video0").withPosition(0, 0).withSize(5, 5);
-    teleopTab.addCamera("Driver", "Driver", "/dev/video1").withPosition(5, 0).withSize(5, 5);
+    teleopTab.addCamera("Camera", "Camera", "/dev/video0").withPosition(0, 0).withSize(5, 5);
   }
 
   public Command getAutonomousCommand() {
-    return FollowPath.get();
+    return autoChooser.getSelected();
   }
-
-  // public Command getAutonomousCommand() {
-  // return new SeekTarget();
-  // }
 
   public void preMatch() {
     Shuffleboard.selectTab("Pre-Match");

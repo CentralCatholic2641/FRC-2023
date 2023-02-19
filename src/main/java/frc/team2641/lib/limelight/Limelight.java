@@ -1,6 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// Copyright (c) 2023 FRC Team 2641
+// Use of this source code is governed by the MIT license
 
 package frc.team2641.lib.limelight;
 
@@ -17,7 +16,6 @@ import edu.wpi.first.wpilibj.Notifier;
 import frc.team2641.lib.limelight.ControlMode.*;
 
 public class Limelight {
-
   private boolean isConnected = false;
   private String name = "limelight";
   private NetworkTable table;

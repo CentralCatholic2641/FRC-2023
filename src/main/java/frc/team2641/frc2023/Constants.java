@@ -1,6 +1,10 @@
+// Copyright (c) 2023 FRC Team 2641
+// Use of this source code is governed by the MIT license
+
 package frc.team2641.frc2023;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import frc.team2641.frc2023.helpers.ArmPosition;
 import frc.team2641.lib.PIDGains;
 
 public final class Constants {
@@ -27,7 +31,6 @@ public final class Constants {
 	public static final class Drive {
 		public static final double maxDrive = 0.6;
 		public static final double maxSteer = 0.5;
-		public static final double rampSpeed = 0.5;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
@@ -45,6 +48,7 @@ public final class Constants {
 		public static final double kRamseteZeta = 0.7;
 		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(5);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
+		public static final PIDGains PID = new PIDGains(0, 0, 0, 0, 0.25, 500);
 	}
 
 	public static final class Pneumatics {
@@ -57,21 +61,27 @@ public final class Constants {
 		public static final int SeekTarget = 1;
 	}
 
-	public static final class Shoulder {
-		public static final int timeoutMs = 30;
-		public static final PIDGains gains = new PIDGains(0.065, 0.01, 0.05, 0.055, 0, 1.0);
+	public static final class Arm {
+		public static final class Positions {
+			public static final ArmPosition start = new ArmPosition(0, 0, 0);
+			public static final ArmPosition intake = new ArmPosition(0, 0, 0);
+			public static final ArmPosition bottomRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition middleRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition topRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition singleSubstation = new ArmPosition(0, 0, 0);
+			public static final ArmPosition doubleSubstation = new ArmPosition(0, 0, 0);
+		}
+
+		public static final PIDGains shoulderGains = new PIDGains(0, 0, 0, 0, 0.25, 500);
+		public static final PIDGains elbowGains = new PIDGains(0, 0, 0, 0, 0.25, 500);
+		public static final PIDGains wristGains = new PIDGains(0, 0, 0, 0, 0.25, 50);
 	}
 
 	public static Mode currentMode = Mode.REAL;
 
 	public static enum Mode {
-		/** Running on a real robot. */
 		REAL,
-
-		/** Running a physics simulator. */
 		SIM,
-
-		/** Replaying from a log file. */
 		REPLAY
 	}
 }

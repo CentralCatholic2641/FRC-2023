@@ -1,3 +1,6 @@
+// Copyright (c) 2023 FRC Team 2641
+// Use of this source code is governed by the MIT license
+
 package frc.team2641.frc2023.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -11,8 +14,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
@@ -28,7 +29,6 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPRamseteCommand;
 
 public class Drivetrain extends SubsystemBase {
-
   private static Drivetrain instance = null;
 
   public static Drivetrain getInstance() {
@@ -167,6 +167,10 @@ public class Drivetrain extends SubsystemBase {
     return ahrs.getRotation2d();
   }
 
+  public double getPitch() {
+    return ahrs.getPitch();
+  }
+
   public void zeroHeading() {
     ahrs.reset();
     ahrs.zeroYaw();
@@ -180,8 +184,6 @@ public class Drivetrain extends SubsystemBase {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
     talon.setNeutralMode(NeutralMode.Brake);
-    // talon.configClosedloopRamp(Constants.Drive.rampSpeed);
-    // talon.configOpenloopRamp(Constants.Drive.rampSpeed);
     talon.configAllSettings(toApply);
     talon.setSelectedSensorPosition(0);
   }
@@ -190,33 +192,47 @@ public class Drivetrain extends SubsystemBase {
     return kinematics;
   }
 
-  public Command followTrajectoryCommand(String trajectory, boolean isFirstPath) {
+  public Command followTrajectoryCommand(String trajectory) {
     PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
-    Robot.getField().getObject("traj").setTrajectory(traj);
+    Robot.getField().getObject("traj_" + trajectory).setTrajectory(traj);
 
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> {
-          if (isFirstPath) {
-            this.resetPose(traj.getInitialPose());
-          }
-        }),
-        new PPRamseteCommand(
-            traj,
-            this::getPose,
-            new RamseteController(),
-            new SimpleMotorFeedforward(
-                Constants.Drive.ksVolts,
-                Constants.Drive.kvVoltSecondsPerMeter,
-                Constants.Drive.kaVoltSecondsSquaredPerMeter),
-            this.kinematics,
-            this::getWheelSpeeds,
-            new PIDController(0, 0, 0),
-            new PIDController(0, 0, 0),
-            this::tDriveVolts,
-            true,
-            this));
+    return new PPRamseteCommand(
+        traj,
+        this::getPose,
+        new RamseteController(),
+        new SimpleMotorFeedforward(
+            Constants.Drive.ksVolts,
+            Constants.Drive.kvVoltSecondsPerMeter,
+            Constants.Drive.kaVoltSecondsSquaredPerMeter),
+        this.kinematics,
+        this::getWheelSpeeds,
+        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+        this::tDriveVolts,
+        true,
+        this);
+  }
+
+  public Command followTrajectoryCommand(PathPlannerTrajectory trajectory) {
+    Robot.getField().getObject("traj_" + trajectory.toString()).setTrajectory(trajectory);
+
+    return new PPRamseteCommand(
+        trajectory,
+        this::getPose,
+        new RamseteController(),
+        new SimpleMotorFeedforward(
+            Constants.Drive.ksVolts,
+            Constants.Drive.kvVoltSecondsPerMeter,
+            Constants.Drive.kaVoltSecondsSquaredPerMeter),
+        this.kinematics,
+        this::getWheelSpeeds,
+        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+        this::tDriveVolts,
+        true,
+        this);
   }
 
   @Override
