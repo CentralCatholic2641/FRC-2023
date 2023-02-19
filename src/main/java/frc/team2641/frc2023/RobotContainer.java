@@ -8,7 +8,7 @@ import frc.team2641.lib.control.Gamepad;
 
 public class RobotContainer {
 	private Drivetrain drivetrain = Drivetrain.getInstance();
-	private Shoulder shoudler = Shoulder.getInstance();
+	private Shoulder shoulder = Shoulder.getInstance();
 	private Elbow elbow = Elbow.getInstance();
 	private Wrist wrist = Wrist.getInstance();
 
@@ -22,7 +22,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		configureButtonBindings();
 		drivetrain.setDefaultCommand(new Drive());
-		drivetrain.setDefaultCommand(new MoveShoulder());
+		shoulder.setDefaultCommand(new MoveShoulder());
 		elbow.setDefaultCommand(new MoveElbow());
 		wrist.setDefaultCommand(new MoveWrist());
 	}
