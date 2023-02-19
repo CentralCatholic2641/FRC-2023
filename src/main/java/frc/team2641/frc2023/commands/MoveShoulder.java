@@ -15,7 +15,7 @@ public class MoveShoulder extends CommandBase {
   public MoveShoulder() {
     this.shoulder = Shoulder.getInstance();
     addRequirements(this.shoulder);
-  }
+    }
 
   /** Creates a new MoveShoulder. */
   
