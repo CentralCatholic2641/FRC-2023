@@ -11,6 +11,7 @@ public final class Constants {
 	public static final class Controllers {
 		public static final int driver = 0;
 		public static final int operator = 1;
+		public static final int joystick = 2;
 	}
 
 	public static final class CAN {
@@ -75,6 +76,10 @@ public final class Constants {
 		public static final PIDGains shoulderGains = new PIDGains(0, 0, 0, 0, 0.25, 500);
 		public static final PIDGains elbowGains = new PIDGains(0, 0, 0, 0, 0.25, 500);
 		public static final PIDGains wristGains = new PIDGains(0, 0, 0, 0, 0.25, 50);
+
+		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4);
+		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(4);
+		public static final SlewRateLimiter wristRateLimiter = new SlewRateLimiter(4);
 	}
 
 	public static Mode currentMode = Mode.REAL;

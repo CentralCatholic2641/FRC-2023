@@ -25,12 +25,12 @@ import frc.team2641.lib.control.Buttons.Gamepad;
 public class Robot extends LoggedRobot {
   Command autoCommand;
 
+  private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
+  private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
   public static RobotContainer robotContainer;
   private static Field2d field = new Field2d();
   private static LogController logController = LogController.getInstance();
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
-  private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
-  private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private Arm arm = Arm.getInstance();
 

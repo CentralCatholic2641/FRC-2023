@@ -57,8 +57,9 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void set(double value) {
-    left.set(value);
-    right.set(-value);
+    double limited = Constants.Arm.shoulderRateLimiter.calculate(value);
+    left.set(limited);
+    right.set(limited);
   }
 
   public void setPos(double pos) {

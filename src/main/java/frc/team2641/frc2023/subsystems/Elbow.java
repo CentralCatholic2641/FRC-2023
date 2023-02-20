@@ -44,7 +44,7 @@ public class Elbow extends SubsystemBase {
   }
 
   public void set(double value) {
-    elbow.set(value);
+    elbow.set(Constants.Arm.elbowRateLimiter.calculate(value));
   }
 
   public void setPos(double pos) {

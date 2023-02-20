@@ -16,7 +16,7 @@ public class RobotContainer {
 
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
 	public Gamepad operator = new Gamepad(Constants.Controllers.operator);
-	public Joystick joystick = new Joystick(2);
+	public Joystick joystick = new Joystick(Constants.Controllers.joystick);
 
 	public boolean controllerShift = false;
 	public boolean driverShift = false;

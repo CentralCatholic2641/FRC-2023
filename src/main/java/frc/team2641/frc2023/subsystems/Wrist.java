@@ -43,7 +43,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public void set(double value) {
-    wrist.set(value);
+    wrist.set(Constants.Arm.wristRateLimiter.calculate(value));
   }
 
   public void setPos(double pos) {
