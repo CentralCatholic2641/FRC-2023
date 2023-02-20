@@ -14,7 +14,7 @@ public class MoveShoulder extends CommandBase {
   public MoveShoulder() {
     this.shoulder = Shoulder.getInstance();
     addRequirements(this.shoulder);
-    }
+  }
 
   @Override
   public void initialize() {
@@ -22,7 +22,7 @@ public class MoveShoulder extends CommandBase {
 
   @Override
   public void execute() {
-    double output = Robot.robotContainer.controller.getRawAxis(Gamepad.lyAxis);
+    double output = Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis);
     shoulder.set(output);
   }
 

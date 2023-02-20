@@ -15,8 +15,8 @@ public class RobotContainer {
 	private Wrist wrist = Wrist.getInstance();
 
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
+	public Gamepad operator = new Gamepad(Constants.Controllers.operator);
 	public Joystick joystick = new Joystick(2);
-	public Gamepad controller = new Gamepad(Constants.Controllers.controller);
 
 	public boolean controllerShift = false;
 	public boolean driverShift = false;

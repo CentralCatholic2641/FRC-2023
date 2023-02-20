@@ -19,7 +19,7 @@ public class Elbow extends SubsystemBase {
     return instance;
   }
 
-  private WPI_TalonFX elbow = new WPI_TalonFX(Constants.CAN.leftMaster);
+  private WPI_TalonFX elbow = new WPI_TalonFX(Constants.CAN.elbow);
 
   public Elbow() {
     elbow.configFactoryDefault();

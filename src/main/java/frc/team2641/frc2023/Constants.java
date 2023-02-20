@@ -10,7 +10,7 @@ import frc.team2641.lib.PIDGains;
 public final class Constants {
 	public static final class Controllers {
 		public static final int driver = 0;
-		public static final int controller = 1;
+		public static final int operator = 1;
 	}
 
 	public static final class CAN {
