@@ -22,8 +22,10 @@ public class MoveElbow extends CommandBase {
 
   @Override
   public void execute() {
-    double output = Robot.robotContainer.operator.getRawAxis(Gamepad.ryAxis);
-    elbow.set(output);
+    if (!elbow.isAuto()) {
+      double output = Robot.robotContainer.operator.getRawAxis(Gamepad.ryAxis);
+      elbow.set(output);
+    }
   }
 
   @Override

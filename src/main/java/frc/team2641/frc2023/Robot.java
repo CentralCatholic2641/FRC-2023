@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team2641.frc2023.subsystems.Arm;
 import frc.team2641.frc2023.subsystems.Drivetrain;
+import frc.team2641.frc2023.subsystems.Pneumatics;
 import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
@@ -33,6 +34,7 @@ public class Robot extends LoggedRobot {
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private Arm arm = Arm.getInstance();
+  private Pneumatics pneumatics = Pneumatics.getInstance();
 
   @Override
   public void robotInit() {
@@ -41,7 +43,7 @@ public class Robot extends LoggedRobot {
     else
       Constants.currentMode = Constants.Mode.SIM;
 
-    CameraServer.startAutomaticCapture("Camera", "/dev/video0");
+    // CameraServer.startAutomaticCapture("Camera", "/dev/video0");
 
     robotContainer = new RobotContainer();
     SmartDashboard.putData(field);
@@ -71,8 +73,8 @@ public class Robot extends LoggedRobot {
     }
 
     logger.start();
-
-    arm.reset();
+    pneumatics.enable();
+    // arm.reset();
   }
 
   @Override

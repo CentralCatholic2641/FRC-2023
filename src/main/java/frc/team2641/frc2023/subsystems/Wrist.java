@@ -4,8 +4,9 @@
 package frc.team2641.frc2023.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 
@@ -18,12 +19,12 @@ public class Wrist extends SubsystemBase {
     return instance;
   }
 
-  private WPI_TalonFX wrist = new WPI_TalonFX(Constants.CAN.wrist);
+  private WPI_TalonSRX wrist = new WPI_TalonSRX(Constants.CAN.wrist);
 
   public Wrist() {
     wrist.configFactoryDefault();
 
-    wrist.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+    wrist.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 
     wrist.setSensorPhase(true);
 
@@ -47,7 +48,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    wrist.set(ControlMode.Position, pos);
+    // wrist.set(ControlMode.Position, pos);
   }
 
   public int getEncoder() {
@@ -60,5 +61,6 @@ public class Wrist extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("wrist", getEncoder());
   }
 }

@@ -65,21 +65,21 @@ public final class Constants {
 	public static final class Arm {
 		public static final class Positions {
 			public static final ArmPosition start = new ArmPosition(0, 0, 0);
-			public static final ArmPosition intake = new ArmPosition(0, 0, 0);
+			public static final ArmPosition intake = new ArmPosition(-56000, -157000, 0);
 			public static final ArmPosition bottomRow = new ArmPosition(0, 0, 0);
-			public static final ArmPosition middleRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition middleRow = new ArmPosition(65000, 60000, 0);
 			public static final ArmPosition topRow = new ArmPosition(0, 0, 0);
 			public static final ArmPosition singleSubstation = new ArmPosition(0, 0, 0);
 			public static final ArmPosition doubleSubstation = new ArmPosition(0, 0, 0);
 		}
 
-		public static final PIDGains shoulderGains = new PIDGains(0, 0, 0, 0, 0.25, 500);
-		public static final PIDGains elbowGains = new PIDGains(0, 0, 0, 0, 0.25, 500);
+		public static final PIDGains shoulderGains = new PIDGains(0.05, 0, 0, 0, 0.4, 1000);
+		public static final PIDGains elbowGains = new PIDGains(0.05, 0, 0, 0, 0.5, 500);
 		public static final PIDGains wristGains = new PIDGains(0, 0, 0, 0, 0.25, 50);
 
-		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4);
-		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(4);
-		public static final SlewRateLimiter wristRateLimiter = new SlewRateLimiter(4);
+		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4.5);
+		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(10);
+		public static final SlewRateLimiter wristRateLimiter = new SlewRateLimiter(6);
 	}
 
 	public static Mode currentMode = Mode.REAL;

@@ -20,6 +20,8 @@ public class Arm extends SubsystemBase {
   private Elbow elbow = Elbow.getInstance();
   private Wrist wrist = Wrist.getInstance();
 
+  private int side = 1;
+
   private ArmPosition position;
 
   public Arm() {
@@ -27,9 +29,9 @@ public class Arm extends SubsystemBase {
 
   public void set(ArmPosition position) {
     this.position = position;
-    shoulder.setPos(position.shoulder);
-    elbow.setPos(position.elbow);
-    wrist.setPos(position.wrist);
+    shoulder.setPos(side * position.shoulder);
+    elbow.setPos(side * position.elbow);
+    wrist.setPos(side * position.wrist);
   }
 
   public ArmPosition get() {
@@ -38,12 +40,14 @@ public class Arm extends SubsystemBase {
 
   public boolean atPosition() {
     boolean value = true;
-    if (shoulder.getEncoder() != position.shoulder)
+
+    if (shoulder.getEncoder() > side * position.shoulder + 2000 || shoulder.getEncoder() < side * position.shoulder - 2000)
       value = false;
-    if (elbow.getEncoder() != position.elbow)
+    if (elbow.getEncoder() > side * position.elbow + 2000 || elbow.getEncoder() < side * position.elbow - 2000)
       value = false;
-    if (wrist.getEncoder() != position.wrist)
+    if (wrist.getEncoder() > side * position.wrist + 2000 || wrist.getEncoder() < side * position.wrist - 2000)
       value = false;
+
     return value;
   }
 
@@ -51,7 +55,20 @@ public class Arm extends SubsystemBase {
     set(Constants.Arm.Positions.start);
   }
 
+  public void flipSide() {
+    setAuto(true);
+    this.side = this.side * -1;
+    this.set(position);
+  }
+
+  public void setAuto(boolean auto) {
+    shoulder.setAuto(auto);
+    elbow.setAuto(auto);
+  }
+
   @Override
   public void periodic() {
+    System.out.println("shoulder: " + shoulder.getEncoder());
+    System.out.println("elbow: " + elbow.getEncoder());
   }
 }

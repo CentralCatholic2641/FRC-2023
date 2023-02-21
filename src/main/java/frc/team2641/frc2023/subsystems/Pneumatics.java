@@ -5,7 +5,6 @@ package frc.team2641.frc2023.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
 
 public class Pneumatics extends SubsystemBase {
@@ -23,7 +22,7 @@ public class Pneumatics extends SubsystemBase {
   }
 
   public void enable() {
-    compressor.enableAnalog(Constants.Pneumatics.minPressure, Constants.Pneumatics.maxPressure);
+    compressor.enableDigital();
   }
 
   public void disable() {

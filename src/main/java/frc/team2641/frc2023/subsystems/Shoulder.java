@@ -6,6 +6,8 @@ package frc.team2641.frc2023.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 
@@ -20,6 +22,8 @@ public class Shoulder extends SubsystemBase {
 
   private WPI_TalonFX left = new WPI_TalonFX(Constants.CAN.leftShoulder);
   private WPI_TalonFX right = new WPI_TalonFX(Constants.CAN.rightShoulder);
+
+  private boolean auto = false;
 
   public Shoulder() {
     left.configFactoryDefault();
@@ -63,6 +67,7 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void setPos(double pos) {
+    auto = true;
     left.set(ControlMode.Position, pos);
     right.set(ControlMode.Position, pos);
   }
@@ -76,7 +81,16 @@ public class Shoulder extends SubsystemBase {
     right.setSelectedSensorPosition(value);
   }
 
+  public boolean isAuto() {
+    return auto;
+  }
+
+  public void setAuto(boolean auto) {
+    this.auto = auto;
+  }
+
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("shoulder", getEncoder());
   }
 }
