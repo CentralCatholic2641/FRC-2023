@@ -70,5 +70,6 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     System.out.println("shoulder: " + shoulder.getEncoder());
     System.out.println("elbow: " + elbow.getEncoder());
+    System.out.println("wrist: " + wrist.getEncoder());
   }
 }

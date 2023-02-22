@@ -19,6 +19,7 @@ public class Pneumatics extends SubsystemBase {
   private Compressor compressor = Robot.getPH().makeCompressor();
 
   private Pneumatics() {
+    disable();
   }
 
   public void enable() {

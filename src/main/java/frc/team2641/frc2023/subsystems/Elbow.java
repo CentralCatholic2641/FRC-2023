@@ -52,7 +52,6 @@ public class Elbow extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    auto = true;
     elbow.set(ControlMode.Position, pos);
   }
 

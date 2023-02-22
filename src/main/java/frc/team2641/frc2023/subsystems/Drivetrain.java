@@ -76,6 +76,13 @@ public class Drivetrain extends SubsystemBase {
     rightSlave1.setInverted(InvertType.FollowMaster);
     rightSlave2.setInverted(InvertType.FollowMaster);
 
+    leftMaster.configOpenloopRamp(Constants.Drive.rampSpeed);
+    leftSlave1.configOpenloopRamp(Constants.Drive.rampSpeed);
+    leftSlave2.configOpenloopRamp(Constants.Drive.rampSpeed);
+    rightMaster.configOpenloopRamp(Constants.Drive.rampSpeed);
+    rightSlave1.configOpenloopRamp(Constants.Drive.rampSpeed);
+    rightSlave2.configOpenloopRamp(Constants.Drive.rampSpeed);
+
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
     pose = odometry.getPoseMeters();

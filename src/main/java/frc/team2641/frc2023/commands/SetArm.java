@@ -18,6 +18,7 @@ public class SetArm extends CommandBase {
 
   @Override
   public void initialize() {
+    arm.setAuto(true);
     arm.set(position);
   }
 

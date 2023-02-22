@@ -23,11 +23,7 @@ public class MoveWrist extends CommandBase {
   @Override
   public void execute() {
     double output = Robot.robotContainer.operator.getRawAxis(Gamepad.rxAxis);
-    if (output > 0.01 || output < -0.01) {
-      wrist.set(output);
-    } else {
-      wrist.setPos(wrist.getEncoder());
-    }
+    wrist.set(output);
   }
 
   @Override

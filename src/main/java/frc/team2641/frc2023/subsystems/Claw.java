@@ -26,10 +26,12 @@ public class Claw extends SubsystemBase {
   }
 
   public void clamp() {
+    System.out.println("clamp");
     claw.set(DoubleSolenoid.Value.kForward);
   }
-
+  
   public void release() {
+    System.out.println("release");
     claw.set(DoubleSolenoid.Value.kReverse);
   }
 

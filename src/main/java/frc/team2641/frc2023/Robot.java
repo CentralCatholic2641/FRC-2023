@@ -28,13 +28,13 @@ public class Robot extends LoggedRobot {
 
   private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
   private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
-  public static RobotContainer robotContainer;
+  private Pneumatics pneumatics = Pneumatics.getInstance();
   private static Field2d field = new Field2d();
   private static LogController logController = LogController.getInstance();
   private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private Arm arm = Arm.getInstance();
-  private Pneumatics pneumatics = Pneumatics.getInstance();
+  public static RobotContainer robotContainer;
 
   @Override
   public void robotInit() {
@@ -73,7 +73,6 @@ public class Robot extends LoggedRobot {
     }
 
     logger.start();
-    pneumatics.enable();
     // arm.reset();
   }
 
@@ -116,6 +115,8 @@ public class Robot extends LoggedRobot {
     if (autoCommand != null)
       autoCommand.cancel();
     drivetrain.resetEncoders();
+
+    pneumatics.enable();
   }
 
   @Override

@@ -67,7 +67,6 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    auto = true;
     left.set(ControlMode.Position, pos);
     right.set(ControlMode.Position, pos);
   }

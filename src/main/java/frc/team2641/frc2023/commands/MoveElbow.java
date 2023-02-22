@@ -24,11 +24,7 @@ public class MoveElbow extends CommandBase {
   public void execute() {
     if (!elbow.isAuto()) {
       double output = Robot.robotContainer.operator.getRawAxis(Gamepad.ryAxis);
-      if (output > 0.01 || output < -0.01) {
-        elbow.set(output);
-      } else {
-        elbow.setPos(elbow.getEncoder());
-      }
+      elbow.set(output);
     }
   }
 

@@ -31,7 +31,8 @@ public final class Constants {
 
 	public static final class Drive {
 		public static final double maxDrive = 0.6;
-		public static final double maxSteer = 0.5;
+		public static final double maxSteer = 0.6;
+		public static final double rampSpeed = 1.5;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
@@ -47,7 +48,7 @@ public final class Constants {
 		public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 		public static final double kRamseteB = 2;
 		public static final double kRamseteZeta = 0.7;
-		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(5);
+		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(3);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
 		public static final PIDGains PID = new PIDGains(0, 0, 0, 0, 0.25, 500);
 	}
