@@ -22,8 +22,10 @@ public class MoveWrist extends CommandBase {
 
   @Override
   public void execute() {
-    double output = Robot.robotContainer.operator.getRawAxis(Gamepad.rxAxis);
-    wrist.set(output);
+    if (!wrist.isAuto()) {
+      double output = Robot.robotContainer.operator.getRawAxis(Gamepad.rxAxis);
+      wrist.set(output);
+    }
   }
 
   @Override

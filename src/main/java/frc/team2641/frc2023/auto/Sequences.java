@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.commands.SetArm;
+import frc.team2641.frc2023.commands.Wait;
 import frc.team2641.frc2023.subsystems.Claw;
 
 public class Sequences {
@@ -23,5 +24,21 @@ public class Sequences {
         Commands.parallel(new SetArm(Constants.Arm.Positions.start),
             FollowPath.goTo(new PathPoint(new Translation2d(2.4, 2.7), Rotation2d.fromDegrees(0)))),
         new AutoBalance());
+  }
+
+  public static Command ScoreHigh() {
+    return Commands.sequence(
+      new SetArm(Constants.Arm.Positions.topRowStart),
+      new SetArm(Constants.Arm.Positions.topRow),
+      new InstantCommand(() -> claw.toggle(), claw),
+      new Wait(0.1),
+      Commands.parallel(
+        Commands.sequence(
+          new Wait(0.25),
+          new InstantCommand(() -> claw.toggle(), claw)
+        ),
+        new SetArm(Constants.Arm.Positions.start)
+      )
+    );
   }
 }

@@ -25,13 +25,15 @@ public class SetArm extends CommandBase {
   @Override
   public void execute() {
     if (arm.atPosition()) {
-      arm.setAuto(false);
       end(false);
+    } else {
+      System.out.println("moving...");
     }
   }
 
   @Override
   public void end(boolean interrupted) {
+    arm.setAuto(false);
   }
 
   @Override

@@ -31,8 +31,8 @@ public final class Constants {
 
 	public static final class Drive {
 		public static final double maxDrive = 0.6;
-		public static final double maxSteer = 0.6;
-		public static final double rampSpeed = 1.5;
+		public static final double maxSteer = 0.45;
+		public static final double rampSpeed = 1.6;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
@@ -66,17 +66,18 @@ public final class Constants {
 	public static final class Arm {
 		public static final class Positions {
 			public static final ArmPosition start = new ArmPosition(0, 0, 0);
-			public static final ArmPosition intake = new ArmPosition(-56000, -157000, 0);
+			public static final ArmPosition intake = new ArmPosition(-38000, -132620, 0);
 			public static final ArmPosition bottomRow = new ArmPosition(0, 0, 0);
-			public static final ArmPosition middleRow = new ArmPosition(65000, 60000, 0);
-			public static final ArmPosition topRow = new ArmPosition(0, 0, 0);
+			public static final ArmPosition middleRow = new ArmPosition(70000, 68000, 10000);
+			public static final ArmPosition topRowStart = new ArmPosition(70000, 0, 0);
+			public static final ArmPosition topRow = new ArmPosition(152500, 165000, 10000);
 			public static final ArmPosition singleSubstation = new ArmPosition(0, 0, 0);
 			public static final ArmPosition doubleSubstation = new ArmPosition(0, 0, 0);
 		}
 
 		public static final PIDGains shoulderGains = new PIDGains(0.05, 0, 0, 0, 0.4, 1000);
 		public static final PIDGains elbowGains = new PIDGains(0.05, 0, 0, 0, 0.5, 500);
-		public static final PIDGains wristGains = new PIDGains(0, 0, 0, 0, 0.25, 50);
+		public static final PIDGains wristGains = new PIDGains(0.125, 0, 0, 0, 0.2, 50);
 
 		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4.5);
 		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(10);

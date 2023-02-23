@@ -35,6 +35,11 @@ public class Claw extends SubsystemBase {
     claw.set(DoubleSolenoid.Value.kReverse);
   }
 
+  public void toggle() {
+    if (get().equals(DoubleSolenoid.Value.kReverse)) claw.set(DoubleSolenoid.Value.kForward);
+    else claw.set(DoubleSolenoid.Value.kReverse);
+  }
+
   public DoubleSolenoid.Value get() {
     return claw.get();
   }

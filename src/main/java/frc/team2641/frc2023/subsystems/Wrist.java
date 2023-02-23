@@ -19,6 +19,8 @@ public class Wrist extends SubsystemBase {
     return instance;
   }
 
+  private boolean auto = false;
+
   private WPI_TalonSRX wrist = new WPI_TalonSRX(Constants.CAN.wrist);
 
   public Wrist() {
@@ -26,29 +28,29 @@ public class Wrist extends SubsystemBase {
 
     wrist.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 
-    wrist.setSensorPhase(true);
+    wrist.setSensorPhase(false);
 
-    wrist.setInverted(false);
+    wrist.setInverted(true);
 
     wrist.configNominalOutputForward(0, 30);
     wrist.configNominalOutputReverse(0, 30);
-    wrist.configPeakOutputForward(Constants.Arm.elbowGains.kPeakOutput, 30);
-    wrist.configPeakOutputReverse(-Constants.Arm.elbowGains.kPeakOutput, 30);
+    wrist.configPeakOutputForward(Constants.Arm.wristGains.kPeakOutput, 30);
+    wrist.configPeakOutputReverse(-Constants.Arm.wristGains.kPeakOutput, 30);
 
-    wrist.configAllowableClosedloopError(0, Constants.Arm.elbowGains.kAllowableError, 30);
+    wrist.configAllowableClosedloopError(0, Constants.Arm.wristGains.kAllowableError, 30);
 
-    wrist.config_kP(0, Constants.Arm.elbowGains.kP, 30);
-    wrist.config_kI(0, Constants.Arm.elbowGains.kI, 30);
-    wrist.config_kD(0, Constants.Arm.elbowGains.kD, 30);
-    wrist.config_kF(0, Constants.Arm.elbowGains.kF, 30);
+    wrist.config_kP(0, Constants.Arm.wristGains.kP, 30);
+    wrist.config_kI(0, Constants.Arm.wristGains.kI, 30);
+    wrist.config_kD(0, Constants.Arm.wristGains.kD, 30);
+    wrist.config_kF(0, Constants.Arm.wristGains.kF, 30);
   }
 
   public void set(double value) {
-    wrist.set(Constants.Arm.wristRateLimiter.calculate(value));
+    wrist.set(Constants.Arm.wristRateLimiter.calculate(value * Constants.Arm.wristGains.kPeakOutput));
   }
 
   public void setPos(double pos) {
-    // wrist.set(ControlMode.Position, pos);
+    wrist.set(ControlMode.Position, pos);
   }
 
   public int getEncoder() {
@@ -57,6 +59,14 @@ public class Wrist extends SubsystemBase {
 
   public void setEncoder(double value) {
     wrist.setSelectedSensorPosition(value);
+  }
+
+  public boolean isAuto() {
+    return auto;
+  }
+
+  public void setAuto(boolean auto) {
+    this.auto = auto;
   }
 
   @Override

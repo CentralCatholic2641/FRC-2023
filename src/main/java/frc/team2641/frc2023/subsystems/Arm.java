@@ -41,11 +41,11 @@ public class Arm extends SubsystemBase {
   public boolean atPosition() {
     boolean value = true;
 
-    if (shoulder.getEncoder() > side * position.shoulder + 2000 || shoulder.getEncoder() < side * position.shoulder - 2000)
+    if (shoulder.getEncoder() > side * position.shoulder + 6000 || shoulder.getEncoder() < side * position.shoulder - 6000)
       value = false;
-    if (elbow.getEncoder() > side * position.elbow + 2000 || elbow.getEncoder() < side * position.elbow - 2000)
+    if (elbow.getEncoder() > side * position.elbow + 3000 || elbow.getEncoder() < side * position.elbow - 3000)
       value = false;
-    if (wrist.getEncoder() > side * position.wrist + 2000 || wrist.getEncoder() < side * position.wrist - 2000)
+    if (wrist.getEncoder() > side * position.wrist + 500 || wrist.getEncoder() < side * position.wrist - 500)
       value = false;
 
     return value;
@@ -64,6 +64,7 @@ public class Arm extends SubsystemBase {
   public void setAuto(boolean auto) {
     shoulder.setAuto(auto);
     elbow.setAuto(auto);
+    wrist.setAuto(auto);
   }
 
   @Override
