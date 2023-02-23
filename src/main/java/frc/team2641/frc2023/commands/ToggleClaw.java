@@ -16,7 +16,7 @@ public class ToggleClaw extends CommandBase {
 
   @Override
   public void initialize() {
-    claw.clamp();
+    claw.toggle();
   }
 
   @Override
@@ -25,7 +25,7 @@ public class ToggleClaw extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    claw.release();
+    claw.toggle();
   }
 
   @Override

@@ -30,24 +30,24 @@ public class Sequences {
     return Commands.sequence(
         new SetArm(Constants.Arm.Positions.topRowStart),
         new SetArm(Constants.Arm.Positions.topRow),
-        new InstantCommand(() -> claw.toggle(), claw),
+        new InstantCommand(() -> claw.release(), claw),
         new Wait(0.1),
         Commands.parallel(
             Commands.sequence(
                 new Wait(0.25),
-                new InstantCommand(() -> claw.toggle(), claw)),
+                new InstantCommand(() -> claw.clamp(), claw)),
             new SetArm(Constants.Arm.Positions.start)));
   }
 
   public static Command ScoreMid() {
     return Commands.sequence(
         new SetArm(Constants.Arm.Positions.middleRow),
-        new InstantCommand(() -> claw.toggle(), claw),
+        new InstantCommand(() -> claw.release(), claw),
         new Wait(0.1),
         Commands.parallel(
             Commands.sequence(
                 new Wait(0.25),
-                new InstantCommand(() -> claw.toggle(), claw)),
+                new InstantCommand(() -> claw.clamp(), claw)),
             new SetArm(Constants.Arm.Positions.start)));
   }
 }

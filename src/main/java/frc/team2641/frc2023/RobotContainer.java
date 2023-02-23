@@ -5,6 +5,8 @@ package frc.team2641.frc2023;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.team2641.frc2023.auto.AutoBalance;
+import frc.team2641.frc2023.auto.FollowPath;
 import frc.team2641.frc2023.auto.Sequences;
 import frc.team2641.frc2023.commands.*;
 import frc.team2641.frc2023.subsystems.*;
@@ -41,10 +43,12 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 		operator.aButton().toggleOnTrue(new ToggleClaw());
-		operator.rightBumper().onTrue(new ResetEncoders());
+		operator.leftBumper().onTrue(new ResetEncoders());
 		// operatorTopRow.onTrue(new SetArm(Constants.Arm.Positions.topRow));
 		operatorTopRow.onTrue(Sequences.ScoreHigh());
-		operatorMiddleRow.onTrue(new SetArm(Constants.Arm.Positions.middleRow));
+		// operatorMiddleRow.onTrue(new SetArm(Constants.Arm.Positions.middleRow));
+		// operatorMiddleRow.onTrue(FollowPath.get("test"));
+		operatorMiddleRow.onTrue(new AutoBalance());
 		operatorStow.onTrue(new SetArm(Constants.Arm.Positions.start));
 		operatorIntake.onTrue(new SetArm(Constants.Arm.Positions.intake));
 		operator.xButton().onTrue(new FlipSide());

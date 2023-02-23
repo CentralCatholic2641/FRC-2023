@@ -23,6 +23,7 @@ public class AutoBalance extends CommandBase {
 
   @Override
   public void execute() {
+    System.out.println("balancing...");
     if (!hasTilted && drivetrain.getPitch() != 0)
       hasTilted = true;
 

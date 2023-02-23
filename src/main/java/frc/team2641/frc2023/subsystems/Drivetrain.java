@@ -14,6 +14,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
@@ -142,10 +144,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void updatePose() {
-    if (limelight.hasPose())
-      pose = limelight.getPose();
-    else
-      pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
+    // if (limelight.hasPose())
+    //   pose = limelight.getPose();
+    // else
+    odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
   }
 
   public Pose2d getPose() {
@@ -205,7 +207,11 @@ public class Drivetrain extends SubsystemBase {
 
     Robot.getField().getObject("traj_" + trajectory).setTrajectory(traj);
 
-    return new PPRamseteCommand(
+    resetPose(traj.getInitialPose());
+
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> this.resetPose(traj.getInitialPose())),
+     new PPRamseteCommand(
         traj,
         this::getPose,
         new RamseteController(),
@@ -219,7 +225,7 @@ public class Drivetrain extends SubsystemBase {
         new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
         this::tDriveVolts,
         true,
-        this);
+        this));
   }
 
   public Command followTrajectoryCommand(PathPlannerTrajectory trajectory) {
