@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 
 public class Elbow extends SubsystemBase {
-
   private static Elbow instance = null;
 
   public static Elbow getInstance() {

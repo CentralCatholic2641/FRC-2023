@@ -21,17 +21,17 @@ public class Arm extends SubsystemBase {
   private Wrist wrist = Wrist.getInstance();
 
   private int side = 1;
-
   private ArmPosition position;
+  private boolean auto = false;
 
   public Arm() {
   }
 
   public void set(ArmPosition position) {
-    this.position = position;
-    shoulder.setPos(side * position.shoulder);
-    elbow.setPos(side * position.elbow);
-    wrist.setPos(side * position.wrist);
+    this.position = new ArmPosition(position.shoulder, position.elbow, position.wrist);
+    shoulder.setPos(side * this.position.shoulder);
+    elbow.setPos(side * this.position.elbow);
+    wrist.setPos(side * this.position.wrist);
   }
 
   public ArmPosition get() {
@@ -41,7 +41,8 @@ public class Arm extends SubsystemBase {
   public boolean atPosition() {
     boolean value = true;
 
-    if (shoulder.getEncoder() > side * position.shoulder + 6000 || shoulder.getEncoder() < side * position.shoulder - 6000)
+    if (shoulder.getEncoder() > side * position.shoulder + 6000
+        || shoulder.getEncoder() < side * position.shoulder - 6000)
       value = false;
     if (elbow.getEncoder() > side * position.elbow + 3000 || elbow.getEncoder() < side * position.elbow - 3000)
       value = false;
@@ -56,12 +57,23 @@ public class Arm extends SubsystemBase {
   }
 
   public void flipSide() {
-    setAuto(true);
+    // setAuto(true);
     this.side = this.side * -1;
     this.set(position);
   }
 
+  // public void setAuto(boolean auto) {
+  // shoulder.setAuto(auto);
+  // elbow.setAuto(auto);
+  // wrist.setAuto(auto);
+  // }
+
+  public boolean isAuto() {
+    return auto;
+  }
+
   public void setAuto(boolean auto) {
+    this.auto = auto;
     shoulder.setAuto(auto);
     elbow.setAuto(auto);
     wrist.setAuto(auto);
