@@ -27,7 +27,9 @@ public class ShuffleboardController {
 
   public ShuffleboardController() {
     // Pre-match
-    autoChooser.setDefaultOption("Default", Sequences.ScoreConeThenBalance());
+    // autoChooser.setDefaultOption("Default",
+    // AutoSequences.ScoreConeThenBalance());
+    autoChooser.setDefaultOption("Default", AutoSequences.ScoreCubeThenPickupAndScoreCone());
 
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
     preMatchTab.addCamera("Camera", "Camera", "/dev/video0");

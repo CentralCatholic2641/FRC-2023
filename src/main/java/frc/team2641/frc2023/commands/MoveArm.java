@@ -4,7 +4,6 @@
 package frc.team2641.frc2023.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.Robot;
 import frc.team2641.frc2023.helpers.ArmPosition;
 import frc.team2641.frc2023.subsystems.Arm;
@@ -30,9 +29,12 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
     if (!arm.isAuto()) {
-      int shoulder = (int) this.shoulder.getEncoder() + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis) * 10000);
-      int elbow = (int) this.elbow.getEncoder() + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.ryAxis) * 10000);
-      int wrist = (int) this.wrist.getEncoder() + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.rxAxis) * 5000);
+      int shoulder = (int) this.shoulder.getEncoder()
+          + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis) * 10000);
+      int elbow = (int) this.elbow.getEncoder()
+          + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.ryAxis) * 10000);
+      int wrist = (int) this.wrist.getEncoder()
+          + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.rxAxis) * 5000);
       System.out.println("calculating... " + shoulder);
       arm.set(new ArmPosition(shoulder, elbow, wrist));
     }

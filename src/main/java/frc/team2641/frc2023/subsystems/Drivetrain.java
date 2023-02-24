@@ -144,14 +144,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void updatePose() {
-    // if (limelight.hasPose())
-    //   pose = limelight.getPose();
-    // else
-    odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
+    if (limelight.hasPose())
+      pose = limelight.getPose();
+    else
+      pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
   }
 
   public Pose2d getPose() {
-    pose = odometry.getPoseMeters();
     return pose;
   }
 
@@ -210,22 +209,22 @@ public class Drivetrain extends SubsystemBase {
     resetPose(traj.getInitialPose());
 
     return new SequentialCommandGroup(
-      new InstantCommand(() -> this.resetPose(traj.getInitialPose())),
-     new PPRamseteCommand(
-        traj,
-        this::getPose,
-        new RamseteController(),
-        new SimpleMotorFeedforward(
-            Constants.Drive.ksVolts,
-            Constants.Drive.kvVoltSecondsPerMeter,
-            Constants.Drive.kaVoltSecondsSquaredPerMeter),
-        this.kinematics,
-        this::getWheelSpeeds,
-        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-        this::tDriveVolts,
-        true,
-        this));
+        new InstantCommand(() -> this.resetPose(traj.getInitialPose())),
+        new PPRamseteCommand(
+            traj,
+            this::getPose,
+            new RamseteController(),
+            new SimpleMotorFeedforward(
+                Constants.Drive.ksVolts,
+                Constants.Drive.kvVoltSecondsPerMeter,
+                Constants.Drive.kaVoltSecondsSquaredPerMeter),
+            this.kinematics,
+            this::getWheelSpeeds,
+            new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+            new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+            this::tDriveVolts,
+            true,
+            this));
   }
 
   public Command followTrajectoryCommand(PathPlannerTrajectory trajectory) {
