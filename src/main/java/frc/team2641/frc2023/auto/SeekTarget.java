@@ -3,7 +3,6 @@
 
 package frc.team2641.frc2023.auto;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team2641.frc2023.Constants.Pipelines;
 import frc.team2641.frc2023.subsystems.Drivetrain;
@@ -61,8 +60,6 @@ public class SeekTarget extends CommandBase {
     // if (distanceAdjust < 0.25)
     // end(false);
 
-    SmartDashboard.putNumber("distanceAdjust", distanceAdjust);
-    SmartDashboard.putNumber("steeringAdjust", steeringAdjust);
     System.out.println("Steering: " + steeringAdjust + " Distance: " + distanceAdjust);
     drivetrain.aDriveUnlimited(distanceAdjust, steeringAdjust);
   }

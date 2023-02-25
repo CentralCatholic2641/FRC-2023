@@ -16,7 +16,7 @@ public class Claw extends SubsystemBase {
     return instance;
   }
 
-  private DoubleSolenoid claw = Robot.getPH().makeDoubleSolenoid(1, 0);
+  private DoubleSolenoid claw = Robot.getPH().makeDoubleSolenoid(0, 1);
 
   private Claw() {
     clamp();
@@ -30,15 +30,17 @@ public class Claw extends SubsystemBase {
     System.out.println("clamp");
     claw.set(DoubleSolenoid.Value.kReverse);
   }
-  
+
   public void release() {
     System.out.println("release");
     claw.set(DoubleSolenoid.Value.kForward);
   }
 
   public void toggle() {
-    if (get().equals(DoubleSolenoid.Value.kReverse)) claw.set(DoubleSolenoid.Value.kForward);
-    else claw.set(DoubleSolenoid.Value.kReverse);
+    if (get().equals(DoubleSolenoid.Value.kReverse))
+      claw.set(DoubleSolenoid.Value.kForward);
+    else
+      claw.set(DoubleSolenoid.Value.kReverse);
   }
 
   public DoubleSolenoid.Value get() {

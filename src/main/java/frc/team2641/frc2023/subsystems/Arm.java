@@ -62,27 +62,15 @@ public class Arm extends SubsystemBase {
     this.set(position);
   }
 
-  // public void setAuto(boolean auto) {
-  // shoulder.setAuto(auto);
-  // elbow.setAuto(auto);
-  // wrist.setAuto(auto);
-  // }
-
   public boolean isAuto() {
     return auto;
   }
 
   public void setAuto(boolean auto) {
     this.auto = auto;
-    shoulder.setAuto(auto);
-    elbow.setAuto(auto);
-    wrist.setAuto(auto);
   }
 
   @Override
   public void periodic() {
-    System.out.println("shoulder: " + shoulder.getEncoder());
-    System.out.println("elbow: " + elbow.getEncoder());
-    System.out.println("wrist: " + wrist.getEncoder());
   }
 }

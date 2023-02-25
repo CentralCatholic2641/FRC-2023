@@ -16,12 +16,16 @@ public class ArmSequences {
 
 	public static Command Intake() {
 		return Commands.sequence(
-				new SetArm(Constants.Arm.Positions.intake),
+				Commands.parallel(
+						Commands.sequence(
+								new Wait(0.5),
+								new InstantCommand(() -> claw.release(), claw)),
+						new SetArm(Constants.Arm.Positions.intake)),
 				new InstantCommand(() -> claw.clamp(), claw),
 				new SetArm(Constants.Arm.Positions.start));
 	}
 
-	public static Command ScoreHigh() {
+	public static Command ScoreTop() {
 		return Commands.sequence(
 				new SetArm(Constants.Arm.Positions.topRowStart),
 				new SetArm(Constants.Arm.Positions.topRow),

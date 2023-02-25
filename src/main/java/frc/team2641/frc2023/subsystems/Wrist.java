@@ -6,7 +6,6 @@ package frc.team2641.frc2023.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 
@@ -18,8 +17,6 @@ public class Wrist extends SubsystemBase {
       instance = new Wrist();
     return instance;
   }
-
-  private boolean auto = false;
 
   private WPI_TalonSRX wrist = new WPI_TalonSRX(Constants.CAN.wrist);
 
@@ -61,16 +58,7 @@ public class Wrist extends SubsystemBase {
     wrist.setSelectedSensorPosition(value);
   }
 
-  public boolean isAuto() {
-    return auto;
-  }
-
-  public void setAuto(boolean auto) {
-    this.auto = auto;
-  }
-
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("wrist", getEncoder());
   }
 }

@@ -44,7 +44,7 @@ public class RobotContainer {
 		operator.aButton().toggleOnTrue(new ToggleClaw());
 		operator.leftBumper().onTrue(new ResetEncoders());
 		// operatorTopRow.onTrue(new SetArm(Constants.Arm.Positions.topRow));
-		operatorTopRow.onTrue(ArmSequences.ScoreHigh());
+		operatorTopRow.onTrue(ArmSequences.ScoreTop());
 		// operatorMiddleRow.onTrue(new SetArm(Constants.Arm.Positions.middleRow));
 		operatorMiddleRow.onTrue(new AutoBalance());
 		operatorStow.onTrue(new SetArm(Constants.Arm.Positions.start));

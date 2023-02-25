@@ -18,20 +18,14 @@ public class AutoSequences {
 
 	public static Command ScoreConeThenBalance() {
 		return Commands.sequence(
-				Commands.parallel(new SetArm(Constants.Arm.Positions.topRow), FollowPath.get("Right Grid Left Cone")),
+				Commands.parallel(new SetArm(Constants.Arm.Positions.topRow), FollowPath.get("Right Grid Left Cone", true)),
 				new InstantCommand(() -> claw.release(), claw),
 				Commands.parallel(new SetArm(Constants.Arm.Positions.start),
 						FollowPath.goTo(new PathPoint(new Translation2d(2.4, 2.7), Rotation2d.fromDegrees(0)))),
 				new AutoBalance());
 	}
 
-	public static Command ScoreCubeThenPickupAndScoreCone() {
-		return Commands.sequence(
-				FollowPath.goTo(new PathPoint(new Translation2d(1.9, 4.4), Rotation2d.fromDegrees(180))),
-				ArmSequences.ScoreHigh(),
-				FollowPath.goTo(new PathPoint(new Translation2d(6.36, 4.64), Rotation2d.fromDegrees(180))),
-				ArmSequences.Intake(),
-				FollowPath.goTo(new PathPoint(new Translation2d(1.9, 4.97), Rotation2d.fromDegrees(180))),
-				ArmSequences.ScoreHigh());
+	public static Command ScorePreloadThenPickupAndScoreTopPrestaged() {
+		return FollowPath.get("Score Preload Score Top Prestaged", true);
 	}
 }

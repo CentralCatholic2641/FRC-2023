@@ -3,17 +3,11 @@
 
 package frc.team2641.frc2023;
 
-import edu.wpi.first.cameraserver.CameraServer;
+// import edu.wpi.first.cameraserver.CameraServer;
+import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.LogFileUtil;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGReader;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team2641.frc2023.subsystems.Arm;
@@ -23,57 +17,39 @@ import frc.team2641.frc2023.telemetry.LogController;
 import frc.team2641.frc2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
 
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
   Command autoCommand;
 
-  private static PowerDistribution pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
-  private static PneumaticHub ph = new PneumaticHub(Constants.CAN.PH);
-  private Pneumatics pneumatics = Pneumatics.getInstance();
-  private static Field2d field = new Field2d();
-  private static LogController logController = LogController.getInstance();
-  private static ShuffleboardController shuffleboardController = ShuffleboardController.getInstance();
-  private Drivetrain drivetrain = Drivetrain.getInstance();
-  private Arm arm = Arm.getInstance();
+  private static PowerDistribution pdh;
+  private static PneumaticHub ph;
+
+  private Drivetrain drivetrain;
+  private Arm arm;
+  private Pneumatics pneumatics;
+
+  private LogController logController;
+  private ShuffleboardController shuffleboardController;
+
   public static RobotContainer robotContainer;
 
   @Override
   public void robotInit() {
-    if (isReal())
-      Constants.currentMode = Constants.Mode.REAL;
-    else
-      Constants.currentMode = Constants.Mode.SIM;
+    pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
+    ph = new PneumaticHub(Constants.CAN.PH);
+
+    drivetrain = Drivetrain.getInstance();
+    arm = Arm.getInstance();
+    pneumatics = Pneumatics.getInstance();
+
+    logController = LogController.getInstance();
+    shuffleboardController = ShuffleboardController.getInstance();
 
     // CameraServer.startAutomaticCapture("Camera", "/dev/video0");
 
     robotContainer = new RobotContainer();
-    SmartDashboard.putData(field);
     logController.start();
-    SmartDashboard.putNumber("steeringAdjust", 0);
-    SmartDashboard.putNumber("distanceAdjust", 0);
 
-    Logger logger = Logger.getInstance();
-
-    logger.recordMetadata("ProjectName", "ChargedUp2023");
-
-    switch (Constants.currentMode) {
-      case REAL:
-        logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
-        logger.addDataReceiver(new NT4Publisher());
-        break;
-      case SIM:
-        logger.addDataReceiver(new WPILOGWriter(""));
-        logger.addDataReceiver(new NT4Publisher());
-        break;
-      case REPLAY:
-        setUseTiming(false);
-        String logPath = LogFileUtil.findReplayLog();
-        logger.setReplaySource(new WPILOGReader(logPath));
-        logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
-        break;
-    }
-
-    logger.start();
-    // arm.reset();
+    PathPlannerServer.startServer(5811);
   }
 
   @Override
@@ -86,7 +62,7 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
 
-    field.setRobotPose(drivetrain.getPose());
+    shuffleboardController.setRobotPose(drivetrain.getPose());
   }
 
   @Override
@@ -99,6 +75,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
+    arm.reset();
+
     autoCommand = shuffleboardController.getAutonomousCommand();
 
     if (autoCommand != null)
@@ -112,6 +90,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    arm.reset();
+
     if (autoCommand != null)
       autoCommand.cancel();
     drivetrain.resetEncoders();
@@ -146,9 +126,5 @@ public class Robot extends LoggedRobot {
 
   public static PneumaticHub getPH() {
     return ph;
-  }
-
-  public static Field2d getField() {
-    return field;
   }
 }

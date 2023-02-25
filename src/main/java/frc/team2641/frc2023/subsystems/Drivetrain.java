@@ -3,7 +3,6 @@
 
 package frc.team2641.frc2023.subsystems;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,14 +11,12 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
-import frc.team2641.frc2023.Robot;
-import frc.team2641.lib.limelight.Limelight;
+import frc.team2641.frc2023.auto.ArmSequences;
+import java.util.HashMap;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -28,7 +25,8 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPRamseteCommand;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 public class Drivetrain extends SubsystemBase {
   private static Drivetrain instance = null;
@@ -38,8 +36,6 @@ public class Drivetrain extends SubsystemBase {
       instance = new Drivetrain();
     return instance;
   }
-
-  private static Limelight limelight = Limelight.getInstance();
 
   private WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.CAN.leftMaster);
   private WPI_TalonFX leftSlave1 = new WPI_TalonFX(Constants.CAN.leftSlave1);
@@ -57,6 +53,24 @@ public class Drivetrain extends SubsystemBase {
       Constants.Drive.kTrackwidthMeters);
 
   private Pose2d pose;
+
+  private HashMap<String, Command> pathEventMap = new HashMap<>();
+
+  private RamseteAutoBuilder pathFollower = new RamseteAutoBuilder(
+      this::getPose,
+      this::resetPose,
+      new RamseteController(),
+      this.kinematics,
+      new SimpleMotorFeedforward(
+          Constants.Drive.ksVolts,
+          Constants.Drive.kvVoltSecondsPerMeter,
+          Constants.Drive.kaVoltSecondsSquaredPerMeter),
+      this::getWheelSpeeds,
+      new PIDConstants(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
+      this::tDriveVolts,
+      pathEventMap,
+      true,
+      this);
 
   private Drivetrain() {
     init(leftMaster);
@@ -87,9 +101,13 @@ public class Drivetrain extends SubsystemBase {
 
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
-    pose = odometry.getPoseMeters();
 
     ahrs.enableLogging(true);
+
+    // pathEventMap.put("intake", ArmSequences.Intake());
+    // pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
+    pathEventMap.put("intake", new PrintCommand("intake"));
+    pathEventMap.put("scoreTop", new PrintCommand("scoreTop"));
   }
 
   public void aDrive(double speed, double rotation) {
@@ -98,7 +116,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
-    drive.arcadeDrive(-speed, rotation, true);
+    drive.arcadeDrive(-speed, -rotation, true);
   }
 
   public void tDrive(double left, double right) {
@@ -107,9 +125,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
-    System.out.println("left:" + leftVolts + " right: " + rightVolts);
-    leftMaster.setVoltage(leftVolts);
-    rightMaster.setVoltage(rightVolts);
+    leftMaster.setVoltage(-leftVolts);
+    rightMaster.setVoltage(-rightVolts);
     drive.feed();
   }
 
@@ -139,15 +156,13 @@ public class Drivetrain extends SubsystemBase {
 
   public void resetPose(Pose2d pose) {
     resetEncoders();
+    this.pose = pose;
     odometry.resetPosition(
         getAngle(), getLeftEncoder(), getRightEncoder(), pose);
   }
 
   public void updatePose() {
-    if (limelight.hasPose())
-      pose = limelight.getPose();
-    else
-      pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
+    this.pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
   }
 
   public Pose2d getPose() {
@@ -156,13 +171,11 @@ public class Drivetrain extends SubsystemBase {
 
   public double getLeftEncoder() {
     double value = leftMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
-    SmartDashboard.putNumber("leftEncoder", value);
     return value;
   }
 
   public double getRightEncoder() {
     double value = rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
-    SmartDashboard.putNumber("rightEncoder", value);
     return value;
   }
 
@@ -191,7 +204,7 @@ public class Drivetrain extends SubsystemBase {
   private void init(WPI_TalonFX talon) {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
-    talon.setNeutralMode(NeutralMode.Brake);
+    talon.setNeutralMode(NeutralMode.Coast);
     talon.configAllSettings(toApply);
     talon.setSelectedSensorPosition(0);
   }
@@ -200,51 +213,23 @@ public class Drivetrain extends SubsystemBase {
     return kinematics;
   }
 
-  public Command followTrajectoryCommand(String trajectory) {
+  public Command followTrajectoryCommand(String trajectory, boolean reset) {
     PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
-    Robot.getField().getObject("traj_" + trajectory).setTrajectory(traj);
-
-    resetPose(traj.getInitialPose());
-
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> this.resetPose(traj.getInitialPose())),
-        new PPRamseteCommand(
-            traj,
-            this::getPose,
-            new RamseteController(),
-            new SimpleMotorFeedforward(
-                Constants.Drive.ksVolts,
-                Constants.Drive.kvVoltSecondsPerMeter,
-                Constants.Drive.kaVoltSecondsSquaredPerMeter),
-            this.kinematics,
-            this::getWheelSpeeds,
-            new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-            new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-            this::tDriveVolts,
-            true,
-            this));
+    if (reset) {
+      resetPose(traj.getInitialPose());
+      pathFollower.resetPose(traj);
+    }
+    return pathFollower.fullAuto(traj);
   }
 
-  public Command followTrajectoryCommand(PathPlannerTrajectory trajectory) {
-    Robot.getField().getObject("traj_" + trajectory.toString()).setTrajectory(trajectory);
-
-    return new PPRamseteCommand(
-        trajectory,
-        this::getPose,
-        new RamseteController(),
-        new SimpleMotorFeedforward(
-            Constants.Drive.ksVolts,
-            Constants.Drive.kvVoltSecondsPerMeter,
-            Constants.Drive.kaVoltSecondsSquaredPerMeter),
-        this.kinematics,
-        this::getWheelSpeeds,
-        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-        new PIDController(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-        this::tDriveVolts,
-        true,
-        this);
+  public Command followTrajectoryCommand(PathPlannerTrajectory trajectory, boolean reset) {
+    if (reset) {
+      resetPose(trajectory.getInitialPose());
+      pathFollower.resetPose(trajectory);
+    }
+    return pathFollower.fullAuto(trajectory);
   }
 
   @Override

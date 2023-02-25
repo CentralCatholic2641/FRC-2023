@@ -3,9 +3,12 @@
 
 package frc.team2641.frc2023.telemetry;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.frc2023.auto.*;
 
@@ -14,6 +17,8 @@ public class ShuffleboardController {
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleop");
   public ShuffleboardTab testTab = Shuffleboard.getTab("Test");
+
+  private Field2d field = new Field2d();
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -26,10 +31,12 @@ public class ShuffleboardController {
   }
 
   public ShuffleboardController() {
+    SmartDashboard.putData(field);
+
     // Pre-match
     // autoChooser.setDefaultOption("Default",
     // AutoSequences.ScoreConeThenBalance());
-    autoChooser.setDefaultOption("Default", AutoSequences.ScoreCubeThenPickupAndScoreCone());
+    autoChooser.setDefaultOption("Default", AutoSequences.ScorePreloadThenPickupAndScoreTopPrestaged());
 
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
     preMatchTab.addCamera("Camera", "Camera", "/dev/video0");
@@ -66,5 +73,9 @@ public class ShuffleboardController {
 
   public void test() {
     Shuffleboard.selectTab("Test");
+  }
+
+  public void setRobotPose(Pose2d pose) {
+    field.setRobotPose(pose);
   }
 }

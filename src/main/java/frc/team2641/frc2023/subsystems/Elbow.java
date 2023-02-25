@@ -6,7 +6,6 @@ package frc.team2641.frc2023.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 
@@ -20,8 +19,6 @@ public class Elbow extends SubsystemBase {
   }
 
   private WPI_TalonFX elbow = new WPI_TalonFX(Constants.CAN.elbow);
-
-  private boolean auto = false;
 
   public Elbow() {
     elbow.configFactoryDefault();
@@ -61,16 +58,7 @@ public class Elbow extends SubsystemBase {
     elbow.setSelectedSensorPosition(value);
   }
 
-  public boolean isAuto() {
-    return auto;
-  }
-
-  public void setAuto(boolean auto) {
-    this.auto = auto;
-  }
-
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("elbow", getEncoder());
   }
 }

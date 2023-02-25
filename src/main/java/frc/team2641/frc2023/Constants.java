@@ -30,12 +30,13 @@ public final class Constants {
 	}
 
 	public static final class Drive {
-		// public static final double maxDrive = 0.6;
-		public static final double maxDrive = 0.35;
+		public static final double maxDrive = 0.6;
+		// public static final double maxDrive = 0.35;
 		public static final double maxSteer = 0.45;
-		// public static final double rampSpeed = 1.6;
-		public static final double rampSpeed = 0.1;
-		public static final boolean brakes = true;
+		// public static final double maxSteer = 0.45;
+		public static final double rampSpeed = 1.6;
+		// public static final double rampSpeed = 0.1;
+		public static final boolean brakes = false;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
 		public static final double wheelDiameter = 0.1524;
@@ -47,7 +48,7 @@ public final class Constants {
 		public static final double kPDriveVel = 2.5;
 		public static final double kTrackwidthMeters = 0.5588;
 		public static final double kMaxSpeedMetersPerSecond = 3;
-		public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+		public static final double kMaxAccelerationMetersPerSecondSquared = 2;
 		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(3);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
 		public static final PIDGains PID = new PIDGains(0, 0, 0, 0, 0.25, 500);
@@ -82,13 +83,5 @@ public final class Constants {
 		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4.5);
 		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(10);
 		public static final SlewRateLimiter wristRateLimiter = new SlewRateLimiter(6);
-	}
-
-	public static Mode currentMode = Mode.REAL;
-
-	public static enum Mode {
-		REAL,
-		SIM,
-		REPLAY
 	}
 }
