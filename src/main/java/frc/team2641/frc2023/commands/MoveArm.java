@@ -29,12 +29,23 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
     if (!arm.isAuto()) {
-      int shoulder = (int) this.shoulder.getEncoder()
-          + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis) * 10000);
-      int elbow = (int) this.elbow.getEncoder()
-          + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.ryAxis) * 10000);
-      int wrist = (int) this.wrist.getEncoder()
-          + (int) (Robot.robotContainer.operator.getRawAxis(Gamepad.rxAxis) * 5000);
+      int shoulderStick = (int) Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis);
+      int elbowStick = (int) Robot.robotContainer.operator.getRawAxis(3);
+      int wristStick = (int) Robot.robotContainer.operator.getRawAxis(4);
+
+      int shoulder = (int) this.shoulder.getEncoder();
+      int elbow = this.elbow.getEncoder();
+      int wrist = this.wrist.getEncoder();
+
+      if (Math.abs(shoulderStick) >= 0.05) shoulder = (int) this.shoulder.getEncoder()
+          + (int) (shoulderStick * 10000);
+      
+      if (Math.abs(elbowStick) >= 0.05) elbow = (int) this.elbow.getEncoder()
+          + (int) (elbowStick * 5000);
+      
+      if (Math.abs(wristStick) >= 0.05) wrist = (int) this.wrist.getEncoder()
+          + (int) (wristStick * 5000);
+      
       System.out.println("calculating... " + shoulder);
       arm.set(new ArmPosition(shoulder, elbow, wrist));
     }
