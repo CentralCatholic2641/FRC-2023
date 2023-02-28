@@ -1,7 +1,7 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023;
+package frc.team2641.resurgence2023;
 
 // import edu.wpi.first.cameraserver.CameraServer;
 import com.pathplanner.lib.server.PathPlannerServer;
@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.team2641.frc2023.subsystems.Arm;
-import frc.team2641.frc2023.subsystems.Drivetrain;
-import frc.team2641.frc2023.subsystems.Pneumatics;
-import frc.team2641.frc2023.telemetry.LogController;
-import frc.team2641.frc2023.telemetry.ShuffleboardController;
+import frc.team2641.resurgence2023.subsystems.Arm;
+import frc.team2641.resurgence2023.subsystems.Drivetrain;
+import frc.team2641.resurgence2023.subsystems.Pneumatics;
+import frc.team2641.resurgence2023.telemetry.LogController;
+import frc.team2641.resurgence2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
 
 public class Robot extends TimedRobot {
@@ -50,14 +50,28 @@ public class Robot extends TimedRobot {
     logController.start();
 
     PathPlannerServer.startServer(5811);
+
+    arm.resetEncoders();
   }
 
   @Override
   public void robotPeriodic() {
     if (robotContainer.driver.getRawButton(Gamepad.leftBumper)) {
-      robotContainer.driverShift = true;
+      robotContainer.driverTankShift = true;
     } else {
-      robotContainer.driverShift = false;
+      robotContainer.driverTankShift = false;
+    }
+
+    if (robotContainer.driver.getRawButton(Gamepad.rightBumper)) {
+      robotContainer.driverSlowShift = true;
+    } else {
+      robotContainer.driverSlowShift = false;
+    }
+
+    if (robotContainer.operator.getRawButton(Gamepad.leftBumper)) {
+      robotContainer.operatorShift = true;
+    } else {
+      robotContainer.operatorShift = false;
     }
 
     CommandScheduler.getInstance().run();

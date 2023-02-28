@@ -1,10 +1,10 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023;
+package frc.team2641.resurgence2023;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import frc.team2641.frc2023.helpers.ArmPosition;
+import frc.team2641.resurgence2023.helpers.ArmPosition;
 import frc.team2641.lib.PIDGains;
 
 public final class Constants {
@@ -31,9 +31,9 @@ public final class Constants {
 
 	public static final class Drive {
 		public static final double maxDrive = 0.65;
-		// public static final double maxDrive = 0.4;
+		public static final double slowDrive = 0.4;
 		public static final double maxSteer = 0.45;
-		// public static final double maxSteer = 0.45;
+		public static final double slowSteer = 0.4;
 		public static final double rampSpeed = 2;
 		// public static final double rampSpeed = 0;
 		public static final boolean brakes = true;

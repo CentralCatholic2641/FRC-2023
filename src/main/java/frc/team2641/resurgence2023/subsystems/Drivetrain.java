@@ -1,7 +1,7 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023.subsystems;
+package frc.team2641.resurgence2023.subsystems;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -12,12 +12,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team2641.frc2023.Constants;
-import frc.team2641.frc2023.auto.ArmSequences;
+import frc.team2641.resurgence2023.Constants;
 import java.util.HashMap;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -74,6 +73,9 @@ public class Drivetrain extends SubsystemBase {
       true,
       this);
 
+  private double driveLimit = Constants.Drive.maxDrive;
+  private double steerLimit = Constants.Drive.maxSteer;
+
   private Drivetrain() {
     init(leftMaster);
     init(leftSlave1);
@@ -94,12 +96,7 @@ public class Drivetrain extends SubsystemBase {
     rightSlave1.setInverted(InvertType.FollowMaster);
     rightSlave2.setInverted(InvertType.FollowMaster);
 
-    leftMaster.configOpenloopRamp(Constants.Drive.rampSpeed);
-    leftSlave1.configOpenloopRamp(Constants.Drive.rampSpeed);
-    leftSlave2.configOpenloopRamp(Constants.Drive.rampSpeed);
-    rightMaster.configOpenloopRamp(Constants.Drive.rampSpeed);
-    rightSlave1.configOpenloopRamp(Constants.Drive.rampSpeed);
-    rightSlave2.configOpenloopRamp(Constants.Drive.rampSpeed);
+    configRamps(Constants.Drive.rampSpeed);
 
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
@@ -113,8 +110,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDrive(double speed, double rotation) {
-    drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(speed * Constants.Drive.maxDrive),
-        Constants.Drive.rotationRateLimiter.calculate(-rotation * Constants.Drive.maxSteer), true);
+    drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(speed * driveLimit),
+        Constants.Drive.rotationRateLimiter.calculate(-rotation * steerLimit), true);
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
@@ -122,8 +119,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tDrive(double left, double right) {
-    drive.tankDrive(Constants.Drive.driveRateLimiter.calculate(left * Constants.Drive.maxDrive),
-        Constants.Drive.driveRateLimiter.calculate(right * Constants.Drive.maxDrive), true);
+    drive.tankDrive(Constants.Drive.driveRateLimiter.calculate(left * driveLimit),
+        Constants.Drive.driveRateLimiter.calculate(right * steerLimit), true);
   }
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
@@ -145,6 +142,23 @@ public class Drivetrain extends SubsystemBase {
     rightMaster.setNeutralMode(input);
     rightSlave1.setNeutralMode(input);
     rightSlave2.setNeutralMode(input);
+  }
+
+  public void configRamps(double rampSpeed) {
+    leftMaster.configOpenloopRamp(rampSpeed);
+    leftSlave1.configOpenloopRamp(rampSpeed);
+    leftSlave2.configOpenloopRamp(rampSpeed);
+    rightMaster.configOpenloopRamp(rampSpeed);
+    rightSlave1.configOpenloopRamp(rampSpeed);
+    rightSlave2.configOpenloopRamp(rampSpeed);
+  }
+
+  public void configDriveLimit(double driveLimit) {
+    this.driveLimit = driveLimit;
+  }
+
+  public void configSteerLimit(double steerLimit) {
+    this.steerLimit = steerLimit;
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -206,7 +220,7 @@ public class Drivetrain extends SubsystemBase {
   private void init(WPI_TalonFX talon) {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
-    talon.setNeutralMode(NeutralMode.Brake);
+    talon.setNeutralMode(Constants.Drive.brakes ? NeutralMode.Brake : NeutralMode.Coast);
     talon.configAllSettings(toApply);
     talon.setSelectedSensorPosition(0);
   }
@@ -219,19 +233,17 @@ public class Drivetrain extends SubsystemBase {
     PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
-    if (reset) {
+    configRamps(0);
+    if (reset)
       resetPose(traj.getInitialPose());
-      pathFollower.resetPose(traj);
-    }
-    return pathFollower.fullAuto(traj);
+    return pathFollower.fullAuto(traj).andThen(new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
   }
 
   public Command followTrajectoryCommand(PathPlannerTrajectory trajectory, boolean reset) {
-    if (reset) {
+    configRamps(0);
+    if (reset)
       resetPose(trajectory.getInitialPose());
-      pathFollower.resetPose(trajectory);
-    }
-    return pathFollower.fullAuto(trajectory);
+    return pathFollower.fullAuto(trajectory).andThen(new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
   }
 
   @Override

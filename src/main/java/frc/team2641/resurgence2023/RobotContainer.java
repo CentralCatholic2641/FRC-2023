@@ -1,22 +1,18 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023;
+package frc.team2641.resurgence2023;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.team2641.frc2023.auto.AutoBalance;
-import frc.team2641.frc2023.auto.ArmSequences;
-import frc.team2641.frc2023.commands.*;
-import frc.team2641.frc2023.subsystems.*;
+import frc.team2641.resurgence2023.auto.ArmSequences;
+import frc.team2641.resurgence2023.commands.*;
+import frc.team2641.resurgence2023.subsystems.*;
 import frc.team2641.lib.control.Gamepad;
 
 public class RobotContainer {
 	private Drivetrain drivetrain = Drivetrain.getInstance();
 	private Arm arm = Arm.getInstance();
-	// private Shoulder shoulder = Shoulder.getInstance();
-	// private Elbow elbow = Elbow.getInstance();
-	// private Wrist wrist = Wrist.getInstance();
 
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
 
@@ -28,27 +24,25 @@ public class RobotContainer {
 
 	public Joystick joystick = new Joystick(Constants.Controllers.joystick);
 
-	public boolean controllerShift = false;
-	public boolean driverShift = false;
+	public boolean driverTankShift = false;
+	public boolean driverSlowShift = false;
+	public boolean operatorShift = false;
 
 	public RobotContainer() {
 		configureButtonBindings();
 		drivetrain.setDefaultCommand(new Drive());
 		arm.setDefaultCommand(new MoveArm());
-		// shoulder.setDefaultCommand(new MoveShoulder());
-		// elbow.setDefaultCommand(new MoveElbow());
-		// wrist.setDefaultCommand(new MoveWrist());
 	}
 
 	private void configureButtonBindings() {
 		operator.aButton().toggleOnTrue(new ToggleClaw());
 		operator.leftBumper().onTrue(new ResetEncoders());
 		// operatorTopRow.onTrue(new SetArm(Constants.Arm.Positions.topRow));
-		operatorTopRow.onTrue(ArmSequences.ScoreTopButDontScore());
+		operatorTopRow.onTrue(ArmSequences.MoveToScoreTop());
 		// operatorMiddleRow.onTrue(ArmSequences.ScoreMid());
-		operatorMiddleRow.onTrue(new SetArm(Constants.Arm.Positions.middleRow));
-		operatorStow.onTrue(new SetArm(Constants.Arm.Positions.start));
-		operatorIntake.onTrue(new SetArm(Constants.Arm.Positions.intake));
-		operator.xButton().onTrue(new FlipSide());
+		operatorMiddleRow.onTrue(ArmSequences.MoveToScoreMid());
+		operatorStow.onTrue(ArmSequences.Stow());
+		operatorIntake.onTrue(ArmSequences.Intake());
+		// operator.xButton().onTrue(new FlipSide());
 	}
 }

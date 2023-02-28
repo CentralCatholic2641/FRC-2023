@@ -1,13 +1,13 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023.subsystems;
+package frc.team2641.resurgence2023.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team2641.frc2023.Constants;
+import frc.team2641.resurgence2023.Constants;
 
 public class Elbow extends SubsystemBase {
   private static Elbow instance = null;

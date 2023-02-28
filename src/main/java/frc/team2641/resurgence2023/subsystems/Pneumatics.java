@@ -1,11 +1,11 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023.subsystems;
+package frc.team2641.resurgence2023.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team2641.frc2023.Robot;
+import frc.team2641.resurgence2023.Robot;
 
 public class Pneumatics extends SubsystemBase {
   private static Pneumatics instance = null;

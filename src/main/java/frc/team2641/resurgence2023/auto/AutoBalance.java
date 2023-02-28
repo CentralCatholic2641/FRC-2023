@@ -1,10 +1,10 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023.auto;
+package frc.team2641.resurgence2023.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.team2641.frc2023.subsystems.Drivetrain;
+import frc.team2641.resurgence2023.subsystems.Drivetrain;
 
 public class AutoBalance extends CommandBase {
   private Drivetrain drivetrain = Drivetrain.getInstance();

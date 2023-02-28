@@ -1,7 +1,7 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023.telemetry;
+package frc.team2641.resurgence2023.telemetry;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.team2641.frc2023.auto.*;
+import frc.team2641.resurgence2023.auto.*;
 
 public class ShuffleboardController {
   public ShuffleboardTab preMatchTab = Shuffleboard.getTab("Pre-Match");

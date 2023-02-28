@@ -1,4 +1,13 @@
 {
+  "HALProvider": {
+    "PowerDistributions": {
+      "20": {
+        "PowerDistribution[20]": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",

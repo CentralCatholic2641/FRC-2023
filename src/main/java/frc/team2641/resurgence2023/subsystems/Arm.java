@@ -1,11 +1,12 @@
 // Copyright (c) 2023 FRC Team 2641
 // Use of this source code is governed by the MIT license
 
-package frc.team2641.frc2023.subsystems;
+package frc.team2641.resurgence2023.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team2641.frc2023.Constants;
-import frc.team2641.frc2023.helpers.ArmPosition;
+import frc.team2641.resurgence2023.Constants;
+import frc.team2641.resurgence2023.helpers.ArmPosition;
 
 public class Arm extends SubsystemBase {
   private static Arm instance = null;
@@ -56,6 +57,12 @@ public class Arm extends SubsystemBase {
     set(Constants.Arm.Positions.start);
   }
 
+  public void resetEncoders() {
+    shoulder.setEncoder(0);
+    elbow.setEncoder(0);
+    wrist.setEncoder(0);
+  }
+
   public void flipSide() {
     // setAuto(true);
     this.side = this.side * -1;
@@ -72,6 +79,8 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println("shoulder: " + shoulder.getEncoder() + " elbow: " + elbow.getEncoder() + " wrist: " + wrist.getEncoder());
+    SmartDashboard.putNumber("Shoulder", shoulder.getEncoder());
+    SmartDashboard.putNumber("Elbow", elbow.getEncoder());
+    SmartDashboard.putNumber("Wrist", wrist.getEncoder());
   }
 }
