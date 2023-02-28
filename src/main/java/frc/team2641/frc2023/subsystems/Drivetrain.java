@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.frc2023.Constants;
 import frc.team2641.frc2023.auto.ArmSequences;
 import java.util.HashMap;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -111,12 +113,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDrive(double speed, double rotation) {
-    drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(-speed * Constants.Drive.maxDrive),
+    drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(speed * Constants.Drive.maxDrive),
         Constants.Drive.rotationRateLimiter.calculate(-rotation * Constants.Drive.maxSteer), true);
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
-    drive.arcadeDrive(-speed, -rotation, true);
+    drive.arcadeDrive(speed, -rotation, true);
   }
 
   public void tDrive(double left, double right) {
@@ -125,8 +127,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
-    leftMaster.setVoltage(-leftVolts);
-    rightMaster.setVoltage(-rightVolts);
+    leftMaster.set(ControlMode.PercentOutput, leftVolts / 110);
+    rightMaster.set(ControlMode.PercentOutput, rightVolts / 110);
     drive.feed();
   }
 
@@ -204,7 +206,7 @@ public class Drivetrain extends SubsystemBase {
   private void init(WPI_TalonFX talon) {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
-    talon.setNeutralMode(NeutralMode.Coast);
+    talon.setNeutralMode(NeutralMode.Brake);
     talon.configAllSettings(toApply);
     talon.setSelectedSensorPosition(0);
   }

@@ -38,6 +38,13 @@ public class ArmSequences {
 						new SetArm(Constants.Arm.Positions.start)));
 	}
 
+	public static Command ScoreTopButDontScore() {
+		return Commands.sequence(
+				new SetArm(Constants.Arm.Positions.topRowStart),
+				new SetArm(Constants.Arm.Positions.topRow)
+		);
+	}
+
 	public static Command ScoreMid() {
 		return Commands.sequence(
 				new SetArm(Constants.Arm.Positions.middleRow),

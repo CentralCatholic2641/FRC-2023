@@ -29,9 +29,9 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
     if (!arm.isAuto()) {
-      int shoulderStick = (int) Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis);
-      int elbowStick = (int) Robot.robotContainer.operator.getRawAxis(3);
-      int wristStick = (int) Robot.robotContainer.operator.getRawAxis(4);
+      double shoulderStick = Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis);
+      double elbowStick = Robot.robotContainer.operator.getRawAxis(4);
+      double wristStick = Robot.robotContainer.operator.getRawAxis(3);
 
       int shoulder = (int) this.shoulder.getEncoder();
       int elbow = this.elbow.getEncoder();
@@ -46,7 +46,6 @@ public class MoveArm extends CommandBase {
       if (Math.abs(wristStick) >= 0.05) wrist = (int) this.wrist.getEncoder()
           + (int) (wristStick * 5000);
       
-      System.out.println("calculating... " + shoulder);
       arm.set(new ArmPosition(shoulder, elbow, wrist));
     }
   }
