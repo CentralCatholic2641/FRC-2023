@@ -34,21 +34,44 @@ public class ShuffleboardController {
     SmartDashboard.putData(field);
 
     // Pre-match
-    // autoChooser.setDefaultOption("Default",
-    // AutoSequences.ScoreConeThenBalance());
-    autoChooser.setDefaultOption("Default", AutoSequences.ScorePreloadThenPickupAndScoreTopPrestaged());
+    autoChooser.setDefaultOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
+        AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
+    autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
+        AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
+    autoChooser.addOption("TOP - Score Preload, Mobility",
+        AutoSequences.ScorePreload("top"));
+    autoChooser.addOption("TOP - Mobility Only",
+        AutoSequences.Mobility("top"));
+
+    autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
+        AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("mid"));
+    autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone",
+        AutoSequences.ScorePreloadCubePickupScorePrestagedCone("mid"));
+    autoChooser.addOption("MID - Score Preload, Mobility",
+        AutoSequences.ScorePreload("mid"));
+    autoChooser.addOption("MID - Mobility Only",
+        AutoSequences.Mobility("mid"));
+
+    autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone, Dock",
+        AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("bot"));
+    autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone",
+        AutoSequences.ScorePreloadCubePickupScorePrestagedCone("bot"));
+    autoChooser.addOption("BOT - Score Preload, Mobility",
+        AutoSequences.ScorePreload("bot"));
+    autoChooser.addOption("BOT - Mobility Only",
+        AutoSequences.Mobility("bot"));
 
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
-    preMatchTab.addCamera("Camera", "Camera", "/dev/video0");
-
-    // Test
-    // testTab.add("Test", new TestCommand()).withSize(2, 1);
+    preMatchTab.addCamera("Front", "Front", "/dev/video0");
+    preMatchTab.addCamera("Back", "Back", "/dev/video1");
 
     // Autonomous
-    autoTab.addCamera("Camera", "Camera", "/dev/video0").withPosition(0, 0).withSize(5, 5);
+    autoTab.addCamera("Front", "Front", "/dev/video0");
+    autoTab.addCamera("Back", "Back", "/dev/video1");
 
     // Teleop
-    teleopTab.addCamera("Camera", "Camera", "/dev/video0").withPosition(0, 0).withSize(5, 5);
+    teleopTab.addCamera("Front", "Front", "/dev/video0");
+    teleopTab.addCamera("Back", "Back", "/dev/video1");
   }
 
   public Command getAutonomousCommand() {

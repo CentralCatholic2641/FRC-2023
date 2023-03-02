@@ -12,7 +12,7 @@ import frc.team2641.lib.control.Buttons.Gamepad;
 public class Drive extends CommandBase {
   private Drivetrain drivetrain;
 
-  private boolean prevDriverTankShift = false;
+  // private boolean prevDriverTankShift = false;
   private boolean prevDriverSlowShift = false;
 
   public Drive() {
@@ -30,25 +30,26 @@ public class Drive extends CommandBase {
       double left = Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis);
       double right = Robot.robotContainer.driver.getRawAxis(Gamepad.ryAxis);
       drivetrain.tDrive(-left, right);
-      prevDriverTankShift = true;
+      // prevDriverTankShift = true;
     } else {
       double drive = Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis);
       double rotation = Robot.robotContainer.driver.getRawAxis(Gamepad.rxAxis);
       drivetrain.aDrive(drive, rotation);
-      prevDriverTankShift = false;
+      // prevDriverTankShift = false;
     }
 
-    if (Robot.robotContainer.driverSlowShift != prevDriverSlowShift && Robot.robotContainer.driverSlowShift) {
-      drivetrain.configBrakes(true);
-      drivetrain.configRamps(0);
-      drivetrain.configDriveLimit(Constants.Drive.slowDrive);
-      drivetrain.configSteerLimit(Constants.Drive.slowSteer);
-      prevDriverSlowShift = Robot.robotContainer.driverSlowShift;
-    } else if (Robot.robotContainer.driverSlowShift != prevDriverSlowShift && !Robot.robotContainer.driverSlowShift) {
-      drivetrain.configBrakes(true);
-      drivetrain.configRamps(Constants.Drive.rampSpeed);
-      drivetrain.configDriveLimit(Constants.Drive.maxDrive);
-      drivetrain.configSteerLimit(Constants.Drive.maxSteer);
+    if (Robot.robotContainer.driverSlowShift != prevDriverSlowShift) {
+      if (Robot.robotContainer.driverSlowShift) {
+        drivetrain.configBrakes(true);
+        drivetrain.configRamps(0);
+        drivetrain.configDriveLimit(Constants.Drive.slowDrive);
+        drivetrain.configSteerLimit(Constants.Drive.slowSteer);
+      } else {
+        drivetrain.configBrakes(true);
+        drivetrain.configRamps(Constants.Drive.rampSpeed);
+        drivetrain.configDriveLimit(Constants.Drive.maxDrive);
+        drivetrain.configSteerLimit(Constants.Drive.maxSteer);
+      }
       prevDriverSlowShift = Robot.robotContainer.driverSlowShift;
     }
   }

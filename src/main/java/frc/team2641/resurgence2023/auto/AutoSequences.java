@@ -3,29 +3,22 @@
 
 package frc.team2641.resurgence2023.auto;
 
-import com.pathplanner.lib.PathPoint;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.team2641.resurgence2023.Constants;
-import frc.team2641.resurgence2023.commands.SetArm;
-import frc.team2641.resurgence2023.subsystems.Claw;
 
 public class AutoSequences {
-	private static Claw claw = Claw.getInstance();
-
-	public static Command ScoreConeThenBalance() {
-		return Commands.sequence(
-				Commands.parallel(new SetArm(Constants.Arm.Positions.topRow), FollowPath.get("Right Grid Left Cone", true)),
-				new InstantCommand(() -> claw.release(), claw),
-				Commands.parallel(new SetArm(Constants.Arm.Positions.start),
-						FollowPath.goTo(new PathPoint(new Translation2d(2.4, 2.7), Rotation2d.fromDegrees(0)))),
-				new AutoBalance());
+	public static Command ScorePreloadCubePickupScorePrestagedConeDock(String start) {
+		return FollowPath.get(start + "_Score Preload Score Prestaged Dock", true);
 	}
 
-	public static Command ScorePreloadThenPickupAndScoreTopPrestaged() {
-		return FollowPath.get("Score Preload Score Top Prestaged", true);
+	public static Command ScorePreloadCubePickupScorePrestagedCone(String start) {
+		return FollowPath.get(start + "_Score Preload Score Prestaged", true);
+	}
+
+	public static Command ScorePreload(String start) {
+		return FollowPath.get(start + "_Score Preload", true);
+	}
+
+	public static Command Mobility(String start) {
+		return FollowPath.get(start + "_Mobility", true);
 	}
 }
