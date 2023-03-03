@@ -34,32 +34,36 @@ public class ShuffleboardController {
     SmartDashboard.putData(field);
 
     // Pre-match
-    autoChooser.setDefaultOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
-        AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
-    autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
-        AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
+    autoChooser.addOption("No Auto", AutoSequences.NoAuto());
+
+    autoChooser.addOption("Just Score Top", ArmSequences.ScoreTop());
+
+    // autoChooser.setDefaultOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
+    //     AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
+    // autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
+    //     AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
     autoChooser.addOption("TOP - Score Preload, Mobility",
         AutoSequences.ScorePreload("top"));
-    autoChooser.addOption("TOP - Mobility Only",
-        AutoSequences.Mobility("top"));
+    // autoChooser.addOption("TOP - Mobility Only",
+    //     AutoSequences.Mobility("top"));
 
-    autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
-        AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("mid"));
-    autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone",
-        AutoSequences.ScorePreloadCubePickupScorePrestagedCone("mid"));
+    // autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
+    //     AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("mid"));
+    // autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone",
+    //     AutoSequences.ScorePreloadCubePickupScorePrestagedCone("mid"));
     autoChooser.addOption("MID - Score Preload, Mobility",
         AutoSequences.ScorePreload("mid"));
-    autoChooser.addOption("MID - Mobility Only",
-        AutoSequences.Mobility("mid"));
+    // autoChooser.addOption("MID - Mobility Only",
+    //     AutoSequences.Mobility("mid"));
 
-    autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone, Dock",
-        AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("bot"));
-    autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone",
-        AutoSequences.ScorePreloadCubePickupScorePrestagedCone("bot"));
+    // autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone, Dock",
+    //     AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("bot"));
+    // autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone",
+    //     AutoSequences.ScorePreloadCubePickupScorePrestagedCone("bot"));
     autoChooser.addOption("BOT - Score Preload, Mobility",
         AutoSequences.ScorePreload("bot"));
-    autoChooser.addOption("BOT - Mobility Only",
-        AutoSequences.Mobility("bot"));
+    // autoChooser.addOption("BOT - Mobility Only",
+    //     AutoSequences.Mobility("bot"));
 
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
     preMatchTab.addCamera("Front", "Front", "/dev/video0");

@@ -12,10 +12,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
+import frc.team2641.resurgence2023.auto.ArmSequences;
 import java.util.HashMap;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -96,17 +97,18 @@ public class Drivetrain extends SubsystemBase {
     rightSlave1.setInverted(InvertType.FollowMaster);
     rightSlave2.setInverted(InvertType.FollowMaster);
 
-    configRamps(Constants.Drive.rampSpeed);
-
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
 
     ahrs.enableLogging(true);
 
-    // pathEventMap.put("intake", ArmSequences.Intake());
-    // pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
-    pathEventMap.put("intake", new PrintCommand("intake"));
-    pathEventMap.put("scoreTop", new PrintCommand("scoreTop"));
+    pathEventMap.put("intake", ArmSequences.Intake());
+    pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
+
+    configBrakes(Constants.Drive.brakes);
+    configRamps(Constants.Drive.rampSpeed);
+    configDriveLimit(Constants.Drive.maxDrive);
+    configSteerLimit(Constants.Drive.maxSteer);
   }
 
   public void aDrive(double speed, double rotation) {
@@ -124,9 +126,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tDriveVolts(double leftVolts, double rightVolts) {
-    leftMaster.set(ControlMode.PercentOutput, leftVolts / 110);
-    rightMaster.set(ControlMode.PercentOutput, rightVolts / 110);
+    leftMaster.set(ControlMode.PercentOutput, -leftVolts / 110);
+    rightMaster.set(ControlMode.PercentOutput, -rightVolts / 110);
     drive.feed();
+
+    System.out.println("left: " + (-leftVolts) + " right: " + (-rightVolts));
   }
 
   public void configBrakes(boolean brakesOn) {
@@ -151,6 +155,13 @@ public class Drivetrain extends SubsystemBase {
     rightMaster.configOpenloopRamp(rampSpeed);
     rightSlave1.configOpenloopRamp(rampSpeed);
     rightSlave2.configOpenloopRamp(rampSpeed);
+    leftMaster.configClosedloopRamp(rampSpeed);
+    leftSlave1.configClosedloopRamp(rampSpeed);
+    leftSlave2.configClosedloopRamp(rampSpeed);
+    rightMaster.configClosedloopRamp(rampSpeed);
+    rightSlave1.configClosedloopRamp(rampSpeed);
+    rightSlave2.configClosedloopRamp(rampSpeed);
+
   }
 
   public void configDriveLimit(double driveLimit) {
@@ -233,17 +244,27 @@ public class Drivetrain extends SubsystemBase {
     PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
-    configRamps(0);
-    if (reset)
-      resetPose(traj.getInitialPose());
-    return pathFollower.fullAuto(traj).andThen(new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
+    return Commands.sequence(
+      new InstantCommand(() -> configRamps(0)),
+      new InstantCommand(() -> {
+        if (reset)
+          resetPose(traj.getInitialPose());
+      }),
+      pathFollower.fullAuto(traj),
+      new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed))
+    );
   }
 
   public Command followTrajectoryCommand(PathPlannerTrajectory trajectory, boolean reset) {
-    configRamps(0);
-    if (reset)
-      resetPose(trajectory.getInitialPose());
-    return pathFollower.fullAuto(trajectory).andThen(new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
+    return Commands.sequence(
+      new InstantCommand(() -> configRamps(0)),
+      new InstantCommand(() -> {
+        if (reset)
+          resetPose(trajectory.getInitialPose());
+      }),
+      pathFollower.fullAuto(trajectory),
+      new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed))
+    );
   }
 
   @Override

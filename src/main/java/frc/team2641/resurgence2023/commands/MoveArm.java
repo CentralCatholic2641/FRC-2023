@@ -30,8 +30,8 @@ public class MoveArm extends CommandBase {
   public void execute() {
     if (!arm.isAuto()) {
       double shoulderStick = Robot.robotContainer.operator.getRawAxis(Gamepad.lyAxis);
-      double elbowStick = Robot.robotContainer.operator.getRawAxis(4);
-      double wristStick = Robot.robotContainer.operator.getRawAxis(3);
+      double elbowStick = Robot.robotContainer.operator.getRawAxis(5);
+      double wristStick = Robot.robotContainer.operator.getRawAxis(4);
 
       int shoulder = (int) this.shoulder.getEncoder();
       int elbow = this.elbow.getEncoder();
@@ -43,7 +43,7 @@ public class MoveArm extends CommandBase {
 
       if (Math.abs(elbowStick) >= 0.05)
         elbow = (int) this.elbow.getEncoder()
-            + (int) (elbowStick * 5000);
+            + (int) (elbowStick * 7500);
 
       if (Math.abs(wristStick) >= 0.05)
         wrist = (int) this.wrist.getEncoder()

@@ -56,4 +56,25 @@ public class ArmSequences {
 	public static Command MoveToScoreMid() {
 		return new SetArm(Constants.Arm.Positions.middleRow);
 	}
+
+	public static Command MoveToScoreBot() {
+		return new SetArm(Constants.Arm.Positions.bottomRow);
+	}
+
+	public static Command ScoreBot() {
+		return Commands.sequence(
+				new SetArm(Constants.Arm.Positions.bottomRow),
+				new InstantCommand(() -> claw.release(), claw),
+				new Wait(0.1),
+				Commands.parallel(
+						Commands.sequence(
+								new Wait(0.25),
+								new InstantCommand(() -> claw.clamp(), claw)),
+						new SetArm(Constants.Arm.Positions.start)));
+	}
+
+	public static Command MoveToSingle() {
+		return new SetArm(Constants.Arm.Positions.singleSubstation);
+	}
+
 }

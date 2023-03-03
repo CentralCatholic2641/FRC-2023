@@ -17,10 +17,11 @@ public class RobotContainer {
 	public Gamepad driver = new Gamepad(Constants.Controllers.driver);
 
 	public Gamepad operator = new Gamepad(Constants.Controllers.operator);
-	public POVButton operatorTopRow = new POVButton(operator, 270);
-	public POVButton operatorMiddleRow = new POVButton(operator, 90);
 	public POVButton operatorIntake = new POVButton(operator, 0);
-	public POVButton operatorStow = new POVButton(operator, 180);
+	public POVButton operatorBotRow = new POVButton(operator, 90);
+	public POVButton operatorMidRow = new POVButton(operator, 180);
+	public POVButton operatorTopRow = new POVButton(operator, 270);
+	// public POVButton operatorStow = new POVButton(operator, 180);
 
 	public Joystick joystick = new Joystick(Constants.Controllers.joystick);
 
@@ -37,12 +38,14 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		operator.aButton().toggleOnTrue(new ToggleClaw());
 		operator.leftBumper().onTrue(new ResetEncoders());
-		// operatorTopRow.onTrue(new SetArm(Constants.Arm.Positions.topRow));
-		operatorTopRow.onTrue(ArmSequences.MoveToScoreTop());
-		// operatorMiddleRow.onTrue(ArmSequences.ScoreMid());
-		operatorMiddleRow.onTrue(ArmSequences.MoveToScoreMid());
-		operatorStow.onTrue(ArmSequences.Stow());
+
 		operatorIntake.onTrue(ArmSequences.Intake());
-		// operator.xButton().onTrue(new FlipSide());
+		operatorBotRow.onTrue(ArmSequences.MoveToScoreBot());
+		operatorMidRow.onTrue(ArmSequences.MoveToScoreMid());
+		operatorTopRow.onTrue(ArmSequences.MoveToScoreTop());
+		// operatorStow.onTrue(ArmSequences.Stow());
+
+		operator.yButton().onTrue(ArmSequences.MoveToSingle());
+		operator.bButton().onTrue(ArmSequences.Stow());
 	}
 }

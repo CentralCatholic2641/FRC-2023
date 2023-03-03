@@ -79,8 +79,9 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Shoulder", shoulder.getEncoder());
-    SmartDashboard.putNumber("Elbow", elbow.getEncoder());
-    SmartDashboard.putNumber("Wrist", wrist.getEncoder());
+    // SmartDashboard.putNumber("Shoulder", shoulder.getEncoder());
+    // SmartDashboard.putNumber("Elbow", elbow.getEncoder());
+    // SmartDashboard.putNumber("Wrist", wrist.getEncoder());
+    System.out.println("shoulder: " + shoulder.getEncoder() + " elbow: " + elbow.getEncoder() + " wrist: " + wrist.getEncoder());
   }
 }

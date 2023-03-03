@@ -45,7 +45,7 @@ public class Drive extends CommandBase {
         drivetrain.configDriveLimit(Constants.Drive.slowDrive);
         drivetrain.configSteerLimit(Constants.Drive.slowSteer);
       } else {
-        drivetrain.configBrakes(true);
+        drivetrain.configBrakes(Constants.Drive.brakes);
         drivetrain.configRamps(Constants.Drive.rampSpeed);
         drivetrain.configDriveLimit(Constants.Drive.maxDrive);
         drivetrain.configSteerLimit(Constants.Drive.maxSteer);

@@ -4,6 +4,7 @@
 package frc.team2641.resurgence2023.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,6 +41,8 @@ public class Wrist extends SubsystemBase {
     wrist.config_kI(0, Constants.Arm.wristGains.kI, 30);
     wrist.config_kD(0, Constants.Arm.wristGains.kD, 30);
     wrist.config_kF(0, Constants.Arm.wristGains.kF, 30);
+
+    wrist.setNeutralMode(NeutralMode.Brake);
   }
 
   public void set(double value) {
