@@ -46,6 +46,8 @@ public class RobotContainer {
 		// operatorStow.onTrue(ArmSequences.Stow());
 
 		operator.yButton().onTrue(ArmSequences.MoveToSingle());
+		operator.start().onTrue(ArmSequences.MoveToDouble());
 		operator.bButton().onTrue(ArmSequences.Stow());
+		operator.xButton().onTrue(new FlipSide());
 	}
 }

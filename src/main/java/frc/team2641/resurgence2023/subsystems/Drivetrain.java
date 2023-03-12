@@ -125,12 +125,12 @@ public class Drivetrain extends SubsystemBase {
         Constants.Drive.driveRateLimiter.calculate(right * steerLimit), true);
   }
 
-  public void tDriveVolts(double leftVolts, double rightVolts) {
-    leftMaster.set(ControlMode.PercentOutput, -leftVolts / 110);
-    rightMaster.set(ControlMode.PercentOutput, -rightVolts / 110);
+  public void tDriveVolts(double rightVolts, double leftVolts) {
+    leftMaster.set(ControlMode.PercentOutput, -leftVolts / 12);
+    rightMaster.set(ControlMode.PercentOutput, -rightVolts / 12);
     drive.feed();
 
-    System.out.println("left: " + (-leftVolts) + " right: " + (-rightVolts));
+    System.out.println("left: " + (-leftVolts / 12) + " right: " + (-rightVolts / 12));
   }
 
   public void configBrakes(boolean brakesOn) {
@@ -161,7 +161,6 @@ public class Drivetrain extends SubsystemBase {
     rightMaster.configClosedloopRamp(rampSpeed);
     rightSlave1.configClosedloopRamp(rampSpeed);
     rightSlave2.configClosedloopRamp(rampSpeed);
-
   }
 
   public void configDriveLimit(double driveLimit) {
@@ -197,12 +196,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoder() {
-    double value = leftMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
+    double value = -leftMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
     return value;
   }
 
   public double getRightEncoder() {
-    double value = rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
+    double value = -rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
     return value;
   }
 
@@ -212,7 +211,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Rotation2d getAngle() {
-    return ahrs.getRotation2d();
+    return ahrs.getRotation2d().rotateBy(Rotation2d.fromDegrees(180));
   }
 
   public double getPitch() {

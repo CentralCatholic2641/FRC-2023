@@ -3,7 +3,7 @@
 
 package frc.team2641.resurgence2023;
 
-// import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cameraserver.CameraServer;
 import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -16,6 +16,8 @@ import frc.team2641.resurgence2023.subsystems.Pneumatics;
 import frc.team2641.resurgence2023.telemetry.LogController;
 import frc.team2641.resurgence2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
+import frc.team2641.lib.limelight.Limelight;
+import frc.team2641.lib.limelight.ControlMode.CamMode;
 
 public class Robot extends TimedRobot {
   Command autoCommand;
@@ -29,6 +31,7 @@ public class Robot extends TimedRobot {
 
   private LogController logController;
   private ShuffleboardController shuffleboardController;
+  private Limelight limelight;
 
   public static RobotContainer robotContainer;
 
@@ -40,11 +43,14 @@ public class Robot extends TimedRobot {
     drivetrain = Drivetrain.getInstance();
     arm = Arm.getInstance();
     pneumatics = Pneumatics.getInstance();
-
+    
     logController = LogController.getInstance();
     shuffleboardController = ShuffleboardController.getInstance();
+    limelight = Limelight.getInstance();
 
-    // CameraServer.startAutomaticCapture("Camera", "/dev/video0");
+    // CameraServer.startAutomaticCapture(0);
+    // CameraServer.startAutomaticCapture(1);
+    // CameraServer.startAutomaticCapture(2);
 
     robotContainer = new RobotContainer();
     logController.start();
@@ -52,6 +58,8 @@ public class Robot extends TimedRobot {
     PathPlannerServer.startServer(5811);
 
     arm.resetEncoders();
+
+    limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override
@@ -89,14 +97,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    arm.reset();
-
     autoCommand = shuffleboardController.getAutonomousCommand();
 
     if (autoCommand != null)
       autoCommand.schedule();
 
     pneumatics.enable();
+
+    limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override
@@ -106,13 +114,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    arm.reset();
-
     if (autoCommand != null)
       autoCommand.cancel();
     drivetrain.resetEncoders();
 
     pneumatics.enable();
+
+    limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override

@@ -35,17 +35,16 @@ public final class Constants {
 		public static final double maxSteer = 0.45;
 		public static final double slowSteer = 0.4;
 		public static final double rampSpeed = 2;
-		// public static final double rampSpeed = 0;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
 		public static final double wheelDiameter = 0.1524;
-		public static final double wheelCircumference = 2 * Math.PI * (wheelDiameter / 2);
+		public static final double wheelCircumference = Math.PI * wheelDiameter;
 		public static final double encoderToMeters = (double) oneRotation / gearRatio * 32 / wheelCircumference;
-		public static final double ksVolts = 0.5;
-		public static final double kvVoltSecondsPerMeter = 0.35;
-		public static final double kaVoltSecondsSquaredPerMeter = 0.15;
-		public static final double kPDriveVel = 0.06;
+		public static final double ksVolts = -0.23046;
+		public static final double kvVoltSecondsPerMeter = 0.34579;
+		public static final double kaVoltSecondsSquaredPerMeter = 0.72742;
+		public static final double kPDriveVel = 0.50144;
 		public static final double kTrackwidthMeters = 0.5588;
 		public static final double kMaxSpeedMetersPerSecond = 2;
 		public static final double kMaxAccelerationMetersPerSecondSquared = 2;
@@ -69,19 +68,19 @@ public final class Constants {
 			public static final ArmPosition start = new ArmPosition(0, 0, 0);
 			public static final ArmPosition intake = new ArmPosition(-38000, -132620, 0);
 			public static final ArmPosition bottomRow = new ArmPosition(38000, 132620, 10000);
-			public static final ArmPosition middleRow = new ArmPosition(73000, 80000, 10000);
+			public static final ArmPosition middleRow = new ArmPosition(80000, 85000, 10000);
 			public static final ArmPosition topRowStart = new ArmPosition(70000, 0, 0);
 			public static final ArmPosition topRow = new ArmPosition(152500, 160000, 10000);
 			public static final ArmPosition singleSubstation = new ArmPosition(-80000, -88000, 0);
-			public static final ArmPosition doubleSubstation = new ArmPosition(0, 0, 0);
+			public static final ArmPosition doubleSubstation = new ArmPosition(-135000, -147000, 0);
 		}
 
 		public static final PIDGains shoulderGains = new PIDGains(0.05, 0, 0, 0, 0.4, 1000);
 		public static final PIDGains elbowGains = new PIDGains(0.05, 0, 0, 0, 0.5, 500);
-		public static final PIDGains wristGains = new PIDGains(0.125, 0, 0, 0, 0.2, 50);
+		public static final PIDGains wristGains = new PIDGains(0.1, 0, 0, 0, 0.2, 50);
 
 		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4.5);
 		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(10);
 		public static final SlewRateLimiter wristRateLimiter = new SlewRateLimiter(6);
 	}
-}
+} 

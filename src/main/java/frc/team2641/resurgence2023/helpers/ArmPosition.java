@@ -13,4 +13,8 @@ public class ArmPosition {
     this.elbow = elbow;
     this.wrist = wrist;
   }
+
+  public String toString() {
+    return "shoulder: " + shoulder + " elbow: " + elbow + " wrist: " + wrist;
+  }
 }

@@ -77,4 +77,7 @@ public class ArmSequences {
 		return new SetArm(Constants.Arm.Positions.singleSubstation);
 	}
 
+	public static Command MoveToDouble() {
+		return new SetArm(Constants.Arm.Positions.doubleSubstation);
+	}
 }
