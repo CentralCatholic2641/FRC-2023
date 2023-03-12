@@ -3,7 +3,6 @@
 
 package frc.team2641.resurgence2023.subsystems;
 
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.helpers.ArmPosition;
@@ -45,9 +44,11 @@ public class Arm extends SubsystemBase {
     if (shoulder.getEncoder() > side * position.shoulder + side * 6000
         || shoulder.getEncoder() < side * position.shoulder - side * 6000)
       value = false;
-    if (elbow.getEncoder() > side * position.elbow + side * 3000 || elbow.getEncoder() < side * position.elbow - side * 3000)
+    if (elbow.getEncoder() > side * position.elbow + side * 3000
+        || elbow.getEncoder() < side * position.elbow - side * 3000)
       value = false;
-    if (wrist.getEncoder() > side * position.wrist + side * 1000 || wrist.getEncoder() < side * position.wrist - side * 1000)
+    if (wrist.getEncoder() > side * position.wrist + side * 1000
+        || wrist.getEncoder() < side * position.wrist - side * 1000)
       value = false;
 
     return value;
@@ -79,10 +80,8 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Shoulder", shoulder.getEncoder());
-    // SmartDashboard.putNumber("Elbow", elbow.getEncoder());
-    // SmartDashboard.putNumber("Wrist", wrist.getEncoder());
-    // System.out.println("shoulder: " + shoulder.getEncoder() + " elbow: " + elbow.getEncoder() + " wrist: " + wrist.getEncoder());
+    // System.out.println("shoulder: " + shoulder.getEncoder() + " elbow: " +
+    // elbow.getEncoder() + " wrist: " + wrist.getEncoder());
     // System.out.println(this.position);
   }
 }

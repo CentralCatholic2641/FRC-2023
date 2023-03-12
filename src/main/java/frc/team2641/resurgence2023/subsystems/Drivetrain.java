@@ -244,26 +244,24 @@ public class Drivetrain extends SubsystemBase {
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
     return Commands.sequence(
-      new InstantCommand(() -> configRamps(0)),
-      new InstantCommand(() -> {
-        if (reset)
-          resetPose(traj.getInitialPose());
-      }),
-      pathFollower.fullAuto(traj),
-      new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed))
-    );
+        new InstantCommand(() -> configRamps(0)),
+        new InstantCommand(() -> {
+          if (reset)
+            resetPose(traj.getInitialPose());
+        }),
+        pathFollower.fullAuto(traj),
+        new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
   }
 
   public Command followTrajectoryCommand(PathPlannerTrajectory trajectory, boolean reset) {
     return Commands.sequence(
-      new InstantCommand(() -> configRamps(0)),
-      new InstantCommand(() -> {
-        if (reset)
-          resetPose(trajectory.getInitialPose());
-      }),
-      pathFollower.fullAuto(trajectory),
-      new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed))
-    );
+        new InstantCommand(() -> configRamps(0)),
+        new InstantCommand(() -> {
+          if (reset)
+            resetPose(trajectory.getInitialPose());
+        }),
+        pathFollower.fullAuto(trajectory),
+        new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
   }
 
   @Override

@@ -43,14 +43,13 @@ public class Robot extends TimedRobot {
     drivetrain = Drivetrain.getInstance();
     arm = Arm.getInstance();
     pneumatics = Pneumatics.getInstance();
-    
+
     logController = LogController.getInstance();
     shuffleboardController = ShuffleboardController.getInstance();
     limelight = Limelight.getInstance();
 
-    // CameraServer.startAutomaticCapture(0);
-    // CameraServer.startAutomaticCapture(1);
-    // CameraServer.startAutomaticCapture(2);
+    CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(1);
 
     robotContainer = new RobotContainer();
     logController.start();

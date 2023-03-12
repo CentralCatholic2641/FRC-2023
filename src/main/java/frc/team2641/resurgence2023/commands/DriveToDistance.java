@@ -9,7 +9,7 @@ import frc.team2641.resurgence2023.subsystems.Drivetrain;
 public class DriveToDistance extends CommandBase {
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private double distance;
-  
+
   public DriveToDistance(double distance) {
     addRequirements(drivetrain);
     this.distance = distance;
@@ -31,7 +31,8 @@ public class DriveToDistance extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   @Override
   public boolean isFinished() {

@@ -38,28 +38,32 @@ public class ShuffleboardController {
 
     autoChooser.addOption("Just Score Top", ArmSequences.ScoreTop());
 
-    // autoChooser.setDefaultOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
-    //     AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
+    // autoChooser.setDefaultOption("TOP - Score Preloaded Cube, Score Top Prestaged
+    // Cone, Dock",
+    // AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
     // autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
-    //     AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
+    // AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
     autoChooser.setDefaultOption("TOP - Score Preload, Mobility",
         AutoSequences.ScorePreload("top"));
     // autoChooser.addOption("TOP - Mobility Only",
-    //     AutoSequences.Mobility("top"));
+    // AutoSequences.Mobility("top"));
 
-    // autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone, Dock",
-    //     AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("mid"));
+    // autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone,
+    // Dock",
+    // AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("mid"));
     // autoChooser.addOption("MID - Score Preloaded Cube, Score Top Prestaged Cone",
-    //     AutoSequences.ScorePreloadCubePickupScorePrestagedCone("mid"));
+    // AutoSequences.ScorePreloadCubePickupScorePrestagedCone("mid"));
     autoChooser.addOption("MID - Score Preload, Mobility",
         AutoSequences.ScorePreload("mid"));
     // autoChooser.addOption("MID - Mobility Only",
-    //     AutoSequences.Mobility("mid"));
+    // AutoSequences.Mobility("mid"));
 
-    // autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone, Dock",
-    //     AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("bot"));
-    // autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged Cone",
-    //     AutoSequences.ScorePreloadCubePickupScorePrestagedCone("bot"));
+    // autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged
+    // Cone, Dock",
+    // AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("bot"));
+    // autoChooser.addOption("BOT - Score Preloaded Cube, Score Bottom Prestaged
+    // Cone",
+    // AutoSequences.ScorePreloadCubePickupScorePrestagedCone("bot"));
     autoChooser.addOption("BOT - Score Preload, Mobility",
         AutoSequences.ScorePreload("bot"));
     autoChooser.addOption("BOT - Mobility Only",
@@ -68,7 +72,7 @@ public class ShuffleboardController {
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
     // preMatchTab.addCamera("Claw", "Claw", "/dev/video0");
     // preMatchTab.addCamera("Side", "Side", "/dev/video1");
-    
+
     // Autonomous
     // autoTab.addCamera("Claw", "Claw", "/dev/video0");
     // autoTab.addCamera("Side", "Side", "/dev/video1");

@@ -12,7 +12,7 @@ public class DriveFor extends CommandBase {
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private double time;
   private Timer timer = new Timer();
-  
+
   public DriveFor(double time) {
     addRequirements(drivetrain);
     this.time = time;
@@ -35,7 +35,8 @@ public class DriveFor extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   @Override
   public boolean isFinished() {
