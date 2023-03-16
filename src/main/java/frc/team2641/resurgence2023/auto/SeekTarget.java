@@ -12,10 +12,10 @@ public class SeekTarget extends CommandBase {
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private Limelight limelight = Limelight.getInstance();
 
-  private double kPaim = -0.03;
-  private double kPdistance = 0.02;
-  private double kIdistance = 0.0;
-  private double kDdistance = 0.125;
+  private double kPaim = -0.055;
+  private double kPdistance = -0.05;
+  private double kIdistance = -0.0002;
+  private double kDdistance = -0.015;
   private double minAim = 0.025;
 
   private double distanceErrorI = 0.0;
@@ -27,7 +27,9 @@ public class SeekTarget extends CommandBase {
 
   @Override
   public void initialize() {
-    limelight.setPipeline(Pipelines.SeekTarget);
+    limelight.setPipeline(Pipelines.AprilTag);
+    distanceErrorI = 0.0;
+    prevDistanceError = 0.0;
   }
 
   @Override
@@ -57,11 +59,12 @@ public class SeekTarget extends CommandBase {
       // steeringAdjust = 0.25;
     }
 
-    // if (distanceAdjust < 0.25)
-    // end(false);
-
-    System.out.println("Steering: " + steeringAdjust + " Distance: " + distanceAdjust);
-    drivetrain.aDriveUnlimited(distanceAdjust, steeringAdjust);
+    if (Math.abs(distanceAdjust) < 0.25 && Math.abs(steeringAdjust) < 0.05)
+      end(false);
+    else { 
+      System.out.println("Steering: " + steeringAdjust + " Distance: " + distanceAdjust);
+      drivetrain.aDriveUnlimited(distanceAdjust, steeringAdjust);
+    }
   }
 
   @Override

@@ -117,7 +117,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
-    drive.arcadeDrive(speed, -rotation, true);
+    drive.arcadeDrive(-speed, -rotation, true);
   }
 
   public void tDrive(double left, double right) {
@@ -126,11 +126,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tDriveVolts(double rightVolts, double leftVolts) {
-    leftMaster.set(ControlMode.PercentOutput, -leftVolts / 12);
-    rightMaster.set(ControlMode.PercentOutput, -rightVolts / 12);
-    drive.feed();
-
-    System.out.println("left: " + (-leftVolts / 12) + " right: " + (-rightVolts / 12));
+    double left = -Constants.Drive.autoLeftRateLimiter.calculate(leftVolts / 10);
+    double right = -Constants.Drive.autoRightRateLimiter.calculate(rightVolts / 10);
+    drive.tankDrive(left, right);
+    System.out.println("left: " + left + " right: " + right);
   }
 
   public void configBrakes(boolean brakesOn) {
@@ -214,7 +213,7 @@ public class Drivetrain extends SubsystemBase {
     return ahrs.getRotation2d().rotateBy(Rotation2d.fromDegrees(180));
   }
 
-  public double getPitch() {
+  public float getPitch() {
     return ahrs.getPitch();
   }
 

@@ -43,7 +43,7 @@ public class ShuffleboardController {
     // AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
     // autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
     // AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
-    autoChooser.setDefaultOption("TOP - Score Preload, Mobility",
+    autoChooser.addOption("TOP - Score Preload, Mobility",
         AutoSequences.ScorePreload("top"));
     // autoChooser.addOption("TOP - Mobility Only",
     // AutoSequences.Mobility("top"));
@@ -68,6 +68,11 @@ public class ShuffleboardController {
         AutoSequences.ScorePreload("bot"));
     autoChooser.addOption("BOT - Mobility Only",
         AutoSequences.Mobility("bot"));
+
+        autoChooser.addOption("Auto Balance",
+        AutoSequences.AutoBalance());
+
+    autoChooser.setDefaultOption("Seek Target", AutoSequences.SeekTarget());
 
     preMatchTab.add("Auto", autoChooser).withSize(2, 1);
     // preMatchTab.addCamera("Claw", "Claw", "/dev/video0");

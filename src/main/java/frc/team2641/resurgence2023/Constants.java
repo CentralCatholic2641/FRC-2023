@@ -50,7 +50,9 @@ public final class Constants {
 		public static final double kMaxAccelerationMetersPerSecondSquared = 2;
 		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(3);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
-		public static final PIDGains PID = new PIDGains(1, 0, 0, 0, 0.25, 500);
+		public static final SlewRateLimiter autoLeftRateLimiter = new SlewRateLimiter(3);
+		public static final SlewRateLimiter autoRightRateLimiter = new SlewRateLimiter(3);
+		public static final PIDGains PID = new PIDGains(0, 0, 0, 0, 0.25, 500);
 	}
 
 	public static final class Pneumatics {

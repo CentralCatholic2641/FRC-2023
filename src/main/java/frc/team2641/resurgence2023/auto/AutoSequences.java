@@ -41,4 +41,12 @@ public class AutoSequences {
 	public static Command ScorePreloadOnly(String start) {
 		return ArmSequences.ScoreTop();
 	}
+
+	public static Command AutoBalance() {
+		return new AutoBalance();
+	}
+
+	public static Command SeekTarget() {
+		return new SeekTarget();
+	}
 }

@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
     shuffleboardController = ShuffleboardController.getInstance();
     limelight = Limelight.getInstance();
 
-    CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
+    // CameraServer.startAutomaticCapture(0);
+    // CameraServer.startAutomaticCapture(1);
 
     robotContainer = new RobotContainer();
     logController.start();
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 
     arm.resetEncoders();
 
-    limelight.setCamMode(CamMode.kDriver);
+    // limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override
@@ -96,6 +96,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    limelight.setCamMode(CamMode.kVision);
     autoCommand = shuffleboardController.getAutonomousCommand();
 
     if (autoCommand != null)
@@ -103,7 +104,6 @@ public class Robot extends TimedRobot {
 
     pneumatics.enable();
 
-    limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override
@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
 
     pneumatics.enable();
 
-    limelight.setCamMode(CamMode.kDriver);
+    // limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override

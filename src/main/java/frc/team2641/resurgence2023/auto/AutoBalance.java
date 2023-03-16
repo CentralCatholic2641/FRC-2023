@@ -11,6 +11,7 @@ public class AutoBalance extends CommandBase {
 
   private double drive = 0.0;
   private boolean hasTilted = false;
+  private boolean onBoard = false;
 
   public AutoBalance() {
     addRequirements(drivetrain);
@@ -18,21 +19,44 @@ public class AutoBalance extends CommandBase {
 
   @Override
   public void initialize() {
-    drive = 0.4;
+    drive = 0.35;
   }
 
   @Override
   public void execute() {
-    System.out.println("balancing...");
-    if (!hasTilted && drivetrain.getPitch() != 0)
-      hasTilted = true;
+    System.out.println("Pitch: " + drivetrain.getPitch());
+    if (!onBoard && (drivetrain.getPitch() < -15 || drivetrain.getPitch() > 15))
+      onBoard = true;
 
-    if (hasTilted)
-      drive = drivetrain.getPitch() / 150;
+    if (onBoard) {
+      System.out.println("balancing...");
+      if (!hasTilted && drivetrain.getPitch() != 0)
+        hasTilted = true;
 
-    if (hasTilted && drivetrain.getPitch() == 0)
-      end(false);
+      if (hasTilted && (drivetrain.getPitch() > 20)) {
+        System.out.println("tipping backward!");
+        drive = -0.5;
+      }
+
+      if (hasTilted && (drivetrain.getPitch() < -20)) {
+        System.out.println("tipping forward!");
+        drive = 0.5;
+      }
+
+      if (hasTilted && ((drivetrain.getPitch() >= -20) && (drivetrain.getPitch() <= 20)))
+        drive = drivetrain.getPitch()/65;
+
+      if (hasTilted && ((drivetrain.getPitch() < -1) && (drivetrain.getPitch() > 1))) {
+        System.out.println("balanced");
+        end(false);
+      }
+
+      else
+        drivetrain.aDriveUnlimited(drive, 0);
+      }
+
     else
+      System.out.println("finding board...");
       drivetrain.aDriveUnlimited(drive, 0);
   }
 
