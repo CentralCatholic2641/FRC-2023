@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -18,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.auto.ArmSequences;
 import java.util.HashMap;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -47,7 +47,10 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonFX rightSlave1 = new WPI_TalonFX(Constants.CAN.rightSlave1);
   private WPI_TalonFX rightSlave2 = new WPI_TalonFX(Constants.CAN.rightSlave2);
 
-  private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
+  private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
+  private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
+
+  private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
   private AHRS ahrs = new AHRS();
   private DifferentialDriveOdometry odometry;
@@ -126,10 +129,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void tDriveVolts(double rightVolts, double leftVolts) {
-    double left = -Constants.Drive.autoLeftRateLimiter.calculate(leftVolts / 10);
-    double right = -Constants.Drive.autoRightRateLimiter.calculate(rightVolts / 10);
-    drive.tankDrive(left, right);
-    System.out.println("left: " + left + " right: " + right);
+    leftGroup.setVoltage(-leftVolts);
+    rightGroup.setVoltage(-rightVolts);
+    drive.feed();
+
+    System.out.println("left: " + (-leftVolts) + " right: " + (-rightVolts));
   }
 
   public void configBrakes(boolean brakesOn) {
