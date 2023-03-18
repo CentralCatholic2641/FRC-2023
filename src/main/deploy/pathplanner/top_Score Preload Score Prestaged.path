@@ -44,11 +44,11 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "intake"
+          "scoreTop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 1.0
+        "waitBehavior": "deadline",
+        "waitTime": 5.0
       }
     },
     {

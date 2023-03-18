@@ -22,6 +22,22 @@ public class ArmSequences {
 		return new SetArm(Constants.Arm.Positions.intake);
 	}
 
+	public static Command AutoIntake() {
+		return Commands.sequence(
+			Commands.parallel(
+				new SetArm(Constants.Arm.Positions.intake),
+				Commands.sequence(
+					new Wait(0.1),
+					new InstantCommand(() -> claw.release(), claw)
+				)
+			),
+			new Wait(0.1),
+			new InstantCommand(() -> claw.clamp(), claw),
+			new Wait(0.1),
+			new SetArm(Constants.Arm.Positions.start)
+		);
+	}
+
 	public static Command ScoreTop() {
 		return Commands.sequence(
 				new SetArm(Constants.Arm.Positions.topRowStart),

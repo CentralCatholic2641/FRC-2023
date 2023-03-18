@@ -30,24 +30,27 @@ public final class Constants {
 	}
 
 	public static final class Drive {
-		public static final double maxDrive = 0.65;
+		// public static final double maxDrive = 0.65;
+		public static final double maxDrive = 1;
 		public static final double slowDrive = 0.4;
-		public static final double maxSteer = 0.45;
+		// public static final double maxSteer = 0.45;
+		public static final double maxSteer = 1;
 		public static final double slowSteer = 0.4;
-		public static final double rampSpeed = 2;
+		// public static final double rampSpeed = 2;
+		public static final double rampSpeed = 1;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
 		public static final double wheelDiameter = 0.1524;
 		public static final double wheelCircumference = Math.PI * wheelDiameter;
 		public static final double encoderToMeters = (double) oneRotation / gearRatio * 32 / wheelCircumference;
-		public static final double ksVolts = -0.23046;
-		public static final double kvVoltSecondsPerMeter = 0.34579;
-		public static final double kaVoltSecondsSquaredPerMeter = 0.72742;
-		public static final double kPDriveVel = 0.50144;
+		public static final double ksVolts = 0;
+		public static final double kvVoltSecondsPerMeter = 1.75;
+		public static final double kaVoltSecondsSquaredPerMeter = 0;
+		public static final double kPDriveVel = 0;
 		public static final double kTrackwidthMeters = 0.5588;
-		public static final double kMaxSpeedMetersPerSecond = 2;
-		public static final double kMaxAccelerationMetersPerSecondSquared = 2;
+		public static final double kMaxSpeedMetersPerSecond = 2.75;
+		public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(3);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
 		public static final SlewRateLimiter autoLeftRateLimiter = new SlewRateLimiter(3);

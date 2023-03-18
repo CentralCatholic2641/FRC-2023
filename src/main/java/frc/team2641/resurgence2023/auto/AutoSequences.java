@@ -18,10 +18,10 @@ public class AutoSequences {
 	// return FollowPath.get(start + "_Score Preload Score Prestaged Dock", true);
 	// }
 
-	// public static Command ScorePreloadCubePickupScorePrestagedCone(String start)
-	// {
-	// return FollowPath.get(start + "_Score Preload Score Prestaged", true);
-	// }
+	public static Command ScorePreloadCubePickupScorePrestagedCone(String start)
+	{
+	return FollowPath.get(start + "_Score Preload Score Prestaged", true);
+	}
 
 	public static Command ScorePreload(String start) {
 		return FollowPath.get(start + "_Score Preload", true);

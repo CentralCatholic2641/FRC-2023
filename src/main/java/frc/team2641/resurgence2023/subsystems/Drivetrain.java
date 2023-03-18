@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -93,20 +94,20 @@ public class Drivetrain extends SubsystemBase {
     rightSlave1.follow(rightMaster);
     rightSlave2.follow(rightMaster);
 
-    leftMaster.setInverted(false);
-    rightMaster.setInverted(true);
-    leftSlave1.setInverted(InvertType.FollowMaster);
-    leftSlave2.setInverted(InvertType.FollowMaster);
-    rightSlave1.setInverted(InvertType.FollowMaster);
-    rightSlave2.setInverted(InvertType.FollowMaster);
+    // leftMaster.setInverted(false);
+    // rightMaster.setInverted(true);
+    // leftSlave1.setInverted(InvertType.FollowMaster);
+    // leftSlave2.setInverted(InvertType.FollowMaster);
+    // rightSlave1.setInverted(InvertType.FollowMaster);
+    // rightSlave2.setInverted(InvertType.FollowMaster);
 
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
 
     ahrs.enableLogging(true);
 
-    pathEventMap.put("intake", ArmSequences.Intake());
     pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
+    pathEventMap.put("intake", ArmSequences.AutoIntake());
 
     configBrakes(Constants.Drive.brakes);
     configRamps(Constants.Drive.rampSpeed);
@@ -133,7 +134,8 @@ public class Drivetrain extends SubsystemBase {
     rightGroup.setVoltage(-rightVolts);
     drive.feed();
 
-    System.out.println("left: " + (-leftVolts) + " right: " + (-rightVolts));
+    SmartDashboard.putNumber("left", -leftVolts);
+    SmartDashboard.putNumber("right", -rightVolts);
   }
 
   public void configBrakes(boolean brakesOn) {

@@ -41,8 +41,8 @@ public class ShuffleboardController {
     // autoChooser.setDefaultOption("TOP - Score Preloaded Cube, Score Top Prestaged
     // Cone, Dock",
     // AutoSequences.ScorePreloadCubePickupScorePrestagedConeDock("top"));
-    // autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
-    // AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
+    autoChooser.addOption("TOP - Score Preloaded Cube, Score Top Prestaged Cone",
+    AutoSequences.ScorePreloadCubePickupScorePrestagedCone("top"));
     autoChooser.addOption("TOP - Score Preload, Mobility",
         AutoSequences.ScorePreload("top"));
     // autoChooser.addOption("TOP - Mobility Only",
@@ -71,6 +71,8 @@ public class ShuffleboardController {
 
         autoChooser.addOption("Auto Balance",
         AutoSequences.AutoBalance());
+
+        autoChooser.addOption("Auto Intake",ArmSequences.AutoIntake());
 
     autoChooser.setDefaultOption("Seek Target", AutoSequences.SeekTarget());
 

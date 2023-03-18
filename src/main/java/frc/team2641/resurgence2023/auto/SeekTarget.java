@@ -15,7 +15,7 @@ public class SeekTarget extends CommandBase {
   private double kPaim = -0.055;
   private double kPdistance = -0.05;
   private double kIdistance = -0.0002;
-  private double kDdistance = -0.015;
+  private double kDdistance = -0.025;
   private double minAim = 0.025;
 
   private double distanceErrorI = 0.0;
