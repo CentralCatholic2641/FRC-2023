@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.auto.ArmSequences;
 import java.util.HashMap;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -93,13 +92,6 @@ public class Drivetrain extends SubsystemBase {
     leftSlave2.follow(leftMaster);
     rightSlave1.follow(rightMaster);
     rightSlave2.follow(rightMaster);
-
-    // leftMaster.setInverted(false);
-    // rightMaster.setInverted(true);
-    // leftSlave1.setInverted(InvertType.FollowMaster);
-    // leftSlave2.setInverted(InvertType.FollowMaster);
-    // rightSlave1.setInverted(InvertType.FollowMaster);
-    // rightSlave2.setInverted(InvertType.FollowMaster);
 
     odometry = new DifferentialDriveOdometry(
         getAngle(), getLeftEncoder(), getRightEncoder());
@@ -248,14 +240,7 @@ public class Drivetrain extends SubsystemBase {
     PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
-    return Commands.sequence(
-        new InstantCommand(() -> configRamps(0)),
-        new InstantCommand(() -> {
-          if (reset)
-            resetPose(traj.getInitialPose());
-        }),
-        pathFollower.fullAuto(traj),
-        new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
+    return followTrajectoryCommand(traj, reset);
   }
 
   public Command followTrajectoryCommand(PathPlannerTrajectory trajectory, boolean reset) {
@@ -265,7 +250,7 @@ public class Drivetrain extends SubsystemBase {
           if (reset)
             resetPose(trajectory.getInitialPose());
         }),
-        pathFollower.fullAuto(trajectory),
+        pathFollower.followPathWithEvents(trajectory),
         new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
   }
 
