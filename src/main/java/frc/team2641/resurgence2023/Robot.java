@@ -96,6 +96,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    drivetrain.resetEncoders();
     limelight.setCamMode(CamMode.kVision);
     autoCommand = shuffleboardController.getAutonomousCommand();
 
@@ -103,7 +104,6 @@ public class Robot extends TimedRobot {
       autoCommand.schedule();
 
     pneumatics.enable();
-
   }
 
   @Override

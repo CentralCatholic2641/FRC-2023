@@ -34,7 +34,7 @@ public class Drive extends CommandBase {
     } else {
       double drive = Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis);
       double rotation = Robot.robotContainer.driver.getRawAxis(Gamepad.rxAxis);
-      drivetrain.aDrive(rotation, drive);
+      drivetrain.aDrive(drive, rotation);
       // prevDriverTankShift = false;
     }
 

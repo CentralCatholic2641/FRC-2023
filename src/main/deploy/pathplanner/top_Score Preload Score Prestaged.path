@@ -44,10 +44,10 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "scoreTop"
+          "intake"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "deadline",
+        "waitBehavior": "none",
         "waitTime": 5.0
       }
     },
@@ -70,7 +70,7 @@
         "names": [
           "scoreTop"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }

@@ -3,6 +3,7 @@
 
 package frc.team2641.resurgence2023.auto;
 
+import java.util.List;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -20,7 +21,7 @@ public class FollowPath {
 	}
 
 	public static Command get(PathPlannerTrajectory trajectory, boolean reset) {
-		return drivetrain.followTrajectoryCommand(trajectory, reset);
+		return drivetrain.followTrajectoryCommand(List.of(trajectory), reset);
 	}
 
 	public static Command goTo(PathPoint endpoint) {
@@ -31,6 +32,6 @@ public class FollowPath {
 				new PathPoint(pose.getTranslation(), pose.getRotation()),
 				endpoint);
 
-		return drivetrain.followTrajectoryCommand(trajectory, true);
+		return drivetrain.followTrajectoryCommand(List.of(trajectory), true);
 	}
 }

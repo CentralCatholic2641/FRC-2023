@@ -41,8 +41,8 @@ public class Arm extends SubsystemBase {
   public boolean atPosition() {
     boolean value = true;
 
-    if (shoulder.getEncoder() > side * position.shoulder + side * 6000
-        || shoulder.getEncoder() < side * position.shoulder - side * 6000)
+    if (shoulder.getEncoder() > side * position.shoulder + side * 3000
+        || shoulder.getEncoder() < side * position.shoulder - side * 3000)
       value = false;
     if (elbow.getEncoder() > side * position.elbow + side * 3000
         || elbow.getEncoder() < side * position.elbow - side * 3000)

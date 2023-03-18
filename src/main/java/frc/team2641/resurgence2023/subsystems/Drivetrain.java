@@ -14,12 +14,15 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.auto.ArmSequences;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -88,6 +91,20 @@ public class Drivetrain extends SubsystemBase {
     init(rightSlave1);
     init(rightSlave2);
 
+    // leftMaster.setSensorPhase(true);
+    // leftSlave1.setSensorPhase(true);
+    // leftSlave2.setSensorPhase(true);
+    // rightMaster.setSensorPhase(false);
+    // rightSlave1.setSensorPhase(false);
+    // rightSlave2.setSensorPhase(false);
+
+    // leftMaster.setInverted(false);
+    // leftSlave1.setInverted(InvertType.FollowMaster);
+    // leftSlave2.setInverted(InvertType.FollowMaster);
+    // rightMaster.setInverted(true);
+    // rightSlave1.setInverted(InvertType.FollowMaster);
+    // rightSlave2.setInverted(InvertType.FollowMaster);
+    
     leftSlave1.follow(leftMaster);
     leftSlave2.follow(leftMaster);
     rightSlave1.follow(rightMaster);
@@ -98,8 +115,8 @@ public class Drivetrain extends SubsystemBase {
 
     ahrs.enableLogging(true);
 
-    pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
     pathEventMap.put("intake", ArmSequences.AutoIntake());
+    pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
 
     configBrakes(Constants.Drive.brakes);
     configRamps(Constants.Drive.rampSpeed);
@@ -108,8 +125,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDrive(double speed, double rotation) {
-    drive.arcadeDrive(Constants.Drive.driveRateLimiter.calculate(speed * driveLimit),
-        Constants.Drive.rotationRateLimiter.calculate(-rotation * steerLimit), true);
+    drive.arcadeDrive(Constants.Drive.rotationRateLimiter.calculate(rotation * steerLimit),
+        Constants.Drive.driveRateLimiter.calculate(-speed * driveLimit), true);
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
@@ -123,11 +140,11 @@ public class Drivetrain extends SubsystemBase {
 
   public void tDriveVolts(double rightVolts, double leftVolts) {
     leftGroup.setVoltage(-leftVolts);
-    rightGroup.setVoltage(-rightVolts);
+    rightGroup.setVoltage(rightVolts);
     drive.feed();
 
     SmartDashboard.putNumber("left", -leftVolts);
-    SmartDashboard.putNumber("right", -rightVolts);
+    SmartDashboard.putNumber("right", rightVolts);
   }
 
   public void configBrakes(boolean brakesOn) {
@@ -198,7 +215,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getRightEncoder() {
-    double value = -rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
+    double value = rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
     return value;
   }
 
@@ -237,20 +254,30 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Command followTrajectoryCommand(String trajectory, boolean reset) {
-    PathPlannerTrajectory traj = PathPlanner.loadPath(trajectory, new PathConstraints(
+    List<PathPlannerTrajectory> traj = PathPlanner.loadPathGroup(trajectory, new PathConstraints(
         Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
 
     return followTrajectoryCommand(traj, reset);
   }
 
-  public Command followTrajectoryCommand(PathPlannerTrajectory trajectory, boolean reset) {
+  public Command followTrajectoryCommand(List<PathPlannerTrajectory> trajectory, boolean reset) {
+    List<CommandBase> commands = new ArrayList<>();
+
+    commands.add(new InstantCommand(() -> {
+        resetPose(trajectory.get(0).getInitialPose());
+    }));
+
+    for (PathPlannerTrajectory traj : trajectory) {
+      commands.add(pathFollower.stopEventGroup(traj.getStartStopEvent()));
+      commands.add(pathFollower.followPathWithEvents(traj));
+      // commands.add(pathFollower.stopEventGroup(traj.getEndStopEvent()));
+    }
+
+    commands.add(pathFollower.stopEventGroup(trajectory.get(trajectory.size() - 1).getEndStopEvent()));
+    
     return Commands.sequence(
         new InstantCommand(() -> configRamps(0)),
-        new InstantCommand(() -> {
-          if (reset)
-            resetPose(trajectory.getInitialPose());
-        }),
-        pathFollower.followPathWithEvents(trajectory),
+        Commands.sequence(commands.toArray(CommandBase[]::new)),
         new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
   }
 
