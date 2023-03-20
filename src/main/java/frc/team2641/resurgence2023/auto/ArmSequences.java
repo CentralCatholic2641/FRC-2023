@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.commands.SetArm;
 import frc.team2641.resurgence2023.commands.Wait;
-import frc.team2641.resurgence2023.subsystems.Claw;
+import frc.team2641.resurgence2023.subsystems.Intake;
 
 public class ArmSequences {
-	private static Claw claw = Claw.getInstance();
+	private static Intake intake = Intake.getInstance();
 
 	public static Command Stow() {
 		return new SetArm(Constants.Arm.Positions.start);
@@ -24,31 +24,23 @@ public class ArmSequences {
 
 	public static Command AutoIntake() {
 		return Commands.sequence(
-			Commands.parallel(
-				new SetArm(Constants.Arm.Positions.intake),
-				Commands.sequence(
-					new Wait(0.1),
-					new InstantCommand(() -> claw.release(), claw)
-				)
-			),
-			new Wait(0.1),
-			new InstantCommand(() -> claw.clamp(), claw),
-			new Wait(0.1),
-			new SetArm(Constants.Arm.Positions.start)
-		);
+				Commands.parallel(
+						new SetArm(Constants.Arm.Positions.intake),
+						Commands.sequence(
+								new InstantCommand(() -> intake.forward(0.15), intake),
+								new Wait(0.5),
+								new InstantCommand(() -> intake.stop(), intake))),
+				new Wait(0.1),
+				new SetArm(Constants.Arm.Positions.start));
 	}
 
 	public static Command ScoreTop() {
 		return Commands.sequence(
 				new SetArm(Constants.Arm.Positions.topRowStart),
 				new SetArm(Constants.Arm.Positions.topRow),
-				new InstantCommand(() -> claw.release(), claw),
+				new InstantCommand(() -> intake.reverse(0.15), intake),
 				new Wait(0.1),
-				Commands.parallel(
-						Commands.sequence(
-								new Wait(0.25),
-								new InstantCommand(() -> claw.clamp(), claw)),
-						new SetArm(Constants.Arm.Positions.start)));
+				new SetArm(Constants.Arm.Positions.start));
 	}
 
 	public static Command MoveToScoreTop() {
@@ -60,13 +52,9 @@ public class ArmSequences {
 	public static Command ScoreMid() {
 		return Commands.sequence(
 				new SetArm(Constants.Arm.Positions.middleRow),
-				new InstantCommand(() -> claw.release(), claw),
+				new InstantCommand(() -> intake.reverse(0.15), intake),
 				new Wait(0.1),
-				Commands.parallel(
-						Commands.sequence(
-								new Wait(0.25),
-								new InstantCommand(() -> claw.clamp(), claw)),
-						new SetArm(Constants.Arm.Positions.start)));
+				new SetArm(Constants.Arm.Positions.start));
 	}
 
 	public static Command MoveToScoreMid() {
@@ -80,13 +68,9 @@ public class ArmSequences {
 	public static Command ScoreBot() {
 		return Commands.sequence(
 				new SetArm(Constants.Arm.Positions.bottomRow),
-				new InstantCommand(() -> claw.release(), claw),
+				new InstantCommand(() -> intake.reverse(0.15), intake),
 				new Wait(0.1),
-				Commands.parallel(
-						Commands.sequence(
-								new Wait(0.25),
-								new InstantCommand(() -> claw.clamp(), claw)),
-						new SetArm(Constants.Arm.Positions.start)));
+				new SetArm(Constants.Arm.Positions.start));
 	}
 
 	public static Command MoveToSingle() {

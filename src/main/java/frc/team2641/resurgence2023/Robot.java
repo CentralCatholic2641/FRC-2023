@@ -5,14 +5,12 @@ package frc.team2641.resurgence2023;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import com.pathplanner.lib.server.PathPlannerServer;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team2641.resurgence2023.subsystems.Arm;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
-import frc.team2641.resurgence2023.subsystems.Pneumatics;
 import frc.team2641.resurgence2023.telemetry.LogController;
 import frc.team2641.resurgence2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
@@ -23,11 +21,9 @@ public class Robot extends TimedRobot {
   Command autoCommand;
 
   private static PowerDistribution pdh;
-  private static PneumaticHub ph;
 
   private Drivetrain drivetrain;
   private Arm arm;
-  private Pneumatics pneumatics;
 
   private LogController logController;
   private ShuffleboardController shuffleboardController;
@@ -38,11 +34,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
-    ph = new PneumaticHub(Constants.CAN.PH);
 
     drivetrain = Drivetrain.getInstance();
     arm = Arm.getInstance();
-    pneumatics = Pneumatics.getInstance();
 
     logController = LogController.getInstance();
     shuffleboardController = ShuffleboardController.getInstance();
@@ -102,8 +96,6 @@ public class Robot extends TimedRobot {
 
     if (autoCommand != null)
       autoCommand.schedule();
-
-    pneumatics.enable();
   }
 
   @Override
@@ -116,8 +108,6 @@ public class Robot extends TimedRobot {
     if (autoCommand != null)
       autoCommand.cancel();
     drivetrain.resetEncoders();
-
-    pneumatics.enable();
 
     // limelight.setCamMode(CamMode.kDriver);
   }
@@ -145,9 +135,5 @@ public class Robot extends TimedRobot {
 
   public static PowerDistribution getPDH() {
     return pdh;
-  }
-
-  public static PneumaticHub getPH() {
-    return ph;
   }
 }

@@ -36,8 +36,9 @@ public class RobotContainer {
 	}
 
 	private void configureButtonBindings() {
-		operator.aButton().toggleOnTrue(new ToggleClaw());
 		operator.leftBumper().onTrue(new ResetEncoders());
+		operator.aButton().onTrue(new MoveIntake(true));
+		operator.rightBumper().onTrue(new MoveIntake(false));
 
 		operatorIntake.onTrue(ArmSequences.Intake());
 		operatorBotRow.onTrue(ArmSequences.MoveToScoreBot());
