@@ -4,6 +4,7 @@
 package frc.team2641.resurgence2023.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 
 public class AutoBalance extends CommandBase {
@@ -19,7 +20,8 @@ public class AutoBalance extends CommandBase {
 
   @Override
   public void initialize() {
-    drive = 0.35;
+    drivetrain.configRamps(0.0);
+    drive = -0.425;
   }
 
   @Override
@@ -33,35 +35,39 @@ public class AutoBalance extends CommandBase {
       if (!hasTilted && drivetrain.getPitch() != 0)
         hasTilted = true;
 
-      if (hasTilted && (drivetrain.getPitch() > 20)) {
+      if (hasTilted && (drivetrain.getPitch() > 18)) {
         System.out.println("tipping backward!");
-        drive = -0.5;
+        drive = 0.2;
       }
 
-      if (hasTilted && (drivetrain.getPitch() < -20)) {
+      if (hasTilted && (drivetrain.getPitch() < -18)) {
         System.out.println("tipping forward!");
-        drive = 0.5;
+        drive = -0.2;
       }
 
-      if (hasTilted && ((drivetrain.getPitch() >= -20) && (drivetrain.getPitch() <= 20)))
-        drive = drivetrain.getPitch()/65;
+      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -8)))
+        drive = -drivetrain.getPitch()/44.75;
 
-      if (hasTilted && ((drivetrain.getPitch() < -1) && (drivetrain.getPitch() > 1))) {
+      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 8)))
+        drive = -drivetrain.getPitch()/46.25;
+
+      if (hasTilted && ((drivetrain.getPitch() > -12) && (drivetrain.getPitch() < 12))) {
         System.out.println("balanced");
-        end(false);
+        drive = 0.0;
       }
 
       else
-        drivetrain.aDriveUnlimited(drive, 0);
+        drivetrain.aDriveUnlimited(0, drive);
       }
 
     else
       System.out.println("finding board...");
-      drivetrain.aDriveUnlimited(drive, 0);
+      drivetrain.aDriveUnlimited(0, drive);
   }
 
   @Override
   public void end(boolean interrupted) {
+    drivetrain.configRamps(Constants.Drive.rampSpeed);
   }
 
   @Override
