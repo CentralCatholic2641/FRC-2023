@@ -36,7 +36,6 @@ public class AutoBalance extends CommandBase {
     if (onBoard) {
       if (!hasTilted && ((drivetrain.getPitch() > 9) || (drivetrain.getPitch() < -9))) {
         hasTilted = true;
-        System.out.println("balancing...");
       }
 
       if (hasTilted && (drivetrain.getPitch() > 18)) {
@@ -48,12 +47,16 @@ public class AutoBalance extends CommandBase {
         System.out.println("tipping forward!");
         drive = -0.3;
       }
-
-      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -13.5)))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -13.5))) {
+        System.out.println("balancing...");
         drive = 0.33;
+      }
 
-      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 13.5)))
-        drive = -0.32;                                                                                                                                                                                                                                                                                                                               
+      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 13.5))) {
+        System.out.println("balancing...");
+        drive = -0.32;
+      }                                                                                                                                                                                                                                                                                                                     
 
       if (hasTilted && ((drivetrain.getPitch() > -13.5) && (drivetrain.getPitch() < 13.5))) {
         System.out.println("balanced");
