@@ -4,7 +4,9 @@
 package frc.team2641.resurgence2023.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.team2641.lib.control.Buttons.Gamepad;
 import frc.team2641.resurgence2023.Constants;
+import frc.team2641.resurgence2023.Robot;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 
 public class AutoBalance extends CommandBase {
@@ -21,37 +23,39 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() {
     drivetrain.configRamps(0.0);
-    drive = -0.425;
+    drive = -0.375;
   }
 
   @Override
   public void execute() {
     System.out.println("Pitch: " + drivetrain.getPitch());
+
     if (!onBoard && (drivetrain.getPitch() < -15 || drivetrain.getPitch() > 15))
       onBoard = true;
 
     if (onBoard) {
-      System.out.println("balancing...");
-      if (!hasTilted && drivetrain.getPitch() != 0)
+      if (!hasTilted && ((drivetrain.getPitch() > 9) || (drivetrain.getPitch() < -9))) {
         hasTilted = true;
+        System.out.println("balancing...");
+      }
 
       if (hasTilted && (drivetrain.getPitch() > 18)) {
         System.out.println("tipping backward!");
-        drive = 0.2;
+        drive = 0.3;
       }
 
       if (hasTilted && (drivetrain.getPitch() < -18)) {
         System.out.println("tipping forward!");
-        drive = -0.2;
+        drive = -0.3;
       }
 
-      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -8)))
-        drive = -drivetrain.getPitch()/44.75;
+      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -13.5)))
+        drive = 0.33;
 
-      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 8)))
-        drive = -drivetrain.getPitch()/46.25;
+      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 13.5)))
+        drive = -0.32;                                                                                                                                                                                                                                                                                                                               
 
-      if (hasTilted && ((drivetrain.getPitch() > -12) && (drivetrain.getPitch() < 12))) {
+      if (hasTilted && ((drivetrain.getPitch() > -13.5) && (drivetrain.getPitch() < 13.5))) {
         System.out.println("balanced");
         drive = 0.0;
       }
@@ -68,10 +72,11 @@ public class AutoBalance extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     drivetrain.configRamps(Constants.Drive.rampSpeed);
+    onBoard = false;
   }
 
   @Override
   public boolean isFinished() {
-    return hasTilted && drivetrain.getPitch() == 0;
+    return (Math.abs(Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis)) > 0.1);
   }
 }
