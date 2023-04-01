@@ -23,9 +23,9 @@ public class MoveIntake extends CommandBase {
   @Override
   public void execute() {
     if (this.direction) {
-      intake.forward(0.15);
+      intake.forward(0.75);
     } else {
-      intake.reverse(0.15);
+      intake.reverse(0.3);
     }
   }
 

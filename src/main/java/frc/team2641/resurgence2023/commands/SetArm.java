@@ -6,9 +6,11 @@ package frc.team2641.resurgence2023.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team2641.resurgence2023.helpers.ArmPosition;
 import frc.team2641.resurgence2023.subsystems.Arm;
+import frc.team2641.resurgence2023.subsystems.Intake;
 
 public class SetArm extends CommandBase {
   private Arm arm = Arm.getInstance();
+  private Intake intake = Intake.getInstance();
   private ArmPosition position;
 
   public SetArm(ArmPosition position) {
@@ -27,6 +29,7 @@ public class SetArm extends CommandBase {
     if (arm.atPosition()) {
       end(false);
     } else {
+      intake.forward(0.5);
       System.out.println("moving...");
     }
   }
@@ -34,6 +37,7 @@ public class SetArm extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     arm.setAuto(false);
+    intake.stop();
   }
 
   @Override

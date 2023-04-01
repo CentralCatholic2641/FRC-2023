@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.team2641.resurgence2023.auto.ArmSequences;
 import frc.team2641.resurgence2023.auto.AutoBalance;
+import frc.team2641.resurgence2023.auto.SeekTarget;
 import frc.team2641.resurgence2023.commands.*;
 import frc.team2641.resurgence2023.subsystems.*;
 import frc.team2641.lib.control.Gamepad;
@@ -38,9 +39,11 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 		driver.bButton().onTrue(new AutoBalance());
+		// driver.aButton().onTrue(new SeekTarget(Constants.Pipelines.Retroreflective));
+		// driver.yButton().onTrue(new SeekTarget(Constants.Pipelines.AprilTag));
 		operator.leftBumper().onTrue(new ResetEncoders());
-		operator.aButton().onTrue(new MoveIntake(true));
-		operator.rightBumper().onTrue(new MoveIntake(false));
+		operator.aButton().whileTrue(new MoveIntake(true));
+		operator.rightBumper().whileTrue(new MoveIntake(false));
 
 		operatorIntake.onTrue(ArmSequences.Intake());
 		operatorBotRow.onTrue(ArmSequences.MoveToScoreBot());

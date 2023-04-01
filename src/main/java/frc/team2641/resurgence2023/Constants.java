@@ -30,11 +30,11 @@ public final class Constants {
 	}
 
 	public static final class Drive {
-		public static final double maxDrive = 0.65;
+		public static final double maxDrive = 0.7;
 		public static final double slowDrive = 0.4;
 		public static final double maxSteer = 0.45;
 		public static final double slowSteer = 0.4;
-		public static final double rampSpeed = 2;
+		public static final double rampSpeed = 1.5;
 		public static final boolean brakes = true;
 		public static final double oneRotation = 2048.0;
 		public static final double gearRatio = 6;
@@ -42,12 +42,12 @@ public final class Constants {
 		public static final double wheelCircumference = Math.PI * wheelDiameter;
 		public static final double encoderToMeters = (double) oneRotation / gearRatio * 32 / wheelCircumference;
 		public static final double ksVolts = 0;
-		public static final double kvVoltSecondsPerMeter = 1.5;
+		public static final double kvVoltSecondsPerMeter = 1.25;
 		public static final double kaVoltSecondsSquaredPerMeter = 0;
 		public static final double kPDriveVel = 0;
 		public static final double kTrackwidthMeters = 0.5588;
-		public static final double kMaxSpeedMetersPerSecond = 3;
-		public static final double kMaxAccelerationMetersPerSecondSquared = 2.25;
+		public static final double kMaxSpeedMetersPerSecond = 2;
+		public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
 		public static final SlewRateLimiter driveRateLimiter = new SlewRateLimiter(3);
 		public static final SlewRateLimiter rotationRateLimiter = new SlewRateLimiter(5);
 		public static final SlewRateLimiter autoLeftRateLimiter = new SlewRateLimiter(3);
@@ -62,24 +62,27 @@ public final class Constants {
 
 	public static final class Pipelines {
 		public static final int AprilTag = 0;
-		public static final int SeekTarget = 1;
+		public static final int Retroreflective = 1;
+		public static final int GamePiece = 2;
 	}
 
 	public static final class Arm {
 		public static final class Positions {
 			public static final ArmPosition start = new ArmPosition(0, 0, 0);
-			public static final ArmPosition intake = new ArmPosition(-38000, -132620, 0);
+			public static final ArmPosition intake = new ArmPosition(-6900, -110000, 0);
 			public static final ArmPosition bottomRow = new ArmPosition(38000, 132620, 10000);
-			public static final ArmPosition middleRow = new ArmPosition(80000, 85000, 10000);
+			public static final ArmPosition middleRowStart = new ArmPosition(83000, 28000, 0);
+			public static final ArmPosition middleRow = new ArmPosition(83000, 85000, 10000);
 			public static final ArmPosition topRowStart = new ArmPosition(70000, 0, 0);
-			public static final ArmPosition topRow = new ArmPosition(152500, 160000, 10000);
-			public static final ArmPosition singleSubstation = new ArmPosition(-80000, -88000, 0);
-			public static final ArmPosition doubleSubstation = new ArmPosition(-135000, -147000, 0);
+			public static final ArmPosition topRow = new ArmPosition(145000, 162000, 10000);
+			public static final ArmPosition singleSubstation = new ArmPosition(-68000, -88000, 0);
+			public static final ArmPosition doubleSubstationStart = new ArmPosition(-75000, 0, 0);
+			public static final ArmPosition doubleSubstation = new ArmPosition(-137000, -165000, 0);
 		}
 
-		public static final PIDGains shoulderGains = new PIDGains(0.75, 0, 0, 0, 0.4, 1000);
-		public static final PIDGains elbowGains = new PIDGains(0.75, 0, 0, 0, 0.5, 500);
-		public static final PIDGains wristGains = new PIDGains(0.1, 0, 0, 0, 0.2, 50);
+		public static final PIDGains shoulderGains = new PIDGains(0.4, 0, 0, 0, 0.4, 1000);
+		public static final PIDGains elbowGains = new PIDGains(0.4, 0, 0, 0, 0.5, 500);
+		public static final PIDGains wristGains = new PIDGains(0.25, 0, 0, 0, 0.2, 50);
 
 		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4.5);
 		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(10);

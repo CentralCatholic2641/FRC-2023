@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
+import frc.team2641.resurgence2023.Robot;
 import frc.team2641.resurgence2023.auto.ArmSequences;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,8 +126,14 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void aDrive(double speed, double rotation) {
-    drive.arcadeDrive(Constants.Drive.rotationRateLimiter.calculate(rotation * steerLimit),
-        Constants.Drive.driveRateLimiter.calculate(-speed * driveLimit), true);
+    double speedOut = Constants.Drive.driveRateLimiter.calculate(((0.35 - driveLimit) * Robot.robotContainer.driver.getRightTrigger() + driveLimit) * -speed);
+    double rotateOut = Constants.Drive.rotationRateLimiter.calculate(((0.35 - steerLimit) * Robot.robotContainer.driver.getRightTrigger() + steerLimit) * rotation);
+
+    if (Math.abs(speedOut) >= 0.01 || Math.abs(rotateOut) >= 0.01) {
+      drive.arcadeDrive( rotateOut, speedOut, true);
+    } else {
+      drive.arcadeDrive(0, 0);
+    }
   }
 
   public void aDriveUnlimited(double speed, double rotation) {
@@ -268,12 +275,12 @@ public class Drivetrain extends SubsystemBase {
     }));
 
     for (PathPlannerTrajectory traj : trajectory) {
-      commands.add(pathFollower.stopEventGroup(traj.getStartStopEvent()));
-      commands.add(pathFollower.followPathWithEvents(traj));
-      // commands.add(pathFollower.stopEventGroup(traj.getEndStopEvent()));
+      // commands.add(pathFollower.stopEventGroup(traj.getStartStopEvent()));
+      // commands.add(pathFollower.followPathWithEvents(traj));
+      commands.add(pathFollower.followPath(traj));
     }
 
-    commands.add(pathFollower.stopEventGroup(trajectory.get(trajectory.size() - 1).getEndStopEvent()));
+    // commands.add(pathFollower.stopEventGroup(trajectory.get(trajectory.size() - 1).getEndStopEvent()));
     
     return Commands.sequence(
         new InstantCommand(() -> configRamps(0)),

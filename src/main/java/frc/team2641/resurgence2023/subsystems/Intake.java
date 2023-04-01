@@ -9,6 +9,7 @@ import frc.team2641.resurgence2023.Constants;
 
 public class Intake extends SubsystemBase {
   private static Intake instance = null;
+  private double stopSpeed = 0.2;
 
   public static Intake getInstance() {
     if (instance == null)
@@ -23,10 +24,7 @@ public class Intake extends SubsystemBase {
 
     intake.setInverted(false);
 
-    intake.configNominalOutputForward(0, 30);
-    intake.configNominalOutputReverse(0, 30);
-    intake.configPeakOutputForward(0.15, 30);
-    intake.configPeakOutputReverse(-0.15, 30);
+    stop();
   }
 
   public void forward(double value) {
@@ -38,7 +36,11 @@ public class Intake extends SubsystemBase {
   }
 
   public void stop() {
-    intake.set(0);
+    intake.set(stopSpeed);
+  }
+
+  public void setStopSpeed(double input) {
+    this.stopSpeed = input;
   }
 
   @Override

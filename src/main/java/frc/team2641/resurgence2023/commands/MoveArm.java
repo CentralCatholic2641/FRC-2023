@@ -8,6 +8,7 @@ import frc.team2641.resurgence2023.Robot;
 import frc.team2641.resurgence2023.helpers.ArmPosition;
 import frc.team2641.resurgence2023.subsystems.Arm;
 import frc.team2641.resurgence2023.subsystems.Elbow;
+import frc.team2641.resurgence2023.subsystems.Intake;
 import frc.team2641.resurgence2023.subsystems.Shoulder;
 import frc.team2641.resurgence2023.subsystems.Wrist;
 import frc.team2641.lib.control.Buttons.Gamepad;
@@ -17,6 +18,7 @@ public class MoveArm extends CommandBase {
   private Shoulder shoulder = Shoulder.getInstance();
   private Elbow elbow = Elbow.getInstance();
   private Wrist wrist = Wrist.getInstance();
+  private Intake intake = Intake.getInstance();
 
   public MoveArm() {
     addRequirements(arm, shoulder, elbow, wrist);
@@ -48,6 +50,12 @@ public class MoveArm extends CommandBase {
       if (Math.abs(wristStick) >= 0.05)
         wrist = (int) this.wrist.getEncoder()
             + (int) (wristStick * 5000);
+
+      if (Math.abs(shoulderStick) > 0.05 || Math.abs(elbowStick) > 0.05 || Math.abs(wristStick) > 0.05) {
+        intake.forward(0.25);
+      } else {
+        intake.stop();
+      }
 
       arm.set(new ArmPosition(shoulder, elbow, wrist));
     }

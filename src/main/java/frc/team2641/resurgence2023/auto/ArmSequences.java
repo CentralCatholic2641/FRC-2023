@@ -9,13 +9,23 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.commands.SetArm;
 import frc.team2641.resurgence2023.commands.Wait;
+import frc.team2641.resurgence2023.helpers.ArmPosition;
+import frc.team2641.resurgence2023.subsystems.Arm;
+import frc.team2641.resurgence2023.subsystems.Elbow;
 import frc.team2641.resurgence2023.subsystems.Intake;
+import frc.team2641.resurgence2023.subsystems.Shoulder;
 
 public class ArmSequences {
 	private static Intake intake = Intake.getInstance();
+	private static Arm arm = Arm.getInstance();
+	private static Shoulder shoulder = Shoulder.getInstance();
+	private static Elbow elbow = Elbow.getInstance();
 
 	public static Command Stow() {
-		return new SetArm(Constants.Arm.Positions.start);
+		return Commands.sequence(
+			new SetArm(new ArmPosition((int) shoulder.getEncoder(), 0, 0)),
+			new SetArm(Constants.Arm.Positions.start)
+		);
 	}
 
 	public static Command Intake() {
@@ -27,7 +37,7 @@ public class ArmSequences {
 				Commands.parallel(
 						new SetArm(Constants.Arm.Positions.intake),
 						Commands.sequence(
-								new InstantCommand(() -> intake.forward(0.15), intake),
+								new InstantCommand(() -> intake.forward(0.5), intake),
 								new Wait(0.5),
 								new InstantCommand(() -> intake.stop(), intake))),
 				new Wait(0.1),
@@ -51,6 +61,7 @@ public class ArmSequences {
 
 	public static Command ScoreMid() {
 		return Commands.sequence(
+				new SetArm(Constants.Arm.Positions.middleRowStart),
 				new SetArm(Constants.Arm.Positions.middleRow),
 				new InstantCommand(() -> intake.reverse(0.15), intake),
 				new Wait(0.1),
@@ -58,7 +69,10 @@ public class ArmSequences {
 	}
 
 	public static Command MoveToScoreMid() {
-		return new SetArm(Constants.Arm.Positions.middleRow);
+		return Commands.sequence(
+			new SetArm(Constants.Arm.Positions.middleRowStart),
+			new SetArm(Constants.Arm.Positions.middleRow)
+		);
 	}
 
 	public static Command MoveToScoreBot() {
@@ -78,6 +92,9 @@ public class ArmSequences {
 	}
 
 	public static Command MoveToDouble() {
-		return new SetArm(Constants.Arm.Positions.doubleSubstation);
+		return Commands.sequence(
+			new SetArm(Constants.Arm.Positions.doubleSubstationStart),
+			new SetArm(Constants.Arm.Positions.doubleSubstation)
+		);
 	}
 }

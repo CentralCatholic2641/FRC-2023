@@ -3,6 +3,7 @@
 
 package frc.team2641.resurgence2023.auto;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team2641.lib.control.Buttons.Gamepad;
 import frc.team2641.resurgence2023.Constants;
@@ -23,7 +24,8 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() {
     drivetrain.configRamps(0.0);
-    drive = -0.375;
+    drive = -0.465;
+  // intake.set(0);
   }
 
   @Override
@@ -48,17 +50,19 @@ public class AutoBalance extends CommandBase {
         drive = -0.3;
       }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -13.5))) {
+      if (hasTilted && ((drivetrain.getPitch() >= -18) && (drivetrain.getPitch() <= -14.5))) {
         System.out.println("balancing...");
+        Timer.delay(0.75);
         drive = 0.33;
       }
 
-      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 13.5))) {
+      if (hasTilted && ((drivetrain.getPitch() <= 18) && (drivetrain.getPitch() >= 14.5))) {
         System.out.println("balancing...");
+        Timer.delay(0.75);
         drive = -0.32;
       }                                                                                                                                                                                                                                                                                                                     
 
-      if (hasTilted && ((drivetrain.getPitch() > -13.5) && (drivetrain.getPitch() < 13.5))) {
+      if (hasTilted && ((drivetrain.getPitch() > -10) && (drivetrain.getPitch() < 10))) {
         System.out.println("balanced");
         drive = 0.0;
       }
@@ -80,6 +84,6 @@ public class AutoBalance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (Math.abs(Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis)) > 0.1);
+    return (Math.abs(Robot.robotContainer.driver.getRawAxis(Gamepad.lyAxis)) > 0.1) || (Math.abs(Robot.robotContainer.driver.getRawAxis(Gamepad.rxAxis)) > 0.1);
   }
 }

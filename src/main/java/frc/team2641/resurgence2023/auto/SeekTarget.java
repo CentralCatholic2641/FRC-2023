@@ -4,7 +4,6 @@
 package frc.team2641.resurgence2023.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.team2641.resurgence2023.Constants.Pipelines;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 import frc.team2641.lib.limelight.Limelight;
 
@@ -21,13 +20,16 @@ public class SeekTarget extends CommandBase {
   private double distanceErrorI = 0.0;
   private double prevDistanceError = 0.0;
 
-  public SeekTarget() {
+  private int pipeline;
+
+  public SeekTarget(int pipeline) {
+    this.pipeline = pipeline;
     addRequirements(drivetrain);
   }
 
   @Override
   public void initialize() {
-    limelight.setPipeline(Pipelines.AprilTag);
+    limelight.setPipeline(pipeline);
     distanceErrorI = 0.0;
     prevDistanceError = 0.0;
   }
@@ -56,7 +58,6 @@ public class SeekTarget extends CommandBase {
     } else {
       distanceAdjust = 0;
       steeringAdjust = 0;
-      // steeringAdjust = 0.25;
     }
 
     if (Math.abs(distanceAdjust) < 0.25 && Math.abs(steeringAdjust) < 0.05)

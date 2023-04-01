@@ -9,8 +9,12 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.team2641.resurgence2023.commands.Wait;
 import frc.team2641.resurgence2023.subsystems.Arm;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
+import frc.team2641.resurgence2023.subsystems.Intake;
 import frc.team2641.resurgence2023.telemetry.LogController;
 import frc.team2641.resurgence2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
@@ -24,6 +28,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain drivetrain;
   private Arm arm;
+  private Intake intake;
 
   private LogController logController;
   private ShuffleboardController shuffleboardController;
@@ -37,13 +42,14 @@ public class Robot extends TimedRobot {
 
     drivetrain = Drivetrain.getInstance();
     arm = Arm.getInstance();
+    intake = Intake.getInstance();
 
     logController = LogController.getInstance();
     shuffleboardController = ShuffleboardController.getInstance();
     limelight = Limelight.getInstance();
 
-    // CameraServer.startAutomaticCapture(0);
-    // CameraServer.startAutomaticCapture(1);
+    CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(1);
 
     robotContainer = new RobotContainer();
     logController.start();
@@ -52,7 +58,7 @@ public class Robot extends TimedRobot {
 
     arm.resetEncoders();
 
-    // limelight.setCamMode(CamMode.kDriver);
+    limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override
@@ -93,6 +99,11 @@ public class Robot extends TimedRobot {
     drivetrain.resetEncoders();
     limelight.setCamMode(CamMode.kVision);
     autoCommand = shuffleboardController.getAutonomousCommand();
+    Commands.sequence(
+      new InstantCommand(() -> intake.forward(1), intake),
+      new Wait(1),
+      new InstantCommand(() -> intake.stop(), intake)
+    ).schedule();
 
     if (autoCommand != null)
       autoCommand.schedule();
@@ -108,8 +119,6 @@ public class Robot extends TimedRobot {
     if (autoCommand != null)
       autoCommand.cancel();
     drivetrain.resetEncoders();
-
-    // limelight.setCamMode(CamMode.kDriver);
   }
 
   @Override
