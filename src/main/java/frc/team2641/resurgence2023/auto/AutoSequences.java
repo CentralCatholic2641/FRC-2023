@@ -44,7 +44,11 @@ public class AutoSequences {
 		return ArmSequences.ScoreTop();
 	}
 
-	public static Command AutoBalance() {
-		return new AutoBalance();
+	public static Command ScorePreloadAutoBalance() {
+		return  Commands.sequence (
+			ArmSequences.ScoreTop(),
+			new DriveFor(8),
+			new AutoBalance()
+		);
 	}
 }
