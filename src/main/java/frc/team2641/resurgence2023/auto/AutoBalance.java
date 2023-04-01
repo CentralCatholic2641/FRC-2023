@@ -34,7 +34,7 @@ public class AutoBalance extends CommandBase {
     if (!onBoard && (drivetrain.getPitch() < -15 || drivetrain.getPitch() > 15))
       onBoard = true;
 
-    if (onBoard) {
+    else if (onBoard) {
       if (!hasTilted && ((drivetrain.getPitch() > 9) || (drivetrain.getPitch() < -9))) {
         hasTilted = true;
       }
