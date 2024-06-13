@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.team2641.resurgence2023.auto.ArmSequences;
 import frc.team2641.resurgence2023.auto.AutoBalance;
-import frc.team2641.resurgence2023.auto.SeekTarget;
 import frc.team2641.resurgence2023.commands.*;
 import frc.team2641.resurgence2023.subsystems.*;
 import frc.team2641.lib.control.Gamepad;
@@ -23,7 +22,6 @@ public class RobotContainer {
 	public POVButton operatorBotRow = new POVButton(operator, 90);
 	public POVButton operatorMidRow = new POVButton(operator, 180);
 	public POVButton operatorTopRow = new POVButton(operator, 270);
-	// public POVButton operatorStow = new POVButton(operator, 180);
 
 	public Joystick joystick = new Joystick(Constants.Controllers.joystick);
 
@@ -39,8 +37,6 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 		driver.bButton().onTrue(new AutoBalance());
-		// driver.aButton().onTrue(new SeekTarget(Constants.Pipelines.Retroreflective));
-		// driver.yButton().onTrue(new SeekTarget(Constants.Pipelines.AprilTag));
 		operator.leftBumper().onTrue(new ResetEncoders());
 		operator.aButton().whileTrue(new MoveIntake(true));
 		operator.rightBumper().whileTrue(new MoveIntake(false));
@@ -49,7 +45,6 @@ public class RobotContainer {
 		operatorBotRow.onTrue(ArmSequences.MoveToScoreBot());
 		operatorMidRow.onTrue(ArmSequences.MoveToScoreMid());
 		operatorTopRow.onTrue(ArmSequences.MoveToScoreTop());
-		// operatorStow.onTrue(ArmSequences.Stow());
 
 		operator.yButton().onTrue(ArmSequences.MoveToSingle());
 		operator.start().onTrue(ArmSequences.MoveToDouble());

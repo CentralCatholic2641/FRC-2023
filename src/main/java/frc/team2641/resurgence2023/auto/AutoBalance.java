@@ -4,14 +4,14 @@
 package frc.team2641.resurgence2023.auto;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.lib.control.Buttons.Gamepad;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.Robot;
 import frc.team2641.resurgence2023.commands.DriveFor;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 
-public class AutoBalance extends CommandBase {
+public class AutoBalance extends Command {
   private Drivetrain drivetrain = Drivetrain.getInstance();
 
   private double drive = 0.0;

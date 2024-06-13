@@ -5,10 +5,10 @@
 package frc.team2641.resurgence2023.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 
-public class DriveFor extends CommandBase {
+public class DriveFor extends Command {
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private double time;
   private Timer timer = new Timer();

@@ -4,9 +4,9 @@
 package frc.team2641.resurgence2023.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class Wait extends CommandBase {
+public class Wait extends Command {
   double time;
   boolean finished;
 

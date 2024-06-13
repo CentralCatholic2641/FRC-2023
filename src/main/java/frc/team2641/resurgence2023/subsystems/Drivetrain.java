@@ -3,36 +3,17 @@
 
 package frc.team2641.resurgence2023.subsystems;
 
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.Robot;
-import frc.team2641.resurgence2023.auto.ArmSequences;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 public class Drivetrain extends SubsystemBase {
   private static Drivetrain instance = null;
@@ -56,30 +37,7 @@ public class Drivetrain extends SubsystemBase {
 
   private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
-  private AHRS ahrs = new AHRS();
-  private DifferentialDriveOdometry odometry;
-  private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
-      Constants.Drive.kTrackwidthMeters);
-
-  private Pose2d pose;
-
-  private HashMap<String, Command> pathEventMap = new HashMap<>();
-
-  private RamseteAutoBuilder pathFollower = new RamseteAutoBuilder(
-      this::getPose,
-      this::resetPose,
-      new RamseteController(),
-      this.kinematics,
-      new SimpleMotorFeedforward(
-          Constants.Drive.ksVolts,
-          Constants.Drive.kvVoltSecondsPerMeter,
-          Constants.Drive.kaVoltSecondsSquaredPerMeter),
-      this::getWheelSpeeds,
-      new PIDConstants(Constants.Drive.PID.kP, Constants.Drive.PID.kI, Constants.Drive.PID.kD),
-      this::tDriveVolts,
-      pathEventMap,
-      true,
-      this);
+  private AHRS ahrs;
 
   private double driveLimit = Constants.Drive.maxDrive;
   private double steerLimit = Constants.Drive.maxSteer;
@@ -91,38 +49,20 @@ public class Drivetrain extends SubsystemBase {
     init(rightMaster);
     init(rightSlave1);
     init(rightSlave2);
-
-    // leftMaster.setSensorPhase(true);
-    // leftSlave1.setSensorPhase(true);
-    // leftSlave2.setSensorPhase(true);
-    // rightMaster.setSensorPhase(false);
-    // rightSlave1.setSensorPhase(false);
-    // rightSlave2.setSensorPhase(false);
-
-    // leftMaster.setInverted(false);
-    // leftSlave1.setInverted(InvertType.FollowMaster);
-    // leftSlave2.setInverted(InvertType.FollowMaster);
-    // rightMaster.setInverted(true);
-    // rightSlave1.setInverted(InvertType.FollowMaster);
-    // rightSlave2.setInverted(InvertType.FollowMaster);
     
     leftSlave1.follow(leftMaster);
     leftSlave2.follow(leftMaster);
     rightSlave1.follow(rightMaster);
     rightSlave2.follow(rightMaster);
 
-    odometry = new DifferentialDriveOdometry(
-        getAngle(), getLeftEncoder(), getRightEncoder());
-
     ahrs.enableLogging(true);
-
-    pathEventMap.put("intake", ArmSequences.AutoIntake());
-    pathEventMap.put("scoreTop", ArmSequences.ScoreTop());
 
     configBrakes(Constants.Drive.brakes);
     configRamps(Constants.Drive.rampSpeed);
     configDriveLimit(Constants.Drive.maxDrive);
     configSteerLimit(Constants.Drive.maxSteer);
+
+    ahrs = new AHRS();
   }
 
   public void aDrive(double speed, double rotation) {
@@ -192,30 +132,6 @@ public class Drivetrain extends SubsystemBase {
     this.steerLimit = steerLimit;
   }
 
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getLeftEncoder(),
-        getRightEncoder());
-  }
-
-  public DifferentialDriveOdometry getOdometry() {
-    return odometry;
-  }
-
-  public void resetPose(Pose2d pose) {
-    resetEncoders();
-    this.pose = pose;
-    odometry.resetPosition(
-        getAngle(), getLeftEncoder(), getRightEncoder(), pose);
-  }
-
-  public void updatePose() {
-    this.pose = odometry.update(getAngle(), getLeftEncoder(), getRightEncoder());
-  }
-
-  public Pose2d getPose() {
-    return pose;
-  }
-
   public double getLeftEncoder() {
     double value = -leftMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
     return value;
@@ -244,52 +160,11 @@ public class Drivetrain extends SubsystemBase {
     ahrs.zeroYaw();
   }
 
-  public void calibrate() {
-    ahrs.calibrate();
-  }
-
   private void init(WPI_TalonFX talon) {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
     talon.setNeutralMode(Constants.Drive.brakes ? NeutralMode.Brake : NeutralMode.Coast);
     talon.configAllSettings(toApply);
     talon.setSelectedSensorPosition(0);
-  }
-
-  public DifferentialDriveKinematics getKinematics() {
-    return kinematics;
-  }
-
-  public Command followTrajectoryCommand(String trajectory, boolean reset) {
-    List<PathPlannerTrajectory> traj = PathPlanner.loadPathGroup(trajectory, new PathConstraints(
-        Constants.Drive.kMaxSpeedMetersPerSecond, Constants.Drive.kMaxAccelerationMetersPerSecondSquared));
-
-    return followTrajectoryCommand(traj, reset);
-  }
-
-  public Command followTrajectoryCommand(List<PathPlannerTrajectory> trajectory, boolean reset) {
-    List<CommandBase> commands = new ArrayList<>();
-
-    commands.add(new InstantCommand(() -> {
-        resetPose(trajectory.get(0).getInitialPose());
-    }));
-
-    for (PathPlannerTrajectory traj : trajectory) {
-      // commands.add(pathFollower.stopEventGroup(traj.getStartStopEvent()));
-      // commands.add(pathFollower.followPathWithEvents(traj));
-      commands.add(pathFollower.followPath(traj));
-    }
-
-    // commands.add(pathFollower.stopEventGroup(trajectory.get(trajectory.size() - 1).getEndStopEvent()));
-    
-    return Commands.sequence(
-        new InstantCommand(() -> configRamps(0)),
-        Commands.sequence(commands.toArray(CommandBase[]::new)),
-        new InstantCommand(() -> configRamps(Constants.Drive.rampSpeed)));
-  }
-
-  @Override
-  public void periodic() {
-    updatePose();
   }
 }

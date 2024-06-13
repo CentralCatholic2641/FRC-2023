@@ -3,10 +3,10 @@
 
 package frc.team2641.resurgence2023.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.resurgence2023.subsystems.Arm;
 
-public class ResetEncoders extends CommandBase {
+public class ResetEncoders extends Command {
   private Arm arm = Arm.getInstance();
 
   public ResetEncoders() {

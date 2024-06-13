@@ -4,7 +4,6 @@
 package frc.team2641.resurgence2023;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,8 +53,6 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     logController.start();
 
-    PathPlannerServer.startServer(5811);
-
     arm.resetEncoders();
 
     limelight.setCamMode(CamMode.kDriver);
@@ -82,8 +79,6 @@ public class Robot extends TimedRobot {
     }
 
     CommandScheduler.getInstance().run();
-
-    shuffleboardController.setRobotPose(drivetrain.getPose());
   }
 
   @Override

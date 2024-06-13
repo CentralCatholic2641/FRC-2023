@@ -3,10 +3,10 @@
 
 package frc.team2641.resurgence2023.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 
-public class DriveToDistance extends CommandBase {
+public class DriveToDistance extends Command {
   private Drivetrain drivetrain = Drivetrain.getInstance();
   private double distance;
 

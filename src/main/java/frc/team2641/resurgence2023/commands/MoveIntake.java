@@ -4,10 +4,10 @@
 
 package frc.team2641.resurgence2023.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.resurgence2023.subsystems.Intake;
 
-public class MoveIntake extends CommandBase {
+public class MoveIntake extends Command {
   private Intake intake = Intake.getInstance();
   private boolean direction;
 

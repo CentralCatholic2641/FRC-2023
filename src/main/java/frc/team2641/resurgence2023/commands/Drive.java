@@ -3,13 +3,13 @@
 
 package frc.team2641.resurgence2023.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.Robot;
 import frc.team2641.resurgence2023.subsystems.Drivetrain;
 import frc.team2641.lib.control.Buttons.Gamepad;
 
-public class Drive extends CommandBase {
+public class Drive extends Command {
   private Drivetrain drivetrain;
 
   // private boolean prevDriverTankShift = false;

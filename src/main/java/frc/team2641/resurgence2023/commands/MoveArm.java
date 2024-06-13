@@ -3,7 +3,7 @@
 
 package frc.team2641.resurgence2023.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.team2641.resurgence2023.Robot;
 import frc.team2641.resurgence2023.helpers.ArmPosition;
 import frc.team2641.resurgence2023.subsystems.Arm;
@@ -13,7 +13,7 @@ import frc.team2641.resurgence2023.subsystems.Shoulder;
 import frc.team2641.resurgence2023.subsystems.Wrist;
 import frc.team2641.lib.control.Buttons.Gamepad;
 
-public class MoveArm extends CommandBase {
+public class MoveArm extends Command {
   private Arm arm = Arm.getInstance();
   private Shoulder shoulder = Shoulder.getInstance();
   private Elbow elbow = Elbow.getInstance();
