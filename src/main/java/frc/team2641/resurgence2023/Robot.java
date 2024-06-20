@@ -8,14 +8,8 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.team2641.resurgence2023.commands.Wait;
 import frc.team2641.resurgence2023.subsystems.Arm;
-import frc.team2641.resurgence2023.subsystems.Drivetrain;
-import frc.team2641.resurgence2023.subsystems.Intake;
 import frc.team2641.resurgence2023.telemetry.LogController;
-import frc.team2641.resurgence2023.telemetry.ShuffleboardController;
 import frc.team2641.lib.control.Buttons.Gamepad;
 import frc.team2641.lib.limelight.Limelight;
 import frc.team2641.lib.limelight.ControlMode.CamMode;
@@ -25,12 +19,9 @@ public class Robot extends TimedRobot {
 
   private static PowerDistribution pdh;
 
-  private Drivetrain drivetrain;
   private Arm arm;
-  private Intake intake;
 
   private LogController logController;
-  private ShuffleboardController shuffleboardController;
   private Limelight limelight;
 
   public static RobotContainer robotContainer;
@@ -39,12 +30,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     pdh = new PowerDistribution(Constants.CAN.PDH, PowerDistribution.ModuleType.kRev);
 
-    drivetrain = Drivetrain.getInstance();
     arm = Arm.getInstance();
-    intake = Intake.getInstance();
 
     logController = LogController.getInstance();
-    shuffleboardController = ShuffleboardController.getInstance();
     limelight = Limelight.getInstance();
 
     CameraServer.startAutomaticCapture(0);
@@ -91,17 +79,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    drivetrain.resetEncoders();
-    limelight.setCamMode(CamMode.kVision);
-    autoCommand = shuffleboardController.getAutonomousCommand();
-    Commands.sequence(
-      new InstantCommand(() -> intake.forward(1), intake),
-      new Wait(1),
-      new InstantCommand(() -> intake.stop(), intake)
-    ).schedule();
-
-    if (autoCommand != null)
-      autoCommand.schedule();
   }
 
   @Override
@@ -113,7 +90,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (autoCommand != null)
       autoCommand.cancel();
-    drivetrain.resetEncoders();
   }
 
   @Override

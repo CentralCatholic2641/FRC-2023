@@ -3,9 +3,8 @@
 
 package frc.team2641.resurgence2023.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 
@@ -21,25 +20,18 @@ public class Elbow extends SubsystemBase {
   private TalonFX elbow = new TalonFX(Constants.CAN.elbow);
 
   public Elbow() {
-    elbow.configFactoryDefault();
+    elbow.getConfigurator().apply(new TalonFXConfiguration());
 
-    elbow.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
-
-    elbow.setSensorPhase(true);
+    TalonFXConfiguration config = new TalonFXConfiguration();
 
     elbow.setInverted(false);
+    config.Slot0.kP = Constants.Arm.elbowGains.kP;
+    config.Slot0.kI = Constants.Arm.elbowGains.kI;
+    config.Slot0.kD = Constants.Arm.elbowGains.kD;
+    config.Voltage.PeakForwardVoltage = Constants.Arm.elbowGains.kPeakOutput;
+    config.Voltage.PeakReverseVoltage = -Constants.Arm.elbowGains.kPeakOutput;
 
-    elbow.configNominalOutputForward(0, 30);
-    elbow.configNominalOutputReverse(0, 30);
-    elbow.configPeakOutputForward(Constants.Arm.elbowGains.kPeakOutput, 30);
-    elbow.configPeakOutputReverse(-Constants.Arm.elbowGains.kPeakOutput, 30);
-
-    elbow.configAllowableClosedloopError(0, Constants.Arm.elbowGains.kAllowableError, 30);
-
-    elbow.config_kP(0, Constants.Arm.elbowGains.kP, 30);
-    elbow.config_kI(0, Constants.Arm.elbowGains.kI, 30);
-    elbow.config_kD(0, Constants.Arm.elbowGains.kD, 30);
-    elbow.config_kF(0, Constants.Arm.elbowGains.kF, 30);
+    elbow.getConfigurator().apply(config);
   }
 
   public void set(double value) {
@@ -47,15 +39,15 @@ public class Elbow extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    elbow.set(ControlMode.Position, pos);
+    elbow.setPosition(pos);
   }
 
-  public int getEncoder() {
-    return (int) elbow.getSelectedSensorPosition();
+  public double getEncoder() {
+    return (double) elbow.getPosition().getValue();
   }
 
   public void setEncoder(double value) {
-    elbow.setSelectedSensorPosition(value);
+    elbow.setPosition(value);
   }
 
   @Override

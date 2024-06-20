@@ -3,16 +3,13 @@
 
 package frc.team2641.resurgence2023.subsystems;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.Robot;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -33,27 +30,16 @@ public class Drivetrain extends SubsystemBase {
   private TalonFX rightSlave1 = new TalonFX(Constants.CAN.rightSlave1);
   private TalonFX rightSlave2 = new TalonFX(Constants.CAN.rightSlave2);
 
-  private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
-  private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
-
-  private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
+  private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
   private double driveLimit = Constants.Drive.maxDrive;
   private double steerLimit = Constants.Drive.maxSteer;
 
   private Drivetrain() {
-    init(leftMaster);
-    init(leftSlave1);
-    init(leftSlave2);
-    init(rightMaster);
-    init(rightSlave1);
-    init(rightSlave2);
-    
-    leftSlave1.
-    leftSlave1.follow(leftMaster);
-    leftSlave2.follow(leftMaster);
-    rightSlave1.follow(rightMaster);
-    rightSlave2.follow(rightMaster);
+    leftSlave1.setControl(new Follower(leftMaster.getDeviceID(), false));
+    leftSlave2.setControl(new Follower(leftMaster.getDeviceID(), false));
+    rightSlave1.setControl(new Follower(rightMaster.getDeviceID(), false));
+    rightSlave2.setControl(new Follower(rightMaster.getDeviceID(), false));
 
     configBrakes(Constants.Drive.brakes);
     configRamps(Constants.Drive.rampSpeed);
@@ -81,15 +67,6 @@ public class Drivetrain extends SubsystemBase {
         Constants.Drive.driveRateLimiter.calculate(right * steerLimit), true);
   }
 
-  public void tDriveVolts(double rightVolts, double leftVolts) {
-    leftGroup.setVoltage(-leftVolts);
-    rightGroup.setVoltage(rightVolts);
-    drive.feed();
-
-    SmartDashboard.putNumber("left", -leftVolts);
-    SmartDashboard.putNumber("right", rightVolts);
-  }
-
   public void configBrakes(boolean brakesOn) {
     NeutralModeValue input;
     if (brakesOn)
@@ -107,18 +84,18 @@ public class Drivetrain extends SubsystemBase {
 
   public void configRamps(double rampSpeed) {
     leftMaster.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
-    leftMaster.configOpenloopRamp(rampSpeed);
-    leftSlave1.configOpenloopRamp(rampSpeed);
-    leftSlave2.configOpenloopRamp(rampSpeed);
-    rightMaster.configOpenloopRamp(rampSpeed);
-    rightSlave1.configOpenloopRamp(rampSpeed);
-    rightSlave2.configOpenloopRamp(rampSpeed);
-    leftMaster.configClosedloopRamp(rampSpeed);
-    leftSlave1.configClosedloopRamp(rampSpeed);
-    leftSlave2.configClosedloopRamp(rampSpeed);
-    rightMaster.configClosedloopRamp(rampSpeed);
-    rightSlave1.configClosedloopRamp(rampSpeed);
-    rightSlave2.configClosedloopRamp(rampSpeed);
+    leftSlave1.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
+    leftSlave2.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
+    rightMaster.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
+    rightSlave1.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
+    rightSlave2.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
+    
+    leftMaster.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(rampSpeed));
+    leftSlave1.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(rampSpeed));
+    leftSlave2.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(rampSpeed));
+    rightMaster.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(rampSpeed));
+    rightSlave1.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(rampSpeed));
+    rightSlave2.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(rampSpeed));
   }
 
   public void configDriveLimit(double driveLimit) {
@@ -127,28 +104,5 @@ public class Drivetrain extends SubsystemBase {
 
   public void configSteerLimit(double steerLimit) {
     this.steerLimit = steerLimit;
-  }
-
-  public double getLeftEncoder() {
-    double value = -leftMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
-    return value;
-  }
-
-  public double getRightEncoder() {
-    double value = rightMaster.getSelectedSensorPosition() / Constants.Drive.encoderToMeters;
-    return value;
-  }
-
-  public void resetEncoders() {
-    leftMaster.setSelectedSensorPosition(0);
-    rightMaster.setSelectedSensorPosition(0);
-  }
-
-  private void init(TalonFX talon) {
-    talon.configFactoryDefault();
-    TalonFXConfiguration toApply = new TalonFXConfiguration();
-    talon.setNeutralMode(Constants.Drive.brakes ? NeutralMode.Brake : NeutralMode.Coast);
-    talon.configAllSettings(toApply);
-    talon.setSelectedSensorPosition(0);
   }
 }

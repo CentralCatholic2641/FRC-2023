@@ -3,9 +3,8 @@
 
 package frc.team2641.resurgence2023.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 
@@ -22,38 +21,27 @@ public class Shoulder extends SubsystemBase {
   private TalonFX right = new TalonFX(Constants.CAN.rightShoulder);
 
   public Shoulder() {
-    left.configFactoryDefault();
-    right.configFactoryDefault();
-
-    left.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
-    right.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
-
-    left.setSensorPhase(true);
-    right.setSensorPhase(false);
+    TalonFXConfiguration leftConfig = new TalonFXConfiguration();
+    TalonFXConfiguration rightConfig = new TalonFXConfiguration();
 
     left.setInverted(false);
     right.setInverted(true);
 
-    left.configNominalOutputForward(0, 30);
-    left.configNominalOutputReverse(0, 30);
-    left.configPeakOutputForward(Constants.Arm.shoulderGains.kPeakOutput, 30);
-    left.configPeakOutputReverse(-Constants.Arm.shoulderGains.kPeakOutput, 30);
-    right.configNominalOutputForward(0, 30);
-    right.configNominalOutputReverse(0, 30);
-    right.configPeakOutputForward(Constants.Arm.shoulderGains.kPeakOutput, 30);
-    right.configPeakOutputReverse(-Constants.Arm.shoulderGains.kPeakOutput, 30);
+    leftConfig.Slot0.kP = Constants.Arm.shoulderGains.kP;
+    leftConfig.Slot0.kI = Constants.Arm.shoulderGains.kI;
+    leftConfig.Slot0.kD = Constants.Arm.shoulderGains.kD;
 
-    left.configAllowableClosedloopError(0, Constants.Arm.shoulderGains.kAllowableError, 30);
-    right.configAllowableClosedloopError(0, Constants.Arm.shoulderGains.kAllowableError, 30);
+    rightConfig.Slot0.kP = Constants.Arm.shoulderGains.kP;
+    rightConfig.Slot0.kI = Constants.Arm.shoulderGains.kI;
+    rightConfig.Slot0.kD = Constants.Arm.shoulderGains.kD;
 
-    left.config_kP(0, Constants.Arm.shoulderGains.kP, 30);
-    left.config_kI(0, Constants.Arm.shoulderGains.kI, 30);
-    left.config_kD(0, Constants.Arm.shoulderGains.kD, 30);
-    left.config_kF(0, Constants.Arm.shoulderGains.kF, 30);
-    right.config_kP(0, Constants.Arm.shoulderGains.kP, 30);
-    right.config_kI(0, Constants.Arm.shoulderGains.kI, 30);
-    right.config_kD(0, Constants.Arm.shoulderGains.kD, 30);
-    right.config_kF(0, Constants.Arm.shoulderGains.kF, 30);
+    leftConfig.Voltage.PeakForwardVoltage = Constants.Arm.shoulderGains.kPeakOutput;
+    leftConfig.Voltage.PeakReverseVoltage = -Constants.Arm.shoulderGains.kPeakOutput;
+    rightConfig.Voltage.PeakForwardVoltage = Constants.Arm.shoulderGains.kPeakOutput;
+    rightConfig.Voltage.PeakReverseVoltage = -Constants.Arm.shoulderGains.kPeakOutput;
+
+    left.getConfigurator().apply(leftConfig);
+    right.getConfigurator().apply(rightConfig);
   }
 
   public void set(double value) {
@@ -63,17 +51,17 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    left.set(ControlMode.Position, pos);
-    right.set(ControlMode.Position, pos);
+    left.setPosition(pos);
+    right.setPosition(pos);
   }
 
   public double getEncoder() {
-    return (left.getSelectedSensorPosition() + right.getSelectedSensorPosition()) / 2;
+    return (left.getPosition().getValue() + right.getPosition().getValue()) / 2;
   }
 
   public void setEncoder(double value) {
-    left.setSelectedSensorPosition(value);
-    right.setSelectedSensorPosition(value);
+    left.setPosition(value);
+    right.setPosition(value);
   }
 
   @Override
