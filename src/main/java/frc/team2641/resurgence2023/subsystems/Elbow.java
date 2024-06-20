@@ -5,7 +5,7 @@ package frc.team2641.resurgence2023.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 
@@ -18,7 +18,7 @@ public class Elbow extends SubsystemBase {
     return instance;
   }
 
-  private WPI_TalonFX elbow = new WPI_TalonFX(Constants.CAN.elbow);
+  private TalonFX elbow = new TalonFX(Constants.CAN.elbow);
 
   public Elbow() {
     elbow.configFactoryDefault();

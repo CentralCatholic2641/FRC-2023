@@ -23,12 +23,4 @@ public class AutoSequences {
 	public static Command ScorePreloadOnly(String start) {
 		return ArmSequences.ScoreTop();
 	}
-
-	public static Command ScorePreloadAutoBalance() {
-		return Commands.sequence (
-			ArmSequences.ScoreTop(),
-			new DriveFor(8),
-			new AutoBalance()
-		);
-	}
 }

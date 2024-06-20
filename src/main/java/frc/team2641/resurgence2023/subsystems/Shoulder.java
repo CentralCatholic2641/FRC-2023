@@ -5,7 +5,7 @@ package frc.team2641.resurgence2023.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
 
@@ -18,8 +18,8 @@ public class Shoulder extends SubsystemBase {
     return instance;
   }
 
-  private WPI_TalonFX left = new WPI_TalonFX(Constants.CAN.leftShoulder);
-  private WPI_TalonFX right = new WPI_TalonFX(Constants.CAN.rightShoulder);
+  private TalonFX left = new TalonFX(Constants.CAN.leftShoulder);
+  private TalonFX right = new TalonFX(Constants.CAN.rightShoulder);
 
   public Shoulder() {
     left.configFactoryDefault();

@@ -12,8 +12,9 @@ import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.Robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Drivetrain extends SubsystemBase {
   private static Drivetrain instance = null;
@@ -24,20 +25,18 @@ public class Drivetrain extends SubsystemBase {
     return instance;
   }
 
-  private WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.CAN.leftMaster);
-  private WPI_TalonFX leftSlave1 = new WPI_TalonFX(Constants.CAN.leftSlave1);
-  private WPI_TalonFX leftSlave2 = new WPI_TalonFX(Constants.CAN.leftSlave2);
+  private TalonFX leftMaster = new TalonFX(Constants.CAN.leftMaster);
+  private TalonFX leftSlave1 = new TalonFX(Constants.CAN.leftSlave1);
+  private TalonFX leftSlave2 = new TalonFX(Constants.CAN.leftSlave2);
 
-  private WPI_TalonFX rightMaster = new WPI_TalonFX(Constants.CAN.rightMaster);
-  private WPI_TalonFX rightSlave1 = new WPI_TalonFX(Constants.CAN.rightSlave1);
-  private WPI_TalonFX rightSlave2 = new WPI_TalonFX(Constants.CAN.rightSlave2);
+  private TalonFX rightMaster = new TalonFX(Constants.CAN.rightMaster);
+  private TalonFX rightSlave1 = new TalonFX(Constants.CAN.rightSlave1);
+  private TalonFX rightSlave2 = new TalonFX(Constants.CAN.rightSlave2);
 
   private MotorControllerGroup leftGroup = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
   private MotorControllerGroup rightGroup = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
 
   private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
-
-  private AHRS ahrs;
 
   private double driveLimit = Constants.Drive.maxDrive;
   private double steerLimit = Constants.Drive.maxSteer;
@@ -50,19 +49,16 @@ public class Drivetrain extends SubsystemBase {
     init(rightSlave1);
     init(rightSlave2);
     
+    leftSlave1.
     leftSlave1.follow(leftMaster);
     leftSlave2.follow(leftMaster);
     rightSlave1.follow(rightMaster);
     rightSlave2.follow(rightMaster);
 
-    ahrs.enableLogging(true);
-
     configBrakes(Constants.Drive.brakes);
     configRamps(Constants.Drive.rampSpeed);
     configDriveLimit(Constants.Drive.maxDrive);
     configSteerLimit(Constants.Drive.maxSteer);
-
-    ahrs = new AHRS();
   }
 
   public void aDrive(double speed, double rotation) {
@@ -95,11 +91,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void configBrakes(boolean brakesOn) {
-    NeutralMode input;
+    NeutralModeValue input;
     if (brakesOn)
-      input = NeutralMode.Brake;
+      input = NeutralModeValue.Brake;
     else
-      input = NeutralMode.Coast;
+      input = NeutralModeValue.Coast;
 
     leftMaster.setNeutralMode(input);
     leftSlave1.setNeutralMode(input);
@@ -110,6 +106,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void configRamps(double rampSpeed) {
+    leftMaster.getConfigurator().apply(new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(rampSpeed));
     leftMaster.configOpenloopRamp(rampSpeed);
     leftSlave1.configOpenloopRamp(rampSpeed);
     leftSlave2.configOpenloopRamp(rampSpeed);
@@ -147,20 +144,7 @@ public class Drivetrain extends SubsystemBase {
     rightMaster.setSelectedSensorPosition(0);
   }
 
-  public Rotation2d getAngle() {
-    return ahrs.getRotation2d().rotateBy(Rotation2d.fromDegrees(180));
-  }
-
-  public float getPitch() {
-    return ahrs.getPitch();
-  }
-
-  public void zeroHeading() {
-    ahrs.reset();
-    ahrs.zeroYaw();
-  }
-
-  private void init(WPI_TalonFX talon) {
+  private void init(TalonFX talon) {
     talon.configFactoryDefault();
     TalonFXConfiguration toApply = new TalonFXConfiguration();
     talon.setNeutralMode(Constants.Drive.brakes ? NeutralMode.Brake : NeutralMode.Coast);
