@@ -29,6 +29,7 @@ public class Arm extends SubsystemBase {
 
   public void set(ArmPosition position) {
     this.position = new ArmPosition(position.shoulder, position.elbow, position.wrist);
+    System.out.println("s: " + position.shoulder + " e: " + position.elbow + " w: " + position.wrist);
     shoulder.setPos(side * this.position.shoulder);
     elbow.setPos(side * this.position.elbow);
     wrist.setPos(side * this.position.wrist);
@@ -39,19 +40,21 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean atPosition() {
-    boolean value = true;
+    // boolean value = true;
 
-    if (shoulder.getEncoder() > side * position.shoulder + side * 3000
-        || shoulder.getEncoder() < side * position.shoulder - side * 3000)
-      value = false;
-    if (elbow.getEncoder() > side * position.elbow + side * 3000
-        || elbow.getEncoder() < side * position.elbow - side * 3000)
-      value = false;
-    if (wrist.getEncoder() > side * position.wrist + side * 1000
-        || wrist.getEncoder() < side * position.wrist - side * 1000)
-      value = false;
+    // if (shoulder.getEncoder() > side * position.shoulder + side * 3000
+    //     || shoulder.getEncoder() < side * position.shoulder - side * 3000)
+    //   value = false;
+    // if (elbow.getEncoder() > side * position.elbow + side * 3000
+    //     || elbow.getEncoder() < side * position.elbow - side * 3000)
+    //   value = false;
+    // if (wrist.getEncoder() > side * position.wrist + side * 1000
+    //     || wrist.getEncoder() < side * position.wrist - side * 1000)
+    //   value = false;
 
-    return value;
+    // return value;
+
+    return false;
   }
 
   public void reset() {

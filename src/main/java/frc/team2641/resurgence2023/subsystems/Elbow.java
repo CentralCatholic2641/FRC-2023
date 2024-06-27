@@ -4,6 +4,7 @@
 package frc.team2641.resurgence2023.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
@@ -18,6 +19,7 @@ public class Elbow extends SubsystemBase {
   }
 
   private TalonFX elbow = new TalonFX(Constants.CAN.elbow);
+  private PositionVoltage request = new PositionVoltage(0).withSlot(0);
 
   public Elbow() {
     elbow.getConfigurator().apply(new TalonFXConfiguration());
@@ -39,7 +41,7 @@ public class Elbow extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    elbow.setPosition(pos);
+    elbow.setControl(request.withPosition(pos));
   }
 
   public double getEncoder() {
@@ -52,5 +54,6 @@ public class Elbow extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(getEncoder());
   }
 }

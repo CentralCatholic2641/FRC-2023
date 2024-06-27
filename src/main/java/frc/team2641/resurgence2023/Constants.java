@@ -80,9 +80,9 @@ public final class Constants {
 			public static final ArmPosition doubleSubstation = new ArmPosition(-137000, -165000, 0);
 		}
 
-		public static final PIDGains shoulderGains = new PIDGains(0.4, 0, 0, 0, 0.4, 1000);
-		public static final PIDGains elbowGains = new PIDGains(0.4, 0, 0, 0, 0.5, 500);
-		public static final PIDGains wristGains = new PIDGains(0.25, 0, 0, 0, 0.2, 50);
+		public static final PIDGains shoulderGains = new PIDGains(0.4, 0, 0, 0, 5, 1);
+		public static final PIDGains elbowGains = new PIDGains(0.4, 0, 0, 0, 5, 1);
+		public static final PIDGains wristGains = new PIDGains(0.25, 0, 0, 0, 2.5, 0.5);
 
 		public static final SlewRateLimiter shoulderRateLimiter = new SlewRateLimiter(4.5);
 		public static final SlewRateLimiter elbowRateLimiter = new SlewRateLimiter(10);

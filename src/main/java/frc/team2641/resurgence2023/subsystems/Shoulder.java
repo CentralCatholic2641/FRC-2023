@@ -4,6 +4,7 @@
 package frc.team2641.resurgence2023.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team2641.resurgence2023.Constants;
@@ -19,6 +20,8 @@ public class Shoulder extends SubsystemBase {
 
   private TalonFX left = new TalonFX(Constants.CAN.leftShoulder);
   private TalonFX right = new TalonFX(Constants.CAN.rightShoulder);
+
+  private PositionVoltage request = new PositionVoltage(0).withSlot(0);
 
   public Shoulder() {
     TalonFXConfiguration leftConfig = new TalonFXConfiguration();
@@ -51,8 +54,9 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void setPos(double pos) {
-    left.setPosition(pos);
-    right.setPosition(pos);
+    PositionVoltage r = request.withPosition(pos);
+    left.setControl(r);
+    right.setControl(r);
   }
 
   public double getEncoder() {
