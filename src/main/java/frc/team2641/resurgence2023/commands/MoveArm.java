@@ -36,7 +36,7 @@ public class MoveArm extends Command {
       double wristStick = Robot.robotContainer.operator.getRawAxis(4);
 
       int shoulder = (int) this.shoulder.getEncoder();
-      int elbow = (int) this.elbow.getEncoder();
+      int elbow = this.elbow.getEncoder();
       int wrist = this.wrist.getEncoder();
 
       if (Math.abs(shoulderStick) >= 0.05)

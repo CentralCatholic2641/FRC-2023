@@ -10,12 +10,16 @@ import frc.team2641.resurgence2023.Constants;
 import frc.team2641.resurgence2023.commands.SetArm;
 import frc.team2641.resurgence2023.commands.Wait;
 import frc.team2641.resurgence2023.helpers.ArmPosition;
+import frc.team2641.resurgence2023.subsystems.Arm;
+import frc.team2641.resurgence2023.subsystems.Elbow;
 import frc.team2641.resurgence2023.subsystems.Intake;
 import frc.team2641.resurgence2023.subsystems.Shoulder;
 
 public class ArmSequences {
 	private static Intake intake = Intake.getInstance();
+	private static Arm arm = Arm.getInstance();
 	private static Shoulder shoulder = Shoulder.getInstance();
+	private static Elbow elbow = Elbow.getInstance();
 
 	public static Command Stow() {
 		return Commands.sequence(
